@@ -1,0 +1,611 @@
+<template>
+<view class="course">
+  <view class="fixed">
+    <view class="tab">
+      <view class="tab-item {{currentTab==0?'active':''}}" data-current="0" bindtap="swichNav" >文章</view>
+      <view wx:if="{{islianmeng==0}}" class="tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="swichNav" >干货</view>
+      <view wx:if="{{islianmeng}}" class="tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="swichNav" >视频</view>
+      <view class="tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="swichNav" >课程</view>
+      <view class="tab-item {{currentTab==3?'active':''}}" data-current="3" bindtap="swichNav" >搜索</view>
+    </view>
+    <scroll-view scroll-x="true" wx:if="{{currentTab==0}}" class="tab-h1" scroll-left="{{scrollLeft}}">
+      <view class="tab-item1 {{currentTab0==0?'active':''}}" data-current="0" bindtap="swichNav0" >恋爱</view>
+      <view class="tab-item1 {{currentTab0==1?'active':''}}" data-current="1" bindtap="swichNav0" >挽回</view>
+      <view class="tab-item1 {{currentTab0==2?'active':''}}" data-current="2" bindtap="swichNav0" >形象提升</view>
+      <view class="tab-item1 {{currentTab0==3?'active':''}}" data-current="3" bindtap="swichNav0" >搭讪</view>
+      <view class="tab-item1 {{currentTab0==4?'active':''}}" data-current="4" bindtap="swichNav0" >聊天</view>
+      <view class="tab-item1 {{currentTab0==5?'active':''}}" data-current="5" bindtap="swichNav0" >约会</view>
+      <view class="tab-item1 {{currentTab0==6?'active':''}}" data-current="6" bindtap="swichNav0" >异地恋</view>
+      <view class="tab-item1 {{currentTab0==7?'active':''}}" data-current="7" bindtap="swichNav0" >相亲攻略</view>
+    </scroll-view>
+    <scroll-view scroll-x="true" wx:if="{{currentTab==1}}" class="tab-h2">
+      <view class="tab-item2 {{currentTab1==0?'active':''}}" data-current="0" bindtap="swichNav1">套路</view>
+      <view class="tab-item2 {{currentTab1==1?'active':''}}" data-current="1" bindtap="swichNav1">搭讪</view>
+      <view class="tab-item2 {{currentTab1==2?'active':''}}" data-current="2" bindtap="swichNav1">电影</view>
+      <view class="tab-item2 {{currentTab1==3?'active':''}}" data-current="3" bindtap="swichNav1">干货</view>
+    </scroll-view>
+    <scroll-view scroll-x="true" wx:if="{{currentTab==2}}" class="tab-h2">
+      <view class="tab-item2 {{currentTab2==0?'active':''}}" data-current="0" bindtap="swichNav2">展示面</view>
+      <view class="tab-item2 {{currentTab2==1?'active':''}}" data-current="1" bindtap="swichNav2">聊天演练</view>
+      <view class="tab-item2 {{currentTab2==2?'active':''}}" data-current="2" bindtap="swichNav2">联盟课程</view>
+    </scroll-view>
+  </view>
+  <view class="neirong" bindtouchstart='touchStart' bindtouchend="touchEnd">
+    <view wx:if="{{currentTab==0}}" wx:for="{{WenzhangList[currentTab0]}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+      <view class="wenzhang" wx:if="{{item.styles==1}}" bindtap="goToviewhtml({{item.url}})">
+        <view class="kuai1">
+          <view class="title1">{{item.title}}</view>
+          <image class="image1" src="{{item.thumb1}}" mode="scaleToFill"></image>
+        </view>
+        <view class="laiyuan1">{{item.nickname}}　　{{item.views}}次阅读</view>
+      </view>
+      <view class="wenzhang" wx:if="{{item.styles==2}}" bindtap="goToviewhtml({{item.url}})">
+        <view class="title2">{{item.title}}
+        <view class="image_bax">
+          <image class="image2" src="{{item.thumb1}}" mode="scaleToFill"></image>
+          <image class="image2" src="{{item.thumb2}}" mode="scaleToFill"></image>
+          <image class="image2" src="{{item.thumb3}}" mode="scaleToFill"></image>
+        </view>
+        <view class="laiyuan2">{{item.nickname}}　　{{item.views}}次阅读</view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{currentTab==1}}" wx:for="{{GanhuoList[currentTab1]}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+      <view class="shipin" bindtap="goToganhuo({{item}})">
+        <view class="title">{{item.title}}</view>
+        <bottom wx:if="{{islianmeng}}" class="shichang">{{item.duration}}</bottom>
+        <view class="image_kuai">
+          <image wx:if="{{islianmeng}}" class="item_img" src="../images/bofang.png"></image>
+          <image class="image" src="{{item.thumb1}}" mode="scaleToFill"></image>
+        </view>
+        <view wx:if="{{islianmeng==0}}" class="laiyuan">{{item.nickname}}　　{{item.views}}次阅读</view>
+        <view wx:if="{{islianmeng}}" class="laiyuan">{{item.nickname}}　　{{item.views}}次播放</view>
+      </view>
+    </view>
+    <view wx:if="{{currentTab==2&&currentTab2<2}}" wx:for="{{KechengList[currentTab2]}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+      <view class="wenzhang" bindtap="goToimage({{item}})">
+        <view class="kuai1">
+          <view class="title1">{{item.title}}</view>
+          <image class="image1" src="cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/bonjour.jpg" mode="scaleToFill"></image>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{currentTab==2&&currentTab2==2}}" >
+      <view class="adding">
+        <view>功能正在完善</view>
+        <view>感谢关注与支持</view>
+        <view>敬请期待</view>
+      </view>
+    </view>
+    <view class="textend" wx:if="{{(currentTab==0&&!isend0[currentTab0])||(currentTab==1&&!isend1[currentTab1])||(currentTab==2&&!isend2[currentTab2])}}">加载中......</view>
+    <view class="textend" wx:if="{{(currentTab==0&&isend0[currentTab0])||(currentTab==1&&isend1[currentTab1])||(currentTab==2&&isend2[currentTab2])}}">恋爱联盟良心出品</view>
+  </view>
+</view>
+</template>
+<script>
+import wepy from 'wepy';
+import api from '@/api/api';
+import tab from '@/components/tab'
+import loading from "../components/loading"
+import {
+  SYSTEM_INFO,
+  USER_SPECICAL_INFO
+} from '@/utils/constant';
+export default class course extends wepy.page {
+  config = {
+    navigationBarTitleText: "课程",
+    enablePullDownRefresh:true,
+    enableReachBottom:true,
+  }
+  components = {
+    tab: tab,
+    loading: loading
+  }
+  data = {
+    islianmeng:0,
+    startX:0,
+    startY:0,
+    endX:0,
+    endY:0,
+    iffirstshow:true,
+    currentTab: 0,
+    oldcurrentTab:0,
+    currentTab0:0,
+    currentTab1:0,
+    currentTab2:0,
+    scrollLeft:0,
+    scroll0:['','','','','','','',''],
+    scroll1:['','','',''],
+    scroll2:['','',''],
+    isend0:[false,false,false,false,false,false,false,false],
+    isend1:[false,false,false,false],
+    isend2:[false,false,true],
+    WenzhangList:[[],[],[],[],[],[],[],[]],
+    GanhuoList:[[],[],[],[]],
+    KechengList:[[],[]],
+  }
+  async getIslianmeng() {
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openid = userSpecialInfo.openid;
+    if(typeof(openid) == "undefined"){
+      wepy.navigateTo({
+        url: '/pages/shouquan'
+      })
+      return false;
+    }
+    const json = await api.getIslianmeng({
+      query: {
+        openid:openid,
+      }
+    });
+    this.islianmeng=json.data.data;
+    this.$apply();
+  }
+  async getWenzhangList(ifBuootm) {
+    if(this.isend0[this.currentTab0]) return 0;
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openid = userSpecialInfo.openid;
+    if(typeof(openid) == "undefined"){
+      wepy.navigateTo({
+        url: '/pages/shouquan'
+      })
+      return false;
+    }
+    const json = await api.getWenzhangList({
+      query: {
+        openid:openid,
+        scroll:this.scroll0[this.currentTab0],
+        tab:this.currentTab0,
+      }
+    });
+    if(json.data.data.length<10) this.isend0[this.currentTab0]=true;
+    if(ifBuootm){
+      this.WenzhangList[this.currentTab0]=this.WenzhangList[this.currentTab0].concat(json.data.data);
+    }
+    else{
+      this.WenzhangList[this.currentTab0]=json.data.data.concat(this.WenzhangList[this.currentTab0]);
+    }
+    this.scroll0[this.currentTab0]=json.data.scroll;
+    this.$apply();
+  }
+  async getGanhuoList(ifBuootm) {
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openid = userSpecialInfo.openid;
+    if(typeof(openid) == "undefined"){
+      wepy.navigateTo({
+        url: '/pages/shouquan'
+      })
+      return false;
+    }
+    const json = await api.getGanhuoList({
+      query: {
+        openid:openid,
+        scroll:this.scroll1[this.currentTab1],
+        tab:this.currentTab1,
+      }
+    });
+    if(json.data.data.length<10) this.isend1[this.currentTab1]=true;
+    if(ifBuootm){
+      this.GanhuoList[this.currentTab1]=this.GanhuoList[this.currentTab1].concat(json.data.data);
+    }
+    else{
+      this.GanhuoList[this.currentTab1]=json.data.data.concat(this.GanhuoList[this.currentTab1]);
+    }
+    this.scroll1[this.currentTab1]=json.data.scroll;
+    this.$apply();
+  }
+  async getKechengList(ifBuootm) {
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openid = userSpecialInfo.openid;
+    if(typeof(openid) == "undefined"){
+      wepy.navigateTo({
+        url: '/pages/shouquan'
+      })
+      return false;
+    }
+    const json = await api.getKechengList({
+      query: {
+        openid:openid,
+        scroll:this.scroll2[this.currentTab2],
+        tab:this.currentTab2,
+      }
+    });
+    if(json.data.data.length<10) this.isend2[this.currentTab2]=true;
+    if(ifBuootm){
+      this.KechengList[this.currentTab2]=this.KechengList[this.currentTab2].concat(json.data.data);
+    }
+    else{
+      this.KechengList[this.currentTab2]=json.data.data.concat(this.KechengList[this.currentTab2]);
+    }
+    this.scroll2[this.currentTab2]=json.data.scroll;
+    this.$apply();
+  }
+  checkCor(){
+    if (this.currentTab0>3){this.scrollLeft=300;}
+    else{this.scrollLeft=0;}
+    this.$apply();
+  }
+  changeTab() {
+    if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
+      if(this.currentTab==0){
+        if(this.currentTab0==0){
+          wx.switchTab({
+            url: "./home"
+          })
+        }
+        else{
+          this.currentTab0--;
+          if(this.WenzhangList[this.currentTab0].length==0)
+            this.getWenzhangList(0);
+        }
+      }
+      else if(this.currentTab==1){
+        if(this.currentTab1==0){
+          this.currentTab=0;
+          this.currentTab0=7;
+          if(this.WenzhangList[this.currentTab0].length==0)
+          this.getWenzhangList(0);
+        }
+        else{
+          this.currentTab1--;
+          if(this.GanhuoList[this.currentTab1].length==0)
+            this.getGanhuoList(0);
+        }
+      }
+      else if(this.currentTab==2){
+        if(this.currentTab2==0){
+          this.currentTab=1;
+          this.currentTab1=3;
+          if(this.GanhuoList[this.currentTab1].length==0)
+          this.getGanhuoList(0);
+        }
+        else{
+          this.currentTab2--;
+          if(this.KechengList[this.currentTab2].length==0)
+            this.getKechengList(0);
+        }
+      }
+    } else if (this.endX - this.startX < -30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
+      if(this.currentTab==0){
+        if(this.currentTab0==7){
+          this.currentTab=1;
+          this.currentTab1=0;
+          if(this.GanhuoList[this.currentTab1].length==0)
+            this.getGanhuoList(0);
+        }
+        else{
+          this.currentTab0++;
+          if(this.WenzhangList[this.currentTab0].length==0)
+            this.getWenzhangList(0);
+        }
+      }
+      else if(this.currentTab==1){
+        if(this.currentTab1==3){
+          this.currentTab=2;
+          this.currentTab2=0;
+          if(this.KechengList[this.currentTab2].length==0)
+            this.getKechengList(0);
+        }
+        else{
+          this.currentTab1++;
+          if(this.GanhuoList[this.currentTab1].length==0)
+            this.getGanhuoList(0);
+        }
+      }
+      else if(this.currentTab==2){
+        if(this.currentTab2==2){
+          wx.switchTab({
+            url: "./searchpage"
+          })
+        }
+        else{
+          this.currentTab2++;
+          if(this.currentTab2<2&&this.KechengList[this.currentTab2].length==0)
+            this.getKechengList(0);
+        }
+      }
+    }
+    this.checkCor();
+    this.$apply();
+  }
+  onShareAppMessage() {
+    return {
+      title: '恋爱联盟',
+      path: '/pages/home',
+    };
+  }
+  onPullDownRefresh() {
+    if(this.currentTab==0){
+      if(!this.isend0[this.currentTab0])
+        this.getWenzhangList(0);
+    }
+    if(this.currentTab==1){
+      if(!this.isend1[this.currentTab1])
+        this.getGanhuoList(0);
+    }
+    if(this.currentTab==2){
+      if(!this.isend2[this.currentTab2])
+        this.getKechengList(0);
+    }
+    wx.stopPullDownRefresh();
+  }
+  onReachBottom(){
+    if(this.currentTab==0){
+      if(!this.isend0[this.currentTab0])
+        this.getWenzhangList(1);
+    }
+    if(this.currentTab==1){
+      if(!this.isend1[this.currentTab1])
+        this.getGanhuoList(1);
+    }
+    if(this.currentTab==2){
+      if(!this.isend2[this.currentTab2])
+        this.getKechengList(1);
+    }
+  }
+  onLoad(){
+    this.getIslianmeng();
+    if(this.iffirstshow){
+      this.getWenzhangList(0);
+      this.iffirstshow=false;
+    }
+    this.$apply();
+  }
+  methods = {
+    goToviewhtml(url){
+      wx.navigateTo({
+        url: "./viewhtml?url="+url,
+      })
+    },
+    goToimage(item){
+      item.title=item.title.replace(",","，");
+      wx.navigateTo({
+        url: "./viewimage?title="+item.title+"&url="+item.url,
+      })
+    },
+    goToganhuo(item){
+      if(this.islianmeng==0){
+        wx.navigateTo({
+          url: "./adding",
+        })
+      }
+      else{
+        item.title=item.title.replace(",","，");
+        wx.navigateTo({
+          url: "./viewganhuo?url="+item.url+"&duration="+item.duration+"&title="+item.title+'&direction='+item.direction,
+        })
+      }
+    },
+    touchStart(e){
+      this.startX=e.changedTouches[0].clientX;
+      this.startY=e.changedTouches[0].clientY;
+    },
+    touchEnd(e){
+      this.endX=e.changedTouches[0].clientX;
+      this.endY=e.changedTouches[0].clientY;
+      this.changeTab();
+    },
+    swichNav(e){
+      var cur=e.target.dataset.current;
+      if(cur!=3){
+        this.currentTab = cur;
+        this.oldcurrentTab = this.currentTab;
+        if(this.currentTab==0){
+          if(this.WenzhangList[this.currentTab0].length==0)
+            this.getWenzhangList(0);
+        }
+        if(this.currentTab==1){
+          if(this.GanhuoList[this.currentTab1].length==0)
+            this.getGanhuoList(0);
+        }
+        if(this.currentTab==2){
+          if(this.KechengList[this.currentTab2].length==0)
+            this.getKechengList(0);
+        }
+      }
+      else{
+        this.currentTab = this.oldcurrentTab;
+        wx.navigateTo({
+          url: "./searchWS",
+        })
+      }
+    },
+    swichNav0(e){
+      var cur=e.target.dataset.current;
+      if(this.currentTab0==cur){return false;}
+      else{
+        this.currentTab0=cur;
+          if(this.WenzhangList[this.currentTab0].length==0)
+            this.getWenzhangList(0);
+      }
+      this.checkCor();
+    },
+    swichNav1(e){
+      var cur=e.target.dataset.current;
+      if(this.currentTab1==cur){return false;}
+      else{
+        this.currentTab1=cur;
+        if(this.GanhuoList[this.currentTab1].length==0)
+          this.getGanhuoList(0);
+      }
+    },
+    swichNav2(e){
+      var cur=e.target.dataset.current;
+      if(this.currentTab2==cur){return false;}
+      else{
+        this.currentTab2=cur;
+        if(this.currentTab2<2&&this.KechengList[this.currentTab2].length==0)
+          this.getKechengList(0);
+      }
+    },
+  }
+}
+</script>
+<style lang="less">
+.course{
+  background: rgba(0, 0, 0, 0.1);
+  .neirong{
+    padding-top: 143rpx;
+    .adding{
+      padding-top:300rpx; 
+      padding-bottom:300rpx; 
+      text-align: center;
+      font-size: 30rpx;
+      color: #000000;
+    }
+  }
+}
+.fixed{
+  top: 0rpx; 
+  width: 100%;
+  position: fixed;
+  z-index: 99;
+  background: #efefef;
+}
+.tab{
+  width: 100%;
+  height: 60rpx;
+  line-height: 60rpx;
+  background: #ffffff;
+  .tab-item{
+    margin-left: 7.5%;
+    margin-right: 7.5%;
+    font-size: 38rpx; 
+    display: inline;
+  }
+}
+.tab-h1{
+  background: #ffffff;
+  margin-top: 3rpx;
+  height: 80rpx;
+  width: 100%; 
+  font-size: 28px; 
+  white-space: nowrap;
+  .tab-item1{
+    margin-left: 30rpx;
+    margin-right: 30rpx;
+    display: inline;
+  }
+}
+.tab-h2{
+  background: #ffffff;
+  margin-top: 3rpx;
+  width: 100%;
+  height: 80rpx;
+  font-size: 28px; 
+  .tab-item2{
+    margin-left: 30rpx;
+    margin-right: 30rpx;
+    display: inline;
+  }
+}
+.textend{
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
+  text-align:center;
+}
+.wenzhang{
+  background: #ffffff;
+  width: 96%;
+  padding-top: 16rpx;
+  margin-top:10rpx;
+  margin-left: 2%;
+  margin-right: 2%;
+  border-radius:20rpx;
+  .kuai1{
+    padding-left:20rpx;
+    padding-right:20rpx;   
+    display: flex;
+    justify-content: space-between;
+    .title1{
+      width: 80%;
+      color: #000;
+      font-size: 28rpx;
+    }
+    .image1{
+      margin-left:16rpx; 
+      height: 138rpx;
+      width: 223rpx;
+    }
+  }
+  .laiyuan1{
+    padding-left: 16rpx;
+    padding-bottom: 16rpx;
+    font-size: 20rpx;
+  }
+  .title2{
+    padding-left:16rpx;
+    padding-right:16rpx;  
+    color: #000;
+    font-size: 28rpx;
+  }
+  .image_bax{
+    margin-top: 16rpx;
+    margin-bottom: 16rpx;
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    .image2{
+      height: 138rpx;
+      width: 223rpx;
+    }
+  }
+  .laiyuan2{
+    padding-bottom: 16rpx;
+    font-size: 20rpx;
+  }
+}
+.shipin{
+  background: #ffffff;
+  width: 96%;
+  margin-top:10rpx;
+  margin-left: 2%;
+  margin-right: 2%;
+  border-radius:20rpx;
+  .title{
+    position: absolute;
+    font-weight: bolder;
+    padding-top: 28rpx;
+    padding-left:32rpx;
+    padding-right:32rpx;  
+    color: #ffffff;
+    font-size: 30rpx;
+  }
+  .shichang{
+    width: 100rpx;
+    height: 40rpx;
+    line-height:40rpx;
+    text-align: center;
+    border-radius:20rpx;
+    margin-left: 78%;
+    margin-top: 325rpx;
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    color: #ffffff;
+    font-size: 20rpx;
+  }
+  .image_kuai{
+    padding-top: 16rpx;
+    padding-bottom: 16rpx;
+    margin-left:16rpx;
+    margin-right:16rpx;  
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    .item_img{
+      position: absolute;
+      width: 68rpx;
+      height: 68rpx;
+    }
+    .image{
+      width: 100%;
+      height: 368rpx;
+    }
+  }
+  .laiyuan{
+    padding-bottom: 16rpx;
+    padding-left: 16rpx;
+    font-size: 20rpx;
+  }
+}
+</style>

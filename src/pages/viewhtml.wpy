@@ -1,0 +1,51 @@
+<template>
+  <web-view class="webview" src="{{url}}">
+  </web-view>
+</template>
+<script>
+import wepy from 'wepy'
+export default class viewhtml extends wepy.page {
+  config = {
+    navigationBarTitleText: '',
+  }
+  Page={}
+  data = {
+    url:"",
+  }
+  async setJilu() {
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openid = userSpecialInfo.openid;
+    if(typeof(openid) == "undefined"){
+      wepy.navigateTo({
+          url: '/pages/shouquan'
+      })
+      return false;
+    }
+    const json = await api.setJilu({
+    query: {
+      openid:openid,
+      jilutype:'html',
+      jilucontent:this.url,
+    }
+    });
+    this.$apply();
+  }
+  onShareAppMessage() {
+    return {
+      title: '恋爱联盟',
+      path: '/pages/viewhtml?url='+this.url,
+    };
+  }
+  onLoad(options) {
+    this.url=options.url;
+    this.setJilu();
+    this.$apply();
+  }
+}
+</script>
+<style lang="less">
+.webview{
+  overflow:inherit;
+  width: 750rpx;
+}
+</style>

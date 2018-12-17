@@ -1,0 +1,87 @@
+<template>
+  <view class="kuai">
+    <view wx:if="{{istiyan}}">
+      <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
+        <view class="duihua">
+          <view class="title" @tap="copycontent({{item.title}})">{{item.title}}\n</view>
+          <text class="content" @tap="copycontent({{item.content}})">{{item.content}}</text>
+        </view>
+      </view>
+      <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5}}">
+        <view class="duihua">
+          <view class="title">{{item.title}}\n</view>
+          <navigator class="vip" url="/pages/vip">
+            <image class="item_img" mode="scaleToFill" src="../images/vip.jpg"></image>
+          </navigator>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{istiyan==0}}">
+      <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+        <view class="duihua">
+          <view class="title" @tap="copycontent({{item.title}})">{{item.title}}\n</view>
+          <text class="content" @tap="copycontent({{item.content}})">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+export default class guanli extends wepy.component {
+  data = {
+    guanliList: [],
+    istiyan:false,
+  }
+  changeistiyan(val){
+    this.istiyan=val;
+    this.$apply();
+  }
+  methods = {
+    copycontent(GG){
+      wx.setClipboardData({
+        data:GG,
+      })
+      this.$emit('jilu','guanli',GG);
+    }
+  }
+  onLoad() {
+  }
+}
+</script>
+<style lang="less">
+.guanliList {
+  width: 100%;
+  .duihua{
+    margin-top: 20rpx;
+    border-radius:20rpx;
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+    padding-top: 20rpx;
+    padding-bottom: 20rpx;
+    background: #ffffff;
+    .title{
+      font-weight: bolder;
+      font-size: 30rpx;
+      color: #000000; 
+    }
+    .content{
+      margin-top: 20rpx;
+      font-size: 28rpx;
+      color: #000000; 
+    }
+    .vip{
+      margin-top: 20rpx;
+      text-align:center;
+      .item_img {
+        padding: 0rpx;
+        border-radius:20rpx;
+        width: 368rpx;
+        height: 248rpx;
+      }
+    }
+  }
+}
+</style>

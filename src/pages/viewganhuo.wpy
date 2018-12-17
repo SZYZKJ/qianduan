@@ -1,0 +1,75 @@
+<template>
+    <view class="container">
+        <view class="title">{{title}}</view>
+        <!-- <txv-video vid="j0797kjycv0" playerid="txv0"></txv-video> -->
+        <video class="video" src="{{url}}" duration="{{duration}}" direction="{{direction}}" autoplay="true"></video>
+    </view>
+</template>
+<script>
+import wepy from 'wepy';
+import course from '@/pages/course';
+// const TxvContext = requirePlugin("tencentvideo");
+// let txvContext = TxvContext.getTxvContext('txv1');
+export default class viewganhuo extends wepy.page {
+  config = {
+    navigationBarTitleText: '恋爱联盟',
+    // usingComponents: {"txv-video": "plugin://tencentvideo/video"},
+  }
+  Page={}
+  data = {
+    title:"",
+    url:"",
+    duration:"",
+    direction: 90,
+  }
+  async setJilu() {
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openid = userSpecialInfo.openid;
+    if(typeof(openid) == "undefined"){
+      wepy.navigateTo({
+          url: '/pages/shouquan'
+      })
+      return false;
+    }
+    const json = await api.setJilu({
+    query: {
+      openid:openid,
+      jilutype:'ganhuo',
+      jilucontent:this.url,
+    }
+    });
+    this.$apply();
+  }
+  onShareAppMessage() {
+    return {
+      title: '恋爱联盟',
+      path: '/pages/viewganhuo?title='+this.title+'&url='+this.url+'&duration='+this.duration+'&direction='+this.direction,
+    };
+  }
+  onLoad(options) {
+    this.title=options.title;
+    this.url=options.url;
+    this.duration=options.duration;
+    this.direction=options.direction;
+    this.setJilu();
+    this.$apply();
+  }
+}
+</script>
+<style lang="less">
+.container{
+    background: #FFFFFF;
+    .title{
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        padding-top: 20rpx;
+        padding-bottom: 20rpx;
+        font-weight: bolder;
+        font-size: 38rpx;
+        color: #000000;
+    }
+    .video{
+        width: 100%;
+    }
+}
+</style>

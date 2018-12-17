@@ -1,0 +1,94 @@
+<template>
+  <view class="kuai">
+    <view wx:if="{{istiyan}}">
+      <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
+        <view class="duihua">
+          <view class="MM" @tap="copycontent({{item.MM}})"><text style="font-weight: bolder;font-size: 30rpx;">美女：</text>{{item.MM}}</view>
+          <view class="GG" wx:if="{{item.GG.length==1}}" @tap="copycontent({{item.GG[0]}})"><text style="font-weight: bolder;font-size: 30rpx;">型男：</text>{{item.GG[0]}}</view>
+          <view class="GG" wx:else @tap="copycontent({{item.GG[0]}})"><text style="font-weight: bolder;font-size: 30rpx;">型男：1、</text>{{item.GG[0]}}</view>
+          <view class="GG" wx:for="{{item.GG}}" wx:key="minitem" wx:for-item='centence' wx:for-index="index" wx:if="{{index>0}}" @tap="copycontent({{centence}})"><text style="font-weight: bolder;font-size: 30rpx;">{{index+1}}、</text>{{centence}}</view>
+        </view>
+      </view>
+      <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5}}">
+        <view class="duihua">
+          <view class="MM"><text style="font-weight: bolder;font-size: 30rpx;">美女：</text>{{item.MM}}</view>
+          <navigator class="vip" url="/pages/vip">
+            <image class="item_img" mode="scaleToFill" src="../images/vip.jpg"></image>
+          </navigator>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{istiyan==0}}">
+      <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+        <view class="duihua">
+          <view class="MM" @tap="copycontent({{item.MM}})"><text style="font-weight: bolder;font-size: 30rpx;">美女：</text>{{item.MM}}</view>
+          <view class="GG" wx:if="{{item.GG.length==1}}" @tap="copycontent({{item.GG[0]}})"><text style="font-weight: bolder;font-size: 30rpx;">型男：</text>{{item.GG[0]}}</view>
+          <view class="GG" wx:else @tap="copycontent({{item.GG[0]}})"><text style="font-weight: bolder;font-size: 30rpx;">型男：1、</text>{{item.GG[0]}}</view>
+          <view class="GG" wx:for="{{item.GG}}" wx:key="minitem" wx:for-item='centence' wx:for-index="index" wx:if="{{index>0}}" @tap="copycontent({{centence}})"><text style="font-weight: bolder;font-size: 30rpx;">{{index+1}}、</text>{{centence}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class huashu extends wepy.component {
+  data = {
+    huashuList: [],
+    istiyan:false,
+  }
+  changeistiyan(val){
+    this.istiyan=val;
+    this.$apply();
+  }
+  methods = {
+    copycontent(GG){
+      wx.setClipboardData({
+        data:GG,
+      })
+      this.$emit('jilu','huashu',GG);
+    }
+  }
+  onLoad() {
+  }
+}
+</script>
+<style lang="less">
+.kuai{
+  text-align: justify;
+}
+.huashuList {
+  .duihua{
+    margin-top: 20rpx;
+    border-radius:20rpx;
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+    padding-top: 20rpx;
+    padding-bottom: 20rpx;
+    background: #ffffff;
+  }
+  .MM{
+    font-size: 28rpx;
+    color: #000000; 
+  }
+  .GG{
+    padding-top: 10rpx;
+    font-size: 28rpx;
+    color: #000000; 
+  }
+  .vip{
+    margin-top: 20rpx;
+    text-align:center;
+    .item_img {
+      padding: 0rpx;
+      border-radius:20rpx;
+      width: 368rpx;
+      height: 248rpx;
+    }
+  }
+}
+
+</style>

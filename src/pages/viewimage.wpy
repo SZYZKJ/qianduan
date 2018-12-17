@@ -1,0 +1,69 @@
+<template>
+    <view class="container">
+        <view class="title">{{title}}</view>
+        <image class="image" src="{{url}}" mode="widthFix"></image>
+    </view>
+</template>
+<script>
+import wepy from 'wepy'
+export default class viewimage extends wepy.page {
+  config = {
+    navigationBarTitleText: '',
+  }
+  Page={}
+  data = {
+    title:"",
+    url:"",
+  }
+  async setJilu() {
+    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+    let openid = userSpecialInfo.openid;
+    if(typeof(openid) == "undefined"){
+      wepy.navigateTo({
+          url: '/pages/shouquan'
+      })
+      return false;
+    }
+    const json = await api.setJilu({
+    query: {
+      openid:openid,
+      jilutype:'html',
+      jilucontent:this.url,
+    }
+    });
+    this.$apply();
+  }
+  onShareAppMessage() {
+    return {
+      title: '恋爱联盟',
+      path: '/pages/viewimage?title='+this.title+'&url='+this.url,
+    };
+  }
+  onLoad(options) {
+    this.title=options.title;
+    wepy.setNavigationBarTitle({
+      title: options.title,
+    })
+    this.url=options.url;
+    this.setJilu();
+    this.$apply();
+  }
+}
+</script>
+<style lang="less">
+.container{
+    background: #FFFFFF;
+    .title{
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        padding-top: 20rpx;
+        padding-bottom: 20rpx;
+        font-weight: bolder;
+        font-size: 38rpx;
+        color: #000000;
+    }
+    .image{
+        width: 100%;
+    }
+}
+</style>

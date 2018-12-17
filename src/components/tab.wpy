@@ -1,0 +1,60 @@
+<template>
+  <view class="swiper-tab">
+    <view wx:for="{{tabList}}" wx:key="key" wx:for-item='item' wx:for-index="index" class="swiper-tab-list {{currentTab==index ? 'active' : ''}}" data-current="{{index}}" bindtap="swichNav">
+      {{item}}
+    </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy'
+
+export default class tab extends wepy.component {
+  props = {
+    currentTab: {
+      default: 0
+    },
+    tabList: {
+      type: Object
+    }
+  }
+  changeTab(e){
+    this.currentTab = e;
+    this.$apply();
+  }
+  methods = {
+    swichNav(e) {
+      if (this.currentTab == e.target.dataset.current) {
+        return false;
+      } else {
+        this.currentTab = e.target.dataset.current;
+      }
+      this.$emit("currentTab", this.currentTab)
+    },
+  }
+}
+
+</script>
+<style lang="less">
+.swiper-tab {
+  margin-top: 0rpx;
+  margin-bottom: 0rpx;
+  padding: 0rpx;
+  font-weight: bolder;
+  padding-left: 10%;
+  padding-right: 10%;
+  line-height: 66rpx;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+}
+.swiper-tab-list {
+  font-size: 38rpx;
+  color: #777777;
+}
+
+.active {
+  color: #eb6623;
+  border-bottom: 5rpx solid #eb6623;
+}
+
+</style>

@@ -1,0 +1,98 @@
+<template>
+<view class="container">
+    <view class="title">您的订单如下</view>
+    <view wx:for="{{dingdan}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+        <view class="dingdankuang">
+            <view class="dingdan">
+                <view><text class="guding">当前状态</text><text class="xiangqing">支付成功</text></view>
+                <view><text class="guding">商品名称</text><text class="xiangqing">{{item.attach.detail}}</text></view>
+                <view><text class="guding">支付时间</text><text class="xiangqing">{{item.time_end}}</text></view>
+                <view><text class="guding">付款金额</text><text class="xiangqing">{{item.cash_fee*0.01}}</text></view>
+                <view><text class="guding">交易单号</text><text class="xiangqing">{{item.transaction_id}}</text></view>
+            </view>
+        </view>
+    </view>
+</view>
+</template>
+<script>
+import wepy from 'wepy';
+import tip from '@/utils/tip';
+import api from '@/api/api';
+import {
+  SYSTEM_INFO,
+  USER_SPECICAL_INFO
+} from '@/utils/constant';
+
+export default class dingdan extends wepy.page {
+    config = {
+        navigationBarTitleText: '全部订单',
+    }
+    data = {
+        gongzhonghao:'cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/gongzhonghao.png',
+        dingdan:[],
+    }
+    imgYu(e){
+        var url=e.currentTarget.dataset.wpyimgyuA;
+      wx.previewImage({
+        current: url,
+        urls: [url],
+      })
+    }
+    async getDingdan(){
+        let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+        let openid = userSpecialInfo.openid;
+        if(typeof(openid) == "undefined"){
+            wepy.navigateTo({
+            url: '/pages/shouquan'
+            })
+            return false;
+        }
+        let json = await api.getDingdan({
+            query: {
+                openid:openid,
+            }
+        })
+        this.dingdan=json.data.data;
+        this.$apply();
+    }
+    onShareAppMessage() {
+        return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+        };
+    }
+    async onLoad() {
+        this.getDingdan();
+    }
+}
+</script>
+<style lang="less">
+.container{
+    margin: 0rpx;
+    padding-bottom: 20rpx;
+    background: rgba(0, 0, 0, 0.1);
+    .title{
+        color: #000000;
+        text-align: center;
+    }
+    .dingdankuang{
+        margin-top: 20rpx;
+        margin-left: 20rpx;
+        margin-right: 20rpx;
+        border-radius:20rpx;
+        background: #FFFFFF;
+        .dingdan{
+            padding-top:20rpx; 
+            margin-left:20rpx;
+            margin-right:20rpx;
+            padding-bottom:20rpx;
+            .guding{
+                color: #000000;
+            }
+            .xiangqing{
+                padding-left:50rpx;
+            }
+        }
+    }
+}
+</style>

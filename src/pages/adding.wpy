@@ -1,0 +1,39 @@
+<template>
+    <view class="adding">
+        <view>功能正在完善</view>
+        <view>感谢关注与支持</view>
+        <view>敬请期待</view>
+        <view class="futrue">恋爱联盟良心出品</view>
+    </view>
+</template>
+<script>
+import wepy from 'wepy';
+
+export default class adding extends wepy.page {
+  config = {
+    navigationBarTitleText: '敬请期待',
+  }
+  onShareAppMessage() {
+    return {
+      title: '恋爱联盟',
+      path: '/pages/home',
+    };
+  }
+  onLoad() {
+  }
+}
+</script>
+<style lang="less">
+page {
+  background: #fff;
+}
+.adding{
+    margin-top:300rpx; 
+    text-align: center;
+    font-size: 30rpx;
+    color: #000000;
+}
+.futrue{
+    margin-top:300rpx; 
+}
+</style>

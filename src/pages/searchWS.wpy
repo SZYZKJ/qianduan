@@ -1,0 +1,461 @@
+<template>
+  <view class="container">
+    <view class="search">
+      <view class="serch_content">
+        <icon type="search" size="20"></icon>
+        <input type="text" class="search_input" value="{{inputValue}}" focus="{{focus}}" bindinput="bindinput" bindconfirm="bindconfirm" bindfocus="bindfocus" confirm-type="search" placeholder="请输入搜索内容" maxlength="20"/>
+        <view wx:if="{{inputValue!=''}}">
+          <icon type="clear" size="20" @tap="delText"></icon>
+        </view>
+      </view>
+        <tab class="tab" @currentTab.user="getCurrentTab" :currentTab.sync="currentTab" :tabList.sync="tabList" ></tab>
+    </view>
+    <view class="showdata"  bindtouchstart='touchStart' bindtouchend="touchEnd">
+        <view wx:if="{{currentTab==0}}" wx:for="{{WenzhangList}}" wx:key="item">
+            <view class="wenzhang" wx:if="{{item.styles==1}}" bindtap="goToviewhtml({{item.url}})">
+              <view class="kuai1">
+                  <view class="title1">{{item.title}}</view>
+                  <image class="image1" src="{{item.thumb1}}" mode="scaleToFill" lazy-load="false"></image>
+              </view>
+              <view class="laiyuan1">{{item.nickname}}　　{{item.views}}次阅读</view>
+            </view>
+            <view class="wenzhang" wx:if="{{item.styles==2}}" bindtap="goToviewhtml({{item.url}})">
+              <view class="title2">{{item.title}}
+              <view class="image_bax">
+                  <image class="image2" src="{{item.thumb1}}" mode="scaleToFill" lazy-load="false"></image>
+                  <image class="image2" src="{{item.thumb2}}" mode="scaleToFill" lazy-load="false"></image>
+                  <image class="image2" src="{{item.thumb3}}" mode="scaleToFill" lazy-load="false"></image>
+              </view>
+              <view class="laiyuan2">{{item.nickname}}　　{{item.views}}次阅读</view>
+              </view>
+            </view>
+            <placeholder wx:if="{{WenzhangList.length==0}}" message="暂无数据"></placeholder>
+        </view>
+        <view wx:if="{{currentTab==1}}" wx:for="{{GanhuoList}}" wx:key="item">
+            <view class="shipin" bindtap="goToganhuo({{item}})">
+            <view class="title">{{item.title}}</view>
+            <bottom wx:if="{{islianmeng}}" class="shichang">{{item.duration}}</bottom>
+            <view class="image_kuai">
+              <image wx:if="{{islianmeng}}" class="item_img" src="../images/bofang.png"></image>
+              <image class="image" src="{{item.thumb1}}" mode="scaleToFill" lazy-load="false"></image>
+            </view>
+            <view wx:if="{{islianmeng==0}}" class="laiyuan">{{item.nickname}}　　{{item.views}}次阅读</view>
+            <view wx:if="{{islianmeng}}" class="laiyuan">{{item.nickname}}　　{{item.views}}次播放</view>
+            </view>
+            <placeholder wx:if="{{GanhuoList.length==0}}" message="暂无数据"></placeholder>
+        </view>
+    </view>
+    <view class="textend" wx:if="{{(currentTab==0&&!isend0)||(currentTab==1&&!isend1)}}">加载中......</view>
+    <view class="textend" wx:if="{{(currentTab==0&&isend0)||(currentTab==1&&isend1)}}">恋爱联盟良心出品</view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+import api from '@/api/api';
+import tip from '@/utils/tip';
+import tab from '@/components/tab';
+import placeholder from '@/components/placeholder';
+import {
+SYSTEM_INFO,
+USER_SPECICAL_INFO
+} from '@/utils/constant';
+export default class searchPage extends wepy.page {
+    config = {
+      navigationBarTitleText: '搜索',
+    }
+    components = {
+      tab: tab,
+      placeholder:placeholder,
+    }
+    data = {
+      islianmeng:0,
+      startX:0,
+      startY:0,
+      endX:0,
+      endY:0,
+      firstShow:true,
+      focus:false,
+      inputValue:"",
+      oldwenzhang:"",
+      oldshipin:"",
+      currentTab:0,
+      scroll0:'',
+      scroll1:'',
+      isend0:false,
+      isend1:false,
+      WenzhangList:[],
+      GanhuoList:[],
+      tabList:['文章','干货'],
+      copyinput:'',
+    }
+    async getIslianmeng() {
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      if(typeof(openid) == "undefined"){
+        wepy.navigateTo({
+          url: '/pages/shouquan'
+        })
+        return false;
+      }
+      const json = await api.getIslianmeng({
+        query: {
+          openid:openid,
+        }
+      });
+      this.islianmeng=json.data.data;
+      if(this.islianmeng){
+        this.tabList[1]='视频';
+      }
+      this.$apply();
+    }
+    async searchWenzhangList(ifBuootm) {
+      let that = this;
+      if(that.inputValue.length==0) return false;
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      if(typeof(openid) == "undefined"){
+        wepy.navigateTo({
+          url: '/pages/shouquan'
+        })
+        return false;
+      }
+      const json = await api.searchWenzhangList({
+        query: {
+          query: that.inputValue,
+          openid:openid,
+          scroll:that.scroll0,
+        }
+      });
+      that.oldwenzhang=that.inputValue;
+      if(json.data.data.length<10){
+        that.isend0=true;
+      }
+      if(ifBuootm){
+        that.WenzhangList=that.WenzhangList.concat(json.data.data);
+      }
+      else{
+        that.WenzhangList=json.data.data.concat(that.WenzhangList);
+      }
+      that.scroll0=json.data.scroll;
+      that.$apply();
+    }
+    async searchGanhuoList() {
+      let that = this;
+      that.inputValue=that.inputValue.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+      if(that.inputValue.length==0) return false;
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      if(typeof(openid) == "undefined"){
+        wepy.navigateTo({
+          url: '/pages/shouquan'
+        })
+        return false;
+      }
+      const json = await api.searchGanhuoList({
+        query: {
+          query: that.inputValue,
+          openid:openid,
+          scroll:that.scroll1,
+        }
+      });
+      that.oldshipin=that.inputValue;
+      if(json.data.data.length<10){
+        that.isend1=true;
+      }
+      that.GanhuoList=that.GanhuoList.concat(json.data.data);
+      that.scroll1=json.data.scroll;
+      that.$apply();
+    }
+    onShareAppMessage() {
+      return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+      };
+    }
+    onPullDownRefresh() {
+      wx.stopPullDownRefresh();
+    }
+    onReachBottom(){
+      if(this.currentTab==0){
+        if(!this.isend0)
+          this.searchWenzhangList();
+      }
+      if(this.currentTab==1){
+        if(!this.isend1)
+          this.searchGanhuoList();
+      }
+    }
+    onLoad(){
+      this.getIslianmeng();
+    }
+    onShow(){
+      let that=this;
+      wx.getClipboardData({
+        success: function(res){
+          if(res.data.length){
+            var copyvalue=res.data.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+            if(that.copyinput!=copyvalue){
+              that.copyinput=copyvalue;
+              that.inputValue=copyvalue;
+            }
+            else{
+              return false;
+            }
+            if((that.currentTab==0&&that.oldwenzhang==that.inputValue)||(that.currentTab==1&&that.oldshipin==that.inputValue)) return false;
+            if(that.currentTab==0){
+              that.WenzhangList=[];
+              that.isend0=false;
+              that.scroll0="";
+              that.searchWenzhangList();
+            }
+            else{
+              that.GanhuoList=[];
+              that.isend1=false;
+              that.scroll1="";
+              that.searchGanhuoList();
+            }
+          }
+        }
+      });
+      that.$apply();
+    }
+    changeTab() {
+      if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
+        if(this.currentTab==1){
+          this.currentTab=0;
+          if(this.currentTab==0&&this.inputValue!=this.oldwenzhang){
+            this.WenzhangList=[];
+            this.isend0=false;
+            this.scroll0="";
+            this.searchWenzhangList();
+          }
+        }
+      } else if (this.endX - this.startX < -30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
+        if(this.currentTab==0){
+          this.currentTab=1;
+          if(this.currentTab==1&&this.inputValue!=this.oldshipin){
+            this.GanhuoList=[];
+            this.isend1=false;
+            this.scroll1="";
+            this.searchGanhuoList();
+          }
+        }
+      }
+      this.$apply();
+    }
+    methods = {
+      touchStart(e){
+        this.startX=e.changedTouches[0].clientX;
+        this.startY=e.changedTouches[0].clientY;
+      },
+      touchEnd(e){
+        this.endX=e.changedTouches[0].clientX;
+        this.endY=e.changedTouches[0].clientY;
+        this.changeTab();
+      },
+      goToviewhtml(url){
+        wx.navigateTo({
+          url: "./viewhtml?url="+url,
+        })
+      },
+      goToganhuo(item){
+        if(this.islianmeng==0){
+          wx.navigateTo({
+            url: "./adding",
+          })
+        }
+        else{
+          item.title=item.title.replace(",","，");
+          wx.navigateTo({
+            url: "./viewganhuo?url="+item.url+"&duration="+item.duration+"&title="+item.title+'&direction='+item.direction,
+          })
+        }
+      },
+      bindinput(obj){
+        this.inputValue = obj.detail.value;
+      },
+      bindconfirm(){
+        this.inputValue=this.inputValue.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+        if(this.inputValue.length){
+          if(this.currentTab==0&&this.inputValue!=this.oldwenzhang){
+            this.WenzhangList=[];
+            this.scroll0='';
+            this.isend0=false;
+            this.searchWenzhangList();
+          }
+          if(this.currentTab==1&&this.inputValue!=this.oldshipin){
+            this.GanhuoList=[];
+            this.scroll1='';
+            this.isend1=false;
+            this.searchGanhuoList();
+          }
+        }
+      },
+      bindfocus(){
+      },
+      delText() {
+        this.inputValue = "";
+      },
+      getCurrentTab(cur, evt){
+        this.currentTab=cur;
+        if(this.currentTab==0&&this.inputValue!=this.oldwenzhang){
+          this.WenzhangList=[];
+          this.scroll0='';
+          this.isend0=false;
+          this.searchWenzhangList();
+        }
+        if(this.currentTab==1&&this.inputValue!=this.oldshipin){
+          this.GanhuoList=[];
+          this.scroll1='';
+          this.isend1=false;
+          this.searchGanhuoList();
+        }
+        this.$apply();
+      },
+    }
+  }
+</script>
+<style lang="less">
+.container{
+    background: rgba(0, 0, 0, 0.1);;
+    .showdata{
+        padding-top:140rpx; 
+    }
+}
+.search {
+  width: 100%;
+  top: 0rpx;
+  position: fixed;
+  z-index: 99;
+  background: #ffffff;
+  .serch_content {
+    margin-left: 5%;
+    margin-right: 5%;
+    display: flex;
+    align-items: center;
+    border-radius: 300rpx;
+    color: #333;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 6rpx 20rpx;
+    height: 58rpx;
+    .search_input {
+      font-size: 28rpx;
+      width: 100%;
+    }
+  }
+  .tab {
+    margin-top: 6rpx;
+    padding-left:20%; 
+    padding-right:20%;
+    height: 66rpx;
+  }
+}
+.textend{
+  padding-top: 30rpx;
+  padding-bottom: 30rpx;
+  text-align:center;
+}
+.wenzhang{
+  background: #ffffff;
+  width: 96%;
+  padding-top: 16rpx;
+  margin-top:10rpx;
+  margin-left: 2%;
+  margin-right: 2%;
+  border-radius:20rpx;
+  .kuai1{
+    padding-left:16rpx;
+    padding-right:16rpx;   
+    display: flex;
+    justify-content: space-between;
+    .title1{
+      color: #000;
+      font-size: 28rpx;
+    }
+    .image1{
+      height: 138rpx;
+      width: 223rpx;
+    }
+  }
+  .laiyuan1{
+    padding-left: 16rpx;
+    padding-bottom: 16rpx;
+    font-size: 20rpx;
+  }
+  .title2{
+    padding-left:16rpx;
+    padding-right:16rpx;  
+    color: #000;
+    font-size: 28rpx;
+  }
+  .image_bax{
+    margin-top: 16rpx;
+    margin-bottom: 16rpx;
+    width: 100%;
+    display: inline-flex;
+    justify-content: space-between;
+    .image2{
+      height: 138rpx;
+      width: 223rpx;
+    }
+  }
+  .laiyuan2{
+    padding-bottom: 16rpx;
+    font-size: 20rpx;
+  }
+}
+.shipin{
+  background: #ffffff;
+  width: 96%;
+  margin-top:10rpx;
+  margin-left: 2%;
+  margin-right: 2%;
+  border-radius:20rpx;
+  .title{
+    position: absolute;
+    font-weight: bolder;
+    padding-top: 28rpx;
+    padding-left:32rpx;
+    padding-right:32rpx;  
+    color: #ffffff;
+    font-size: 30rpx;
+  }
+  .shichang{
+    width: 100rpx;
+    height: 40rpx;
+    line-height:40rpx;
+    text-align: center;
+    border-radius:20rpx;
+    margin-left: 78%;
+    margin-top: 325rpx;
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    color: #ffffff;
+    font-size: 20rpx;
+  }
+  .image_kuai{
+    padding-top: 16rpx;
+    padding-bottom: 16rpx;
+    margin-left:16rpx;
+    margin-right:16rpx;  
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    .item_img{
+      position: absolute;
+      width: 68rpx;
+      height: 68rpx;
+    }
+    .image{
+      width: 100%;
+      height: 368rpx;
+    }
+  }
+  .laiyuan{
+    padding-bottom: 16rpx;
+    padding-left: 16rpx;
+    font-size: 20rpx;
+  }
+}                          
+</style>

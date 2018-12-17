@@ -1,0 +1,99 @@
+<template>
+<view class="container">
+    <view class="tequan">您当前的积分为</view>
+    <view class="jifen">{{jifen}}</view>
+    <view wx:if="{{vipdengji<6}}">
+        <view class="kaitongtext">点击升级，解锁更多会员专属服务，获取更多积分，为您提供更多恋爱能力~</view>
+        <navigator class="vip" url="/pages/vip">升级会员</navigator>
+    </view>
+</view>
+</template>
+<script>
+import wepy from 'wepy';
+import tip from '@/utils/tip';
+import api from '@/api/api';
+import {
+  SYSTEM_INFO,
+  USER_SPECICAL_INFO
+} from '@/utils/constant';
+
+export default class jifen extends wepy.page {
+    config = {
+        navigationBarTitleText: '我的积分',
+    }
+    data = {
+        jifen:0,
+        vipdengji : 0,
+    }
+    async getJifen(){
+        let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+        let openid = userSpecialInfo.openid;
+        if(typeof(openid) == "undefined"){
+            wepy.navigateTo({
+                url: '/pages/shouquan'
+            })
+            return false;
+        }
+        let json = await api.getJifen({
+          query: {
+            openid:openid,
+            iszhudong:1,
+          }
+        })
+        this.vipdengji=json.data.data.vipdengji;
+        this.jifen=json.data.data.jifen;
+        this.$apply();
+    }
+    methods={
+    }
+    onShareAppMessage() {
+        return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+        };
+    }
+    async onLoad() {
+        this.getJifen();
+    }
+}
+</script>
+<style lang="less">
+.container{
+    align-items: center;
+    text-align: center;
+    margin-top: 0rpx;
+    background: #ffffff;
+}
+.kaitongtext{
+    margin-top: 50rpx;
+    margin-left: 200rpx;
+    margin-right: 200rpx;
+    color: #000000;
+}
+.vip{
+    height: 60rpx;
+    background: #09BB07;
+    color: #ffffff;
+    border-radius:20rpx;
+    margin-top: 200rpx;
+    padding-top: 16rpx;
+    width: 60%;
+    margin-left: 20%;
+}
+.tequan{
+    padding-top: 20rpx;
+    color: #000000;
+}
+.jifen{
+    padding-top: 50rpx;
+    color: #09BB07;
+}
+.tequanneirong{
+    margin-top: 20rpx;
+    margin-left: 138rpx;
+    text-align: left;
+    .tequantext{
+        color: #000000;
+    }
+}
+</style>

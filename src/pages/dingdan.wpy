@@ -28,15 +28,7 @@ export default class dingdan extends wepy.page {
         navigationBarTitleText: '全部订单',
     }
     data = {
-        gongzhonghao:'cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/gongzhonghao.png',
         dingdan:[],
-    }
-    imgYu(e){
-        var url=e.currentTarget.dataset.wpyimgyuA;
-      wx.previewImage({
-        current: url,
-        urls: [url],
-      })
     }
     async getDingdan(){
         let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};

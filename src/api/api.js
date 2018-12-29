@@ -3,6 +3,7 @@ import {
 } from '@/utils/wxRequest';
 
 const apiMain = 'https://www.lianaizhuli.com/api/'
+// const apiTest = 'https://www.xingnanzhuli.com/api/'
 
 //微信的jscode换取sessionKey
 const getOpenid = (params) => wxRequestPost(params, apiMain+'getOpenid');
@@ -46,6 +47,10 @@ const getDingdan = (params) => wxRequestPost(params, apiMain + 'getDingdan');
 const getIslianmeng = (params) => wxRequestPost(params, apiMain + 'getIslianmeng');
 //存储记录
 const setJilu = (params) => wxRequestPost(params, apiMain + 'setJilu');
+//获取土味情话列表
+const getTuweiqinghuaList = (params) => wxRequestPost(params, apiMain + 'getTuweiqinghuaList');
+//随机获取土味情话
+const getTuweiqinghua = (params) => wxRequestPost(params, apiMain + 'getTuweiqinghua');
 //获取广告列表
 const getAdList = (params) => wxRequestPost(params, apiMain + 'getAdList');
 
@@ -71,5 +76,7 @@ export default {
   getDingdan,
   getIslianmeng,
   setJilu,
+  getTuweiqinghuaList,
+  getTuweiqinghua,
   getAdList,
 }

@@ -41,6 +41,14 @@ export default class viewhtml extends wepy.page {
     this.setJilu();
     this.$apply();
   }
+  onUnload(){
+    var pages = getCurrentPages();
+    if(pages.length==1){
+        wx.switchTab({
+            url: "/pages/home"
+        })
+    }
+  }
 }
 </script>
 <style lang="less">

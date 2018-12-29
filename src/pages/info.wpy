@@ -12,7 +12,7 @@
       </view>
     </view>
     <view class="info_block" bindtouchstart='touchStart' bindtouchend="touchEnd">
-      <navigator class="item" url="/pages/vip">
+      <navigator wx:if="{{issystem}}" class="item" url="/pages/vip">
         <view class="item_content">
           <image class="item_img" src="../images/icon_my_01.png"></image>
           <view class="text">升级会员</view>
@@ -89,6 +89,7 @@ export default class info extends wepy.page {
     huiyuan:['非会员','体验会员','月会员','年会员','终身会员(含私教3个月)','终身会员(含私教一年)','联盟会员(含私教终身)'],
     vipdengji : 0,
     jifen:0,
+    issystem:0,
   }
   onShareAppMessage() {
     return {
@@ -130,6 +131,8 @@ export default class info extends wepy.page {
     let userInfo = wepy.getStorageSync(USER_INFO);
     that.avatarUrl = userInfo.avatarUrl;
     that.nickName = userInfo.nickName;
+    that.issystem = wepy.getStorageSync('issystem');
+    that.$apply();
   }
   async onShow(){
     this.getJifen();

@@ -126,24 +126,6 @@ export default class adding extends wepy.page {
         currentTab : 1,
         detail:['','体验会员(三天)','月会员(一个月)','年会员(一年)','私教3个月(送年会员)','私教一年(送终身会员)','联盟会员(含私教终身)'],
     }
-    async getIslianmeng() {
-        let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-        let openid = userSpecialInfo.openid;
-        if(typeof(openid) == "undefined"){
-        wepy.navigateTo({
-            url: '/pages/shouquan'
-        })
-        return false;
-        }
-        const json = await api.getIslianmeng({
-        query: {
-            openid:openid,
-        }
-        });
-        this.issystem=json.data.issystem;
-        this.islianmeng=json.data.data;
-        this.$apply();
-    }
     async get_prepay_id() {
         var timestamp = Date.parse(new Date());
         if(timestamp-this.nowtime<3000){
@@ -168,7 +150,7 @@ export default class adding extends wepy.page {
         }
         });
         if(json.data.MSG=='notiyan'){
-            tip.confirm('您已开通过体验权限，如需体验等多，请升级为正式会员解锁更多会员专属服务，为您提供更多恋爱能力~');
+            tip.confirm('您已开通过体验权限，如需体验更多，请升级为正式会员解锁更多会员专属服务，为您提供更多恋爱能力~');
             return false;
         }
         if(json.data.MSG=='THK'){
@@ -210,7 +192,9 @@ export default class adding extends wepy.page {
         };
     }
     onLoad() {
-        this.getIslianmeng();
+        this.islianmeng=wepy.getStorageSync('islianmeng');
+        this.issystem=wepy.getStorageSync('issystem');
+        this.$apply();
     }
 }
 </script>

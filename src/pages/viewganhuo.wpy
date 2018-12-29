@@ -1,8 +1,8 @@
 <template>
     <view class="container">
-        <view class="title">{{title}}</view>
+        <text selectable='true' class="title">{{title}}</text>
         <!-- <txv-video vid="j0797kjycv0" playerid="txv0"></txv-video> -->
-        <video class="video" src="{{url}}" duration="{{duration}}" direction="{{direction}}" autoplay="true"></video>
+        <video id="lianmeng" class="video" src="{{url}}" duration="{{duration}}" direction="{{direction}}" autoplay="true"></video>
     </view>
 </template>
 <script>
@@ -21,6 +21,10 @@ export default class viewganhuo extends wepy.page {
     url:"",
     duration:"",
     direction: 90,
+  }
+  onHide(){
+    var videoContextPrev = wx.createVideoContext('lianmeng');
+    videoContextPrev.pause();
   }
   async setJilu() {
     let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
@@ -53,6 +57,14 @@ export default class viewganhuo extends wepy.page {
     this.direction=options.direction;
     this.setJilu();
     this.$apply();
+  }
+  onUnload(){
+    var pages = getCurrentPages();
+    if(pages.length==1){
+        wx.switchTab({
+            url: "/pages/home"
+        })
+    }
   }
 }
 </script>

@@ -109,6 +109,7 @@
       jilutype:'huashu',
       jilucontent:'',
       copyinput:'',
+      issystem:0,
     }
     async getRecommend() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
@@ -322,6 +323,9 @@
       this.$apply();
     }
     onReachBottom(){
+      if(this.issystem==0){
+        return false;
+      }
       if(this.currentTab==0){
         if(!this.isend0)
           this.searchHuashu();
@@ -343,6 +347,7 @@
     }
     onLoad() {
       this.getRecommend();
+      this.issystem=wepy.getStorageSync('issystem');
       this.$apply();
     }
     onShow() {

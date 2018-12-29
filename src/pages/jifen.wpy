@@ -2,7 +2,7 @@
 <view class="container">
     <view class="tequan">您当前的积分为</view>
     <view class="jifen">{{jifen}}</view>
-    <view wx:if="{{vipdengji<6}}">
+    <view wx:if="{{vipdengji<6&&issystem}}">
         <view class="kaitongtext">点击升级，解锁更多会员专属服务，获取更多积分，为您提供更多恋爱能力~</view>
         <navigator class="vip" url="/pages/vip">升级会员</navigator>
     </view>
@@ -24,6 +24,7 @@ export default class jifen extends wepy.page {
     data = {
         jifen:0,
         vipdengji : 0,
+        issystem:0,
     }
     async getJifen(){
         let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
@@ -53,6 +54,8 @@ export default class jifen extends wepy.page {
         };
     }
     async onLoad() {
+        this.issystem=wepy.getStorageSync('issystem');
+        this.$apply();
         this.getJifen();
     }
 }

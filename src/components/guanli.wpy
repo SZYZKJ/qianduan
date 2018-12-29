@@ -3,13 +3,13 @@
     <view wx:if="{{istiyan}}">
       <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
         <view class="duihua">
-          <view class="title" @tap="copycontent({{item.title}})">{{item.title}}\n</view>
-          <text class="content" @tap="copycontent({{item.content}})">{{item.content}}</text>
+          <text selectable='true' class="title" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
+          <text selectable='true' class="content" @tap="copycontent({{item.content}})">{{item.content}}</text>
         </view>
       </view>
-      <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5}}">
+      <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5&&issystem}}">
         <view class="duihua">
-          <view class="title">{{item.title}}\n</view>
+          <text selectable='true' class="title">{{item.title}}\n</text>
           <navigator class="vip" url="/pages/vip">
             <image class="item_img" mode="scaleToFill" src="../images/vip.jpg"></image>
           </navigator>
@@ -19,8 +19,8 @@
     <view wx:if="{{istiyan==0}}">
       <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
         <view class="duihua">
-          <view class="title" @tap="copycontent({{item.title}})">{{item.title}}\n</view>
-          <text class="content" @tap="copycontent({{item.content}})">{{item.content}}</text>
+          <text selectable='true' class="title" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
+          <text selectable='true' class="content" @tap="copycontent({{item.content}})">{{item.content}}</text>
         </view>
       </view>
     </view>
@@ -32,6 +32,7 @@ export default class guanli extends wepy.component {
   data = {
     guanliList: [],
     istiyan:false,
+    issystem:0,
   }
   changeistiyan(val){
     this.istiyan=val;
@@ -46,6 +47,8 @@ export default class guanli extends wepy.component {
     }
   }
   onLoad() {
+    this.issystem=wepy.getStorageSync('issystem');
+    this.$apply();
   }
 }
 </script>
@@ -63,6 +66,7 @@ export default class guanli extends wepy.component {
     padding-bottom: 20rpx;
     background: #ffffff;
     .title{
+      white-space: pre-wrap;
       font-weight: bolder;
       font-size: 30rpx;
       color: #000000; 

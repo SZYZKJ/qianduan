@@ -6,7 +6,7 @@
           <image class="image_box" bindtap="imgYu({{item}})" src="{{item}}" mode="scaleToFill"/>
         </view>
       </view>
-      <view class="biaoqingList" wx:for="{{biaoqingList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=15}}">
+      <view class="biaoqingList" wx:for="{{biaoqingList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=15&&issystem}}">
         <view class="box">
           <navigator url="/pages/vip">
             <image class="image_box" src="../images/vip.jpg" mode="scaleToFill"/>
@@ -30,6 +30,7 @@ export default class biaoqing extends wepy.component {
   data = {
     biaoqingList: [],
     istiyan:false,
+    issystem:0,
   }
   changeistiyan(val){
     this.istiyan=val;
@@ -46,6 +47,8 @@ export default class biaoqing extends wepy.component {
     }
   }
   onLoad() {
+    this.issystem=wepy.getStorageSync('issystem');
+    this.$apply();
   }
 }
 </script>

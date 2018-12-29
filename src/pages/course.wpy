@@ -34,25 +34,26 @@
     <view wx:if="{{currentTab==0}}" wx:for="{{WenzhangList[currentTab0]}}" wx:key="key" wx:for-item='item' wx:for-index="index">
       <view class="wenzhang" wx:if="{{item.styles==1}}" bindtap="goToviewhtml({{item.url}})">
         <view class="kuai1">
-          <view class="title1">{{item.title}}</view>
+          <text selectable='true' class="title1">{{item.title}}</text>
           <image class="image1" src="{{item.thumb1}}" mode="scaleToFill"></image>
         </view>
         <view class="laiyuan1">{{item.nickname}}　　{{item.views}}次阅读</view>
       </view>
       <view class="wenzhang" wx:if="{{item.styles==2}}" bindtap="goToviewhtml({{item.url}})">
-        <view class="title2">{{item.title}}
-        <view class="image_bax">
-          <image class="image2" src="{{item.thumb1}}" mode="scaleToFill"></image>
-          <image class="image2" src="{{item.thumb2}}" mode="scaleToFill"></image>
-          <image class="image2" src="{{item.thumb3}}" mode="scaleToFill"></image>
-        </view>
-        <view class="laiyuan2">{{item.nickname}}　　{{item.views}}次阅读</view>
+        <text selectable='true' class="kuai1">{{item.title}}</text>
+        <view class="title2">
+          <view class="image_bax">
+            <image class="image2" src="{{item.thumb1}}" mode="scaleToFill"></image>
+            <image class="image2" src="{{item.thumb2}}" mode="scaleToFill"></image>
+            <image class="image2" src="{{item.thumb3}}" mode="scaleToFill"></image>
+          </view>
+          <view class="laiyuan2">{{item.nickname}}　　{{item.views}}次阅读</view>
         </view>
       </view>
     </view>
     <view wx:if="{{currentTab==1}}" wx:for="{{GanhuoList[currentTab1]}}" wx:key="key" wx:for-item='item' wx:for-index="index">
       <view class="shipin" bindtap="goToganhuo({{item}})">
-        <view class="title">{{item.title}}</view>
+        <text selectable='true' class="title">{{item.title}}</text>
         <bottom wx:if="{{islianmeng}}" class="shichang">{{item.duration}}</bottom>
         <view class="image_kuai">
           <image wx:if="{{islianmeng}}" class="item_img" src="../images/bofang.png"></image>
@@ -65,7 +66,7 @@
     <view wx:if="{{currentTab==2&&currentTab2<2}}" wx:for="{{KechengList[currentTab2]}}" wx:key="key" wx:for-item='item' wx:for-index="index">
       <view class="wenzhang" bindtap="goToimage({{item}})">
         <view class="kuai1">
-          <view class="title1">{{item.title}}</view>
+          <text selectable='true' class="title1">{{item.title}}</text>
           <image class="image1" src="cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/bonjour.jpg" mode="scaleToFill"></image>
         </view>
       </view>
@@ -123,23 +124,6 @@ export default class course extends wepy.page {
     WenzhangList:[[],[],[],[],[],[],[],[]],
     GanhuoList:[[],[],[],[]],
     KechengList:[[],[]],
-  }
-  async getIslianmeng() {
-    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-    let openid = userSpecialInfo.openid;
-    if(typeof(openid) == "undefined"){
-      wepy.navigateTo({
-        url: '/pages/shouquan'
-      })
-      return false;
-    }
-    const json = await api.getIslianmeng({
-      query: {
-        openid:openid,
-      }
-    });
-    this.islianmeng=json.data.data;
-    this.$apply();
   }
   async getWenzhangList(ifBuootm) {
     if(this.isend0[this.currentTab0]) return 0;
@@ -344,7 +328,7 @@ export default class course extends wepy.page {
     }
   }
   onLoad(){
-    this.getIslianmeng();
+    this.islianmeng=wepy.getStorageSync('islianmeng');
     if(this.iffirstshow){
       this.getWenzhangList(0);
       this.iffirstshow=false;
@@ -515,11 +499,11 @@ export default class course extends wepy.page {
   .kuai1{
     padding-left:20rpx;
     padding-right:20rpx;   
+    color: #000;
     display: flex;
     justify-content: space-between;
     .title1{
       width: 80%;
-      color: #000;
       font-size: 28rpx;
     }
     .image1{

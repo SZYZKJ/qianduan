@@ -4,13 +4,13 @@
       <view class="methodlogyList" wx:for="{{MethodologyList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
         <view class="secondkuai">
           <view class="duihua">
-            <view class="biaoti" @tap="copycontent({{item.title}})">{{item.title}}\n</view>
-            <text class="introduction" @tap="copycontent({{item.introduction}})">{{item.introduction}}</text>
+            <text selectable='true' class="biaoti" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
+            <text selectable='true' class="introduction" @tap="copycontent({{item.introduction}})">{{item.introduction}}</text>
           </view>
           <view class="thirdkuai" wx:if="{{item.content.length>0}}">
             <view class="contentkuai">
               <view class="content" wx:if="{{item.chakan}}">
-                <text @tap="copycontent({{item.content}})">{{item.content}}</text>
+                <text selectable='true' @tap="copycontent({{item.content}})">{{item.content}}</text>
               </view>
             </view>
             <view class="chakankuai">
@@ -20,10 +20,10 @@
           </view>
         </view>
       </view>
-      <view class="methodlogyList" wx:for="{{MethodologyList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5}}">
+      <view class="methodlogyList" wx:for="{{MethodologyList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5&&issystem}}">
         <view class="secondkuai">
           <view class="duihua">
-            <view class="biaoti">{{item.title}}\n</view>
+            <text selectable='true' class="biaoti">{{item.title}}\n</text>
             <navigator class="vip" url="/pages/vip">
               <image class="item_img" mode="scaleToFill" src="../images/vip.jpg"></image>
             </navigator>
@@ -37,13 +37,13 @@
       <view class="methodlogyList" wx:for="{{MethodologyList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
         <view class="secondkuai">
           <view class="duihua">
-            <view class="biaoti" @tap="copycontent({{item.title}})">{{item.title}}\n</view>
-            <text class="introduction" @tap="copycontent({{item.introduction}})">{{item.introduction}}</text>
+            <text selectable='true' class="biaoti" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
+            <text selectable='true' class="introduction" @tap="copycontent({{item.introduction}})">{{item.introduction}}</text>
           </view>
           <view class="thirdkuai" wx:if="{{item.content.length>0}}">
             <view class="contentkuai">
               <view class="content" wx:if="{{item.chakan}}">
-                <text @tap="copycontent({{item.content}})">{{item.content}}</text>
+                <text selectable='true' @tap="copycontent({{item.content}})">{{item.content}}</text>
               </view>
             </view>
             <view class="chakankuai">
@@ -81,6 +81,7 @@ export default class methodology extends wepy.page {
     scroll:'',
     isend:false,
     istiyan:false,
+    issystem:0,
     title:{
       '555354659295006577':'直接开场白','321772450499124142':'间接开场白','954705093104796036':'幽默开场白',
       '706200759532847427':'酒吧开场白','241970070930171655':'全环境搭讪','847020183663766929':'搭讪模板','592714267443116829':'收号后续','739210464880021256':'好奇开场白','641670114264877142':'筛选开场白','706267352450146333':'调侃幽默','916767903321494437':'高价值展示',
@@ -135,6 +136,8 @@ export default class methodology extends wepy.page {
       title: this.title[this.cid],
     })
     this.getMethodologyList();
+    this.issystem=wepy.getStorageSync('issystem');
+    this.$apply();
   }
   methods = {
     changechakan(index){
@@ -173,6 +176,7 @@ export default class methodology extends wepy.page {
     background: #ffffff;
     .duihua{
       .biaoti{
+        white-space: pre-wrap;
         margin-bottom:10rpx; 
         font-weight: bolder;
         font-size: 30rpx;

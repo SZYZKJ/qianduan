@@ -26,21 +26,22 @@
         <biaoti>搭讪技巧</biaoti>
       </view>
       <view class="kuai_list">
+        <button class="weui-btn" type="default" size="mini" @tap="gototwqh">土味情话</button>
         <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(555354659295006577)">直接开场白</button>
         <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(321772450499124142)">间接开场白</button>
-        <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(954705093104796036)">幽默开场白</button>
       </view>
       <view class="kuai_list">
+        <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(954705093104796036)">幽默开场白</button>
         <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(739210464880021256)">好奇开场白</button>
         <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(641670114264877142)">筛选开场白</button>
-        <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(706200759532847427)">酒吧开场白</button>
       </view>
       <view class="kuai_list">
+        <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(706200759532847427)">酒吧开场白</button>
         <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(241970070930171655)">全环境搭讪</button>
         <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(847020183663766929)">搭讪模板</button>
-        <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(706267352450146333)">调侃幽默</button>
       </view>
       <view class="kuai_list">
+        <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(706267352450146333)">调侃幽默</button>
         <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(592714267443116829)">收号后续</button>
         <button class="weui-btn" type="default" size="mini" @tap="gotoMethodology(144254242636989440)">神回复</button>
       </view>
@@ -214,6 +215,24 @@ export default class home extends wepy.page {
         }
     }
   }
+  async getIslianmeng() {
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      if(typeof(openid) == "undefined"){
+      wepy.navigateTo({
+          url: '/pages/shouquan'
+      })
+      return false;
+      }
+      const json = await api.getIslianmeng({
+      query: {
+          openid:openid,
+      }
+      });
+      wepy.setStorageSync('issystem', json.data.issystem);
+      wepy.setStorageSync('islianmeng', json.data.islianmeng);
+      this.$apply();
+  }
   onShareAppMessage() {
     return {
       title: '恋爱联盟',
@@ -227,8 +246,6 @@ export default class home extends wepy.page {
     })
   }
   async onLoad(){
-    let systemInfo = wepy.getSystemInfoSync();
-    wepy.setStorageSync(SYSTEM_INFO, systemInfo);
     let res = await wepy.getSetting();
     if ((res.authSetting)['scope.userInfo']) {
       let userInfo = wepy.getStorageSync(USER_INFO);
@@ -247,6 +264,7 @@ export default class home extends wepy.page {
       })
     }
     this.getAdList();
+    this.getIslianmeng();
   }
   changeTab() {
     if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
@@ -268,6 +286,11 @@ export default class home extends wepy.page {
       this.endX=e.changedTouches[0].clientX;
       this.endY=e.changedTouches[0].clientY;
       this.changeTab();
+    },
+    gototwqh(){
+      wx.navigateTo({
+        url: "./twqh"
+      })
     },
     gotoMethodology(obj){
       wx.navigateTo({

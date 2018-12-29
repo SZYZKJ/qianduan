@@ -1,6 +1,6 @@
 <template>
     <view class="container">
-        <view class="title">{{title}}</view>
+        <text selectable='true' class="title">{{title}}</text>
         <image class="image" src="{{url}}" mode="widthFix"></image>
     </view>
 </template>
@@ -47,6 +47,14 @@ export default class viewimage extends wepy.page {
     this.url=options.url;
     this.setJilu();
     this.$apply();
+  }
+  onUnload(){
+    var pages = getCurrentPages();
+    if(pages.length==1){
+        wx.switchTab({
+            url: "/pages/home"
+        })
+    }
   }
 }
 </script>

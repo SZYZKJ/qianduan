@@ -27,6 +27,8 @@ export default class extends wepy.app {
       'pages/jifen',
       'pages/weixin',
       'pages/dingdan',
+      'pages/twqh',
+      'pages/tuweiqinghua'
     ],
     window: {
       backgroundTextStyle: 'dark',
@@ -74,6 +76,8 @@ export default class extends wepy.app {
   }
   async onLaunch(options) {
     wepy.setStorageSync('options', JSON.stringify(options));
+    let systemInfo = wepy.getSystemInfoSync();
+    wepy.setStorageSync('systemInfo', systemInfo);
   }
 }
 </script>

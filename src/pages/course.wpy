@@ -5,8 +5,7 @@
       <view class="tab-item {{currentTab==0?'active':''}}" data-current="0" bindtap="swichNav" >文章</view>
       <view wx:if="{{islianmeng==0}}" class="tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="swichNav" >干货</view>
       <view wx:if="{{islianmeng}}" class="tab-item {{currentTab==1?'active':''}}" data-current="1" bindtap="swichNav" >视频</view>
-      <view class="tab-item {{currentTab==2?'active':''}}" data-current="2" bindtap="swichNav" >课程</view>
-      <view class="tab-item {{currentTab==3?'active':''}}" data-current="3" bindtap="swichNav" >搜索</view>
+      <view class="tab-item {{currentTab==3?'active':''}}" data-current="2" bindtap="swichNav" >搜索</view>
     </view>
     <scroll-view scroll-x="true" wx:if="{{currentTab==0}}" class="tab-h1" scroll-left="{{scrollLeft}}">
       <view class="tab-item1 {{currentTab0==0?'active':''}}" data-current="0" bindtap="swichNav0" >恋爱</view>
@@ -23,11 +22,6 @@
       <view class="tab-item2 {{currentTab1==1?'active':''}}" data-current="1" bindtap="swichNav1">搭讪</view>
       <view class="tab-item2 {{currentTab1==2?'active':''}}" data-current="2" bindtap="swichNav1">电影</view>
       <view class="tab-item2 {{currentTab1==3?'active':''}}" data-current="3" bindtap="swichNav1">干货</view>
-    </scroll-view>
-    <scroll-view scroll-x="true" wx:if="{{currentTab==2}}" class="tab-h2">
-      <view class="tab-item2 {{currentTab2==0?'active':''}}" data-current="0" bindtap="swichNav2">展示面</view>
-      <view class="tab-item2 {{currentTab2==1?'active':''}}" data-current="1" bindtap="swichNav2">聊天演练</view>
-      <view class="tab-item2 {{currentTab2==2?'active':''}}" data-current="2" bindtap="swichNav2">联盟课程</view>
     </scroll-view>
   </view>
   <view class="neirong" bindtouchstart='touchStart' bindtouchend="touchEnd">
@@ -71,15 +65,8 @@
         </view>
       </view>
     </view>
-    <view wx:if="{{currentTab==2&&currentTab2==2}}" >
-      <view class="adding">
-        <view>功能正在完善</view>
-        <view>感谢关注与支持</view>
-        <view>敬请期待</view>
-      </view>
-    </view>
-    <view class="textend" wx:if="{{(currentTab==0&&!isend0[currentTab0])||(currentTab==1&&!isend1[currentTab1])||(currentTab==2&&!isend2[currentTab2])}}">加载中......</view>
-    <view class="textend" wx:if="{{(currentTab==0&&isend0[currentTab0])||(currentTab==1&&isend1[currentTab1])||(currentTab==2&&isend2[currentTab2])}}">恋爱联盟良心出品</view>
+    <view class="textend" wx:if="{{(currentTab==0&&!isend0[currentTab0])||(currentTab==1&&!isend1[currentTab1])}}">加载中......</view>
+    <view class="textend" wx:if="{{(currentTab==0&&isend0[currentTab0])||(currentTab==1&&isend1[currentTab1])}}">恋爱联盟良心出品</view>
   </view>
 </view>
 </template>
@@ -113,17 +100,13 @@ export default class course extends wepy.page {
     oldcurrentTab:0,
     currentTab0:0,
     currentTab1:0,
-    currentTab2:0,
     scrollLeft:0,
     scroll0:['','','','','','','',''],
     scroll1:['','','',''],
-    scroll2:['','',''],
     isend0:[false,false,false,false,false,false,false,false],
     isend1:[false,false,false,false],
-    isend2:[false,false,true],
     WenzhangList:[[],[],[],[],[],[],[],[]],
     GanhuoList:[[],[],[],[]],
-    KechengList:[[],[]],
   }
   async getWenzhangList(ifBuootm) {
     if(this.isend0[this.currentTab0]) return 0;
@@ -236,19 +219,6 @@ export default class course extends wepy.page {
             this.getGanhuoList(0);
         }
       }
-      else if(this.currentTab==2){
-        if(this.currentTab2==0){
-          this.currentTab=1;
-          this.currentTab1=3;
-          if(this.GanhuoList[this.currentTab1].length==0)
-          this.getGanhuoList(0);
-        }
-        else{
-          this.currentTab2--;
-          if(this.KechengList[this.currentTab2].length==0)
-            this.getKechengList(0);
-        }
-      }
     } else if (this.endX - this.startX < -30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
       if(this.currentTab==0){
         if(this.currentTab0==7){
@@ -265,27 +235,15 @@ export default class course extends wepy.page {
       }
       else if(this.currentTab==1){
         if(this.currentTab1==3){
-          this.currentTab=2;
-          this.currentTab2=0;
-          if(this.KechengList[this.currentTab2].length==0)
+          wx.switchTab({
+            url: "./searchpage"
+          })
             this.getKechengList(0);
         }
         else{
           this.currentTab1++;
           if(this.GanhuoList[this.currentTab1].length==0)
             this.getGanhuoList(0);
-        }
-      }
-      else if(this.currentTab==2){
-        if(this.currentTab2==2){
-          wx.switchTab({
-            url: "./searchpage"
-          })
-        }
-        else{
-          this.currentTab2++;
-          if(this.currentTab2<2&&this.KechengList[this.currentTab2].length==0)
-            this.getKechengList(0);
         }
       }
     }
@@ -307,10 +265,6 @@ export default class course extends wepy.page {
       if(!this.isend1[this.currentTab1])
         this.getGanhuoList(0);
     }
-    if(this.currentTab==2){
-      if(!this.isend2[this.currentTab2])
-        this.getKechengList(0);
-    }
     wx.stopPullDownRefresh();
   }
   onReachBottom(){
@@ -321,10 +275,6 @@ export default class course extends wepy.page {
     if(this.currentTab==1){
       if(!this.isend1[this.currentTab1])
         this.getGanhuoList(1);
-    }
-    if(this.currentTab==2){
-      if(!this.isend2[this.currentTab2])
-        this.getKechengList(1);
     }
   }
   onLoad(){
@@ -371,7 +321,7 @@ export default class course extends wepy.page {
     },
     swichNav(e){
       var cur=e.target.dataset.current;
-      if(cur!=3){
+      if(cur!=2){
         this.currentTab = cur;
         this.oldcurrentTab = this.currentTab;
         if(this.currentTab==0){
@@ -381,10 +331,6 @@ export default class course extends wepy.page {
         if(this.currentTab==1){
           if(this.GanhuoList[this.currentTab1].length==0)
             this.getGanhuoList(0);
-        }
-        if(this.currentTab==2){
-          if(this.KechengList[this.currentTab2].length==0)
-            this.getKechengList(0);
         }
       }
       else{
@@ -411,15 +357,6 @@ export default class course extends wepy.page {
         this.currentTab1=cur;
         if(this.GanhuoList[this.currentTab1].length==0)
           this.getGanhuoList(0);
-      }
-    },
-    swichNav2(e){
-      var cur=e.target.dataset.current;
-      if(this.currentTab2==cur){return false;}
-      else{
-        this.currentTab2=cur;
-        if(this.currentTab2<2&&this.KechengList[this.currentTab2].length==0)
-          this.getKechengList(0);
       }
     },
   }
@@ -452,8 +389,8 @@ export default class course extends wepy.page {
   line-height: 60rpx;
   background: #ffffff;
   .tab-item{
-    margin-left: 7.5%;
-    margin-right: 7.5%;
+    margin-left: 12%;
+    margin-right: 12%;
     font-size: 38rpx; 
     display: inline;
   }
@@ -466,8 +403,8 @@ export default class course extends wepy.page {
   font-size: 28px; 
   white-space: nowrap;
   .tab-item1{
-    margin-left: 30rpx;
-    margin-right: 30rpx;
+    margin-left: 15rpx;
+    margin-right: 15rpx;
     display: inline;
   }
 }
@@ -478,8 +415,8 @@ export default class course extends wepy.page {
   height: 80rpx;
   font-size: 28px; 
   .tab-item2{
-    margin-left: 30rpx;
-    margin-right: 30rpx;
+    margin-left: 66rpx;
+    margin-right: 66rpx;
     display: inline;
   }
 }

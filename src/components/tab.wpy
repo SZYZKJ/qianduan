@@ -53,8 +53,8 @@ export default class tab extends wepy.component {
 }
 
 .active {
-  color: #eb6623;
-  border-bottom: 5rpx solid #eb6623;
+  color: #ff4500;
+  border-bottom: 5rpx solid #ff4500;
 }
 
 </style>

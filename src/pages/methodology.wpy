@@ -1,7 +1,7 @@
 <template>
   <view class="firstkuai">
     <view wx:if="{{istiyan}}">
-      <view class="methodlogyList" wx:for="{{MethodologyList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
+      <view class="lilunList" wx:for="{{LilunList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
         <view class="secondkuai">
           <view class="duihua">
             <text selectable='true' class="biaoti" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
@@ -20,7 +20,7 @@
           </view>
         </view>
       </view>
-      <view class="methodlogyList" wx:for="{{MethodologyList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5&&issystem}}">
+      <view class="lilunList" wx:for="{{LilunList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5&&issystem}}">
         <view class="secondkuai">
           <view class="duihua">
             <text selectable='true' class="biaoti">{{item.title}}\n</text>
@@ -34,7 +34,7 @@
       <view class="textend" wx:if="{{isend}}">恋爱联盟良心出品</view>
     </view>
     <view wx:if="{{istiyan==0}}">
-      <view class="methodlogyList" wx:for="{{MethodologyList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+      <view class="lilunList" wx:for="{{LilunList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
         <view class="secondkuai">
           <view class="duihua">
             <text selectable='true' class="biaoti" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
@@ -77,7 +77,7 @@ export default class methodology extends wepy.page {
   data = {
     cid:107,
     title:'恋爱联盟',
-    MethodologyList: [],
+    LilunList: [],
     scroll:'',
     isend:false,
     istiyan:false,
@@ -112,7 +112,7 @@ export default class methodology extends wepy.page {
     else
       this.istiyan=true;
     if(json.data.data.length<10) this.isend=true;
-    this.MethodologyList=this.MethodologyList.concat(json.data.data);
+    this.LilunList=this.LilunList.concat(json.data.data);
     this.scroll=json.data.scroll;
     this.$apply();
   }
@@ -141,12 +141,18 @@ export default class methodology extends wepy.page {
   }
   methods = {
     changechakan(index){
-      this.MethodologyList[index].chakan=!this.MethodologyList[index].chakan;
+      this.LilunList[index].chakan=!this.LilunList[index].chakan;
     },
     copycontent(GG){
       var that=this;
       wx.setClipboardData({
         data:GG,
+        success: function() {
+          wx.showToast({
+            title: "复制成功",
+            duration: 500,
+          });
+        }
       })
     }
   }
@@ -162,7 +168,7 @@ export default class methodology extends wepy.page {
     text-align:center;
   }
 }
-.methodlogyList {
+.lilunList {
   padding-top: 20rpx;
   width: 100%;
   .secondkuai{

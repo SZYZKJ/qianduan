@@ -352,6 +352,10 @@
     }
     onShow() {
       let that=this;
+      if(wepy.$instance.globalData.currentTab!=-1){
+        this.currentTab= wepy.$instance.globalData.currentTab;
+        wepy.$instance.globalData.currentTab=-1;
+      }
       that.showRecommend=0;
       if(that.ifonShow==false){
         that.ifonShow=true;
@@ -364,9 +368,6 @@
           if(that.copyinput!=copyvalue){
             that.copyinput=copyvalue;
             that.inputValue=copyvalue
-          }
-          else{
-            return false;
           }
           if((that.currentTab==0&&that.oldhuashu==that.inputValue)||(that.currentTab==1&&that.oldguanli==that.inputValue)||(that.currentTab==2&&that.oldbiaoqing==that.inputValue)) return false;
           that.huashuList=[];

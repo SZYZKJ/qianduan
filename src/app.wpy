@@ -16,6 +16,7 @@ export default class extends wepy.app {
       'pages/mall',
       'pages/info',
       'pages/searchpage',
+      'pages/lilun',
       'pages/methodology',
       'pages/searchWS',
       'pages/vip',
@@ -32,41 +33,42 @@ export default class extends wepy.app {
     ],
     window: {
       backgroundTextStyle: 'dark',
-      navigationBarBackgroundColor: '#FFFFFF',
+      navigationBarBackgroundColor: '#ffffff',
       navigationBarTitleText: '恋爱联盟',
       navigationBarTextStyle: 'black',
       enablePullDownRefresh: true,
-      backgroundColor: '#EFEFEF'
+      backgroundColor: '#ffffff'
     },
     tabBar: {
       "color": "#999999",
-      "selectedColor": "#f03939",
+      "selectedColor": "#ff4500",
       "backgroundColor": "#ffffff",
       "borderStyle": "black",
       "list": [{
         "pagePath": "pages/home",
-        "text": "套路",
-        "iconPath": "images/icon_home.png",
-        "selectedIconPath": "images/icon_home_active.png"
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home_active.png"
       }, {
         "pagePath": "pages/course",
-        "text": "课程",
-        "iconPath": "images/icon_shop_cart.png",
-        "selectedIconPath": "images/icon_shop_cart_active.png"
+        "text": "文章",
+        "iconPath": "images/wenzhang.png",
+        "selectedIconPath": "images/wenzhang_active.png"
       }, {
         "pagePath": "pages/searchpage",
         "text": "话术",
-        "iconPath": "images/icon_classify.png",
-        "selectedIconPath": "images/icon_classify_active.png"
+        "iconPath": "images/huashu.png",
+        "selectedIconPath": "images/huashu_active.png"
       }, {
         "pagePath": "pages/info",
         "text": "个人",
-        "iconPath": "images/icon_info.png",
-        "selectedIconPath": "images/icon_info_active.png"
+        "iconPath": "images/info.png",
+        "selectedIconPath": "images/info_active.png"
       }]
     }
   }
   globalData = {
+    currentTab:0,
   }
   constructor() {
     super()

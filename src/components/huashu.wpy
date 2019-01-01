@@ -3,15 +3,19 @@
     <view wx:if="{{istiyan}}">
       <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
         <view class="duihua">
-          <text selectable='true' class="MM" @tap="copycontent({{item.MM}})"><text style="font-weight: bolder;font-size: 30rpx;">美女：</text>{{item.MM}}\n</text>
-          <text selectable='true' class="GG" wx:if="{{item.GG.length==1}}" @tap="copycontent({{item.GG[0]}})"><text style="font-weight: bolder;font-size: 30rpx;">型男：</text>{{item.GG[0]}}</text>
-          <text selectable='true' class="GG" wx:else @tap="copycontent({{item.GG[0]}})"><text style="font-weight: bolder;font-size: 30rpx;">型男：1、</text>{{item.GG[0]}}\n</text>
-          <text selectable='true' class="GG" wx:for="{{item.GG}}" wx:key="minitem" wx:for-item='centence' wx:for-index="index" wx:if="{{index>0}}" @tap="copycontent({{centence}})"><text style="font-weight: bolder;font-size: 30rpx;">{{index+1}}、</text>{{centence}}\n</text>
+          <view class="girl">
+            <text selectable='true' @tap="copycontent({{item.MM}})">{{item.MM}}</text>
+          </view>
+          <view wx:for="{{item.GG}}" wx:key="minitem" wx:for-item='centence' wx:for-index="index">
+            <view class="man"><text selectable='true' @tap="copycontent({{centence}})">{{centence}}</text></view>
+          </view>
         </view>
       </view>
       <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5&&issystem}}">
         <view class="duihua">
-          <text selectable='true' class="MM" @tap="copycontent({{item.MM}})"><text style="font-weight: bolder;font-size: 30rpx;">美女：</text>{{item.MM}}</text>
+          <view class="girl">
+            <text selectable='true' @tap="copycontent({{item.MM}})">{{item.MM}}</text>
+          </view>
           <navigator class="vip" url="/pages/vip">
             <image class="item_img" mode="scaleToFill" src="../images/vip.jpg"></image>
           </navigator>
@@ -21,10 +25,12 @@
     <view wx:if="{{istiyan==0}}">
       <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
         <view class="duihua">
-          <text selectable='true' class="MM" @tap="copycontent({{item.MM}})"><text style="font-weight: bolder;font-size: 30rpx;">美女：</text>{{item.MM}}\n</text>
-          <text selectable='true' class="GG" wx:if="{{item.GG.length==1}}" @tap="copycontent({{item.GG[0]}})"><text style="font-weight: bolder;font-size: 30rpx;">型男：</text>{{item.GG[0]}}</text>
-          <text selectable='true' class="GG" wx:else @tap="copycontent({{item.GG[0]}})"><text style="font-weight: bolder;font-size: 30rpx;">型男：1、</text>{{item.GG[0]}}\n</text>
-          <text selectable='true' class="GG" wx:for="{{item.GG}}" wx:key="minitem" wx:for-item='centence' wx:for-index="index" wx:if="{{index>0}}" @tap="copycontent({{centence}})"><text style="font-weight: bolder;font-size: 30rpx;">{{index+1}}、</text>{{centence}}\n</text>
+          <view class="girl">
+            <text selectable='true' @tap="copycontent({{item.MM}})">{{item.MM}}</text>
+          </view>
+          <view wx:for="{{item.GG}}" wx:key="minitem" wx:for-item='centence' wx:for-index="index">
+            <view class="man"><text selectable='true' @tap="copycontent({{centence}})">{{centence}}</text></view>
+          </view>
         </view>
       </view>
     </view>
@@ -47,6 +53,12 @@ export default class huashu extends wepy.component {
     copycontent(GG){
       wx.setClipboardData({
         data:GG,
+        success: function() {
+          wx.showToast({
+            title: "复制成功",
+            duration: 500,
+          });
+        }
       })
       this.$emit('jilu','huashu',GG);
     }
@@ -73,14 +85,21 @@ export default class huashu extends wepy.component {
     padding-bottom: 20rpx;
     background: #ffffff;
   }
-  .MM{
-    white-space: pre-wrap;
+  .girl{
+    background: url(https://www.lianaizhuli.com/girl.png) no-repeat left top;
+    background-size: 25px 25px;
+    line-height: 25px;
+    padding-left: 30px;
     font-size: 28rpx;
     color: #000000; 
+    box-sizing: border-box;
+    position: relative;
   }
-  .GG{
-    white-space: pre-wrap;
-    padding-top: 10rpx;
+  .man{
+    background: url(https://www.lianaizhuli.com/man.png) no-repeat left top;
+    background-size: 25px 25px;
+    line-height: 25px;
+    padding-left: 30px;
     font-size: 28rpx;
     color: #000000; 
   }

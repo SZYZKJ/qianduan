@@ -75,7 +75,7 @@ export default class jifen extends wepy.page {
 }
 .vip{
     height: 60rpx;
-    background: #09BB07;
+    background: #ff00ff;
     color: #ffffff;
     border-radius:20rpx;
     margin-top: 200rpx;
@@ -89,7 +89,7 @@ export default class jifen extends wepy.page {
 }
 .jifen{
     padding-top: 50rpx;
-    color: #09BB07;
+    color: #ff00ff;
 }
 .tequanneirong{
     margin-top: 20rpx;

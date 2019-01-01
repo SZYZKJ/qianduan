@@ -3,7 +3,7 @@
     <view class="words-item person{{item.person}}" wx:for="{{wordsList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
         <view class="words-avatar">
             <open-data class="words-avatar1" type="userAvatarUrl" wx:if="{{item.person==1}}"></open-data>
-            <image class="words-avatar2" mode="cover" src="{{person2Avatar}}" wx:if="{{item.person==2}}"></image>
+            <cover-image class="words-avatar2" mode="aspectFit" src="{{person2Avatar}}" wx:if="{{item.person==2}}"></cover-image>
         </view>
         <view bindtap="copyText" class="words-content" data-text="{{item.content}}" wx:if="{{item.type==1}}">
             <text selectable="true">{{item.content}}</text>

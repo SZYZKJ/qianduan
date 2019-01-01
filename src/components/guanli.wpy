@@ -42,6 +42,12 @@ export default class guanli extends wepy.component {
     copycontent(GG){
       wx.setClipboardData({
         data:GG,
+        success: function() {
+          wx.showToast({
+            title: "复制成功",
+            duration: 500,
+          });
+        }
       })
       this.$emit('jilu','guanli',GG);
     }

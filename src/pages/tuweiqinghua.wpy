@@ -1,5 +1,5 @@
 <template>
-<view class="words-list">
+<view scroll-y="true" style="height:{{winheight}}rpx" bindtouchstart='touchStart' bindtouchend="touchEnd" class="words-list">
     <view class="words-item person{{item.person}}" wx:for="{{wordsList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
         <view class="words-avatar">
             <open-data class="words-avatar1" type="userAvatarUrl" wx:if="{{item.person==1}}"></open-data>
@@ -10,11 +10,11 @@
         </view>
         <image bindtap="previewImage" class="words-img" mode="widthFix" data-src="{{item.content}}" src="{{item.content}}" wx:if="{{item.type==2}}"></image>
     </view>
-</view>
-<view class="fixed-footer">
-    <view class="btngroup-prev-next">
-        <view bindtap="openChat(0)" class="btn-prev {{prevChatId===false?'disabled':''}}">上一个</view>
-        <view bindtap="openChat(1)" class="btn-next {{nextChatId===false?'disabled':''}}">下一个</view>
+    <view class="fixed-footer">
+        <view class="btngroup-prev-next">
+            <view bindtap="openChat(0)" class="btn-prev {{prevChatId===false?'disabled':''}}">上一个(下拉)</view>
+            <view bindtap="openChat(1)" class="btn-next {{nextChatId===false?'disabled':''}}">下一个(上滑)</view>
+        </view>
     </view>
 </view>
 </template>
@@ -28,11 +28,16 @@ import {
 } from '@/utils/constant';
 import tip from "@/utils/tip";
 export default class tuweiqinghua extends wepy.page {
+    config = {
+        enablePullDownRefresh:false,
+        enableReachBottom:false,
+    }
     data= {
         person2Avatar: "../images/meinv.png",
         wordsList:[],
         cententsList:[],
         nowid:0,
+        winheight:0,
     }
     copyText(t) {
         var e = t.currentTarget.dataset.text;
@@ -73,27 +78,32 @@ export default class tuweiqinghua extends wepy.page {
             urls: [ e ]
         });
     }
-    methods={
-        openChat(t) {
-            if(t==0){
-                if(this.nowid>0){
-                    this.nowid--;
-                    this.wordsList=this.cententsList[this.nowid];
-                }
+    openChat(e) {
+        var t=1;
+        if(typeof(e.target) != "undefined")
+            t=e.target.dataset.wpyopenchatA;
+        else t=e;
+        if(t==0){
+            if(this.nowid>0){
+                this.nowid--;
+                this.wordsList=this.cententsList[this.nowid];
+            }
+        }
+        else{
+            if(this.nowid<this.cententsList.length-1){
+                this.nowid++;
+                this.wordsList=this.cententsList[this.nowid];
             }
             else{
-                if(this.nowid<this.cententsList.length-1){
-                    this.nowid++;
-                    this.wordsList=this.cententsList[this.nowid];
-                }
-                else{
-                    this.getTuweiqinghua();
-                }
+                this.getTuweiqinghua();
             }
-            this.$apply();
-        }  
-    }
+        }
+        this.$apply();
+    }  
     onLoad(e) {
+        var Width=wx.getSystemInfoSync().windowWidth;
+        var Height=wx.getSystemInfoSync().windowHeight;
+        this.winheight=Height/Width*750;
         this.wordsList=JSON.parse(e.json);
         this.cententsList=[this.wordsList];
         var r = [
@@ -105,6 +115,25 @@ export default class tuweiqinghua extends wepy.page {
             title: r[Math.floor(Math.random() * 3)]
         });
         this.$apply();
+    }
+    changeTab() {
+        if (this.endY - this.startY > 30 && Math.abs(this.endX - this.startX)*1.5 < Math.abs(this.endY - this.startY)) {
+            this.openChat(0);
+        }
+        if (this.endY - this.startY < -30 && Math.abs(this.endX - this.startX)*1.5 < Math.abs(this.endY - this.startY)) {
+            this.openChat(1);
+        }
+    }
+    methods = {
+        touchStart(e){
+            this.startX=e.changedTouches[0].clientX;
+            this.startY=e.changedTouches[0].clientY;
+        },
+        touchEnd(e){
+            this.endX=e.changedTouches[0].clientX;
+            this.endY=e.changedTouches[0].clientY;
+            this.changeTab();
+        },
     }
     onShareAppMessage() {
         return {
@@ -127,13 +156,11 @@ page {
     background-color: #ebeaeb;
 }
 .words-list {
-    position: relative;
+    // position: relative;
     width: 100%;
-    height: 100%;
     padding: 30rpx 20rpx 230rpx;
     box-sizing: border-box;
 }
-
 .words-item {
     position: relative;
     width: 100%;
@@ -225,6 +252,7 @@ page {
     float: right;
 }
 .fixed-footer {
+    z-index: 99;
     position: fixed;
     left: 0;
     bottom: 0;

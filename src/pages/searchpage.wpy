@@ -148,23 +148,40 @@
     }
     computed = {}
     confirm(){
-      wx.showModal({
-        title: '开通会员',
-        content: '您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~',
-        showCancel: true,
-        cancelText:"取消",
-        confirmText:"开通",
-        success: function (res) {
-            if (res.cancel) {
-            } else {
-              wepy.navigateTo({
-                url: '/pages/vip'
-              })
-            }
-        },
-        fail: function (res) { },//接口调用失败的回调函数
-        complete: function (res) { },//接口调用结束的回调函数（调用成功、失败都会执行）
-      })
+      if(this.issystem==1){
+        wx.showModal({
+          title: '开通会员',
+          content: '您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~',
+          showCancel: true,
+          cancelText:"取消",
+          confirmText:"开通",
+          success: function (res) {
+              if (res.cancel) {
+              } else {
+                wepy.navigateTo({
+                  url: '/pages/vip'
+                })
+              }
+          },
+          fail: function (res) { },//接口调用失败的回调函数
+          complete: function (res) { },//接口调用结束的回调函数（调用成功、失败都会执行）
+        })
+      }
+      else{
+          wx.showModal({
+          title: '温馨提示',
+          content: '您当前为非会员，无法为您提供更多恋爱能力~',
+          showCancel: false,
+          confirmText:"确定",
+          success: function (res) {
+              if (res.cancel) {
+              } else {
+              }
+          },
+          fail: function (res) { },//接口调用失败的回调函数
+          complete: function (res) { },//接口调用结束的回调函数（调用成功、失败都会执行）
+        })
+      }
     }
     async searchHuashu() {
       let that = this;
@@ -185,9 +202,7 @@
       });
       that.oldhuashu=that.inputValue;
       if(json.data.MSG=='OK'||json.data.MSG=='TIYAN'){
-        if(json.data.MSG=='OK')
-          that.$invoke('huashu', 'changeistiyan', false);
-        else
+        if(json.data.MSG=='TIYAN')
           that.$invoke('huashu', 'changeistiyan', true);
         that.huashuList=that.huashuList.concat(json.data.data);
         if(json.data.data.length<10) this.isend0=true;
@@ -218,9 +233,7 @@
       });
       that.oldguanli=that.inputValue;
       if(json.data.MSG=='OK'||json.data.MSG=='TIYAN'){
-        if(json.data.MSG=='OK')
-          that.$invoke('guanli', 'changeistiyan', false);
-        else
+        if(json.data.MSG=='TIYAN')
           that.$invoke('guanli', 'changeistiyan', true);
         that.guanliList=that.guanliList.concat(json.data.data);
         that.scroll1=json.data.scroll;
@@ -251,9 +264,7 @@
       });
       that.oldbiaoqing=that.inputValue;
       if(json.data.MSG=='OK'||json.data.MSG=='TIYAN'){
-        if(json.data.MSG=='OK')
-          that.$invoke('biaoqing', 'changeistiyan', false);
-        else
+        if(json.data.MSG=='TIYAN')
           that.$invoke('biaoqing', 'changeistiyan', true);
         that.biaoqingList=that.biaoqingList.concat(json.data.data);
         if(json.data.data.length<10) this.isend2=true;
@@ -382,6 +393,11 @@
           that.doSearch(that.inputValue);
         }
       })
+      if(wepy.$instance.globalData.istiyan==false){
+        that.$invoke('huashu', 'changeistiyan', false);
+        that.$invoke('guanli', 'changeistiyan', false);
+        that.$invoke('biaoqing', 'changeistiyan', false);
+      }
       that.$apply();
     }
     async setJilu() {

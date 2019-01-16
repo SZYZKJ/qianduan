@@ -5,7 +5,14 @@
         <view class="secondkuai">
           <view class="duihua">
             <text selectable='true' class="biaoti" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
-            <text selectable='true' class="introduction" @tap="copycontent({{item.introduction}})">{{item.introduction}}</text>
+            <view wx:for="{{item.datalist}}" wx:key="key" wx:for-item='minitem'>
+              <view class="girl" wx:if="{{minitem.person==0}}">
+                <text selectable='true' @tap="copycontent({{minitem.content}})">{{minitem.content}}</text>
+              </view>
+              <view class="man" wx:if="{{minitem.person==1}}">
+                <text selectable='true' @tap="copycontent({{minitem.content}})">{{minitem.content}}</text>
+              </view>
+            </view>
           </view>
           <view class="thirdkuai" wx:if="{{item.content.length>0}}">
             <view class="contentkuai">
@@ -38,7 +45,14 @@
         <view class="secondkuai">
           <view class="duihua">
             <text selectable='true' class="biaoti" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
-            <text selectable='true' class="introduction" @tap="copycontent({{item.introduction}})">{{item.introduction}}</text>
+            <view wx:for="{{item.datalist}}" wx:key="key" wx:for-item='minitem'>
+              <view class="girl" wx:if="{{minitem.person==0}}">
+                <text selectable='true' @tap="copycontent({{minitem.content}})">{{minitem.content}}</text>
+              </view>
+              <view class="man" wx:if="{{minitem.person==1}}">
+                <text selectable='true' @tap="copycontent({{minitem.content}})">{{minitem.content}}</text>
+              </view>
+            </view>
           </view>
           <view class="thirdkuai" wx:if="{{item.content.length>0}}">
             <view class="contentkuai">
@@ -107,10 +121,13 @@ export default class methodology extends wepy.page {
         scroll:this.scroll,
       }
     });
-    if(json.data.MSG=='OK')
+    if(json.data.MSG=='OK'){
       this.istiyan=false;
-    else
+    }
+    if(json.data.MSG=='TIYAN'){
+      wepy.$instance.globalData.istiyan=true;
       this.istiyan=true;
+    }
     if(json.data.data.length<10) this.isend=true;
     this.LilunList=this.LilunList.concat(json.data.data);
     this.scroll=json.data.scroll;
@@ -138,6 +155,12 @@ export default class methodology extends wepy.page {
     this.getMethodologyList();
     this.issystem=wepy.getStorageSync('issystem');
     this.$apply();
+  }
+  onShow(){
+    if(!wepy.$instance.globalData.istiyan){
+      this.istiyan=wepy.$instance.globalData.istiyan;
+      this.$apply();
+    }
   }
   methods = {
     changechakan(index){
@@ -188,7 +211,21 @@ export default class methodology extends wepy.page {
         font-size: 30rpx;
         color: #000000; 
       }
-      .introduction{
+      .girl{
+        background: url(https://www.lianaizhuli.com/girl.png) no-repeat left top;
+        background-size: 25px 25px;
+        line-height: 25px;
+        padding-left: 30px;
+        font-size: 28rpx;
+        color: #000000; 
+        box-sizing: border-box;
+        position: relative;
+      }
+      .man{
+        background: url(https://www.lianaizhuli.com/man.png) no-repeat left top;
+        background-size: 25px 25px;
+        line-height: 25px;
+        padding-left: 30px;
         font-size: 28rpx;
         color: #000000; 
       }

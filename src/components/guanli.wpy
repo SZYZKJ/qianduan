@@ -1,15 +1,26 @@
 <template>
   <view class="kuai">
     <view wx:if="{{istiyan}}">
-      <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
+      <view class="huashuList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
         <view class="duihua">
-          <text selectable='true' class="title" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
-          <text selectable='true' class="content" @tap="copycontent({{item.content}})">{{item.content}}</text>
+          <view class="girl" wx:if="{{item.title!=item.datalist[0].content}}">
+              <text selectable='true' @tap="copycontent({{item.title}})">{{item.title}}</text>
+          </view>
+          <view wx:for="{{item.datalist}}" wx:key="key" wx:for-item='minitem'>
+            <view class="girl" wx:if="{{minitem.person==0}}">
+              <text selectable='true' @tap="copycontent({{minitem.content}})">{{minitem.content}}</text>
+            </view>
+            <view class="man" wx:if="{{minitem.person==1}}">
+              <text selectable='true' @tap="copycontent({{minitem.content}})">{{minitem.content}}</text>
+            </view>
+          </view>
         </view>
       </view>
-      <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5&&issystem}}">
+      <view class="huashuList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5&&issystem}}">
         <view class="duihua">
-          <text selectable='true' class="title">{{item.title}}\n</text>
+          <view class="girl">
+              <text selectable='true' @tap="copycontent({{item.title}})">{{item.title}}</text>
+          </view>
           <navigator class="vip" url="/pages/vip">
             <image class="item_img" mode="scaleToFill" src="../images/vip.jpg"></image>
           </navigator>
@@ -17,10 +28,19 @@
       </view>
     </view>
     <view wx:if="{{istiyan==0}}">
-      <view class="guanliList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+      <view class="huashuList" wx:for="{{guanliList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
         <view class="duihua">
-          <text selectable='true' class="title" @tap="copycontent({{item.title}})">{{item.title}}\n</text>
-          <text selectable='true' class="content" @tap="copycontent({{item.content}})">{{item.content}}</text>
+          <view class="girl"  wx:if="{{item.title!=item.datalist[0].content}}">
+              <text selectable='true' @tap="copycontent({{item.title}})">{{item.title}}</text>
+          </view>
+          <view wx:for="{{item.datalist}}" wx:key="key" wx:for-item='minitem'>
+            <view class="girl" wx:if="{{minitem.person==0}}">
+              <text selectable='true' @tap="copycontent({{minitem.content}})">{{minitem.content}}</text>
+            </view>
+            <view class="man" wx:if="{{minitem.person==1}}">
+              <text selectable='true' @tap="copycontent({{minitem.content}})">{{minitem.content}}</text>
+            </view>
+          </view>
         </view>
       </view>
     </view>
@@ -28,6 +48,7 @@
 </template>
 <script>
 import wepy from 'wepy'
+
 export default class guanli extends wepy.component {
   data = {
     guanliList: [],
@@ -59,8 +80,10 @@ export default class guanli extends wepy.component {
 }
 </script>
 <style lang="less">
-.guanliList {
-  width: 100%;
+.kuai{
+  text-align: justify;
+}
+.huashuList {
   .duihua{
     margin-top: 20rpx;
     border-radius:20rpx;
@@ -71,27 +94,35 @@ export default class guanli extends wepy.component {
     padding-top: 20rpx;
     padding-bottom: 20rpx;
     background: #ffffff;
-    .title{
-      white-space: pre-wrap;
-      font-weight: bolder;
-      font-size: 30rpx;
-      color: #000000; 
-    }
-    .content{
-      margin-top: 20rpx;
-      font-size: 28rpx;
-      color: #000000; 
-    }
-    .vip{
-      margin-top: 20rpx;
-      text-align:center;
-      .item_img {
-        padding: 0rpx;
-        border-radius:20rpx;
-        width: 368rpx;
-        height: 248rpx;
-      }
+  }
+  .girl{
+    background: url(https://www.lianaizhuli.com/girl.png) no-repeat left top;
+    background-size: 25px 25px;
+    line-height: 25px;
+    padding-left: 30px;
+    font-size: 28rpx;
+    color: #000000; 
+    box-sizing: border-box;
+    position: relative;
+  }
+  .man{
+    background: url(https://www.lianaizhuli.com/man.png) no-repeat left top;
+    background-size: 25px 25px;
+    line-height: 25px;
+    padding-left: 30px;
+    font-size: 28rpx;
+    color: #000000; 
+  }
+  .vip{
+    margin-top: 20rpx;
+    text-align:center;
+    .item_img {
+      padding: 0rpx;
+      border-radius:20rpx;
+      width: 368rpx;
+      height: 248rpx;
     }
   }
 }
+
 </style>

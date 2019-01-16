@@ -154,7 +154,7 @@ export default class adding extends wepy.page {
             return false;
         }
         if(json.data.MSG=='THK'){
-            tip.confirm('您已开通过更高等级会员，恋爱联盟感谢您的关注与支持，竭诚为您服务~');
+            tip.confirm('您已开通过更高等级会员或会员时间还未到期，恋爱联盟感谢您的关注与支持，竭诚为您服务~');
             return false;
         }
         if(json.data.MSG=='nophoneNumber'){
@@ -162,6 +162,7 @@ export default class adding extends wepy.page {
               url: '/pages/phonenumber'
             });
         }
+        let that=this;
         wx.requestPayment({
             timeStamp: json.data.data.timeStamp,
             nonceStr: json.data.data.nonceStr,
@@ -169,6 +170,10 @@ export default class adding extends wepy.page {
             signType: json.data.data.signType,
             paySign: json.data.data.paySign,
             'success': function (res) {
+                if(that.currentTab>1){
+                    wepy.$instance.globalData.istiyan=false;
+                    tip.confirm('恭喜您已开通恋爱联盟会员，可以在“个人==》导师微信”里扫码添加导师微信，这是您的会员特权，导师将把您加入答疑交流群，为您提供更多恋爱能力~');
+                }
                 wx.navigateBack({
                     delta: 1
                 })

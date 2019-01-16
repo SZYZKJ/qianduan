@@ -69,6 +69,7 @@ export default class extends wepy.app {
   }
   globalData = {
     currentTab:0,
+    istiyan:true,
   }
   constructor() {
     super()
@@ -79,7 +80,7 @@ export default class extends wepy.app {
   async onLaunch(options) {
     wepy.setStorageSync('options', JSON.stringify(options));
     let systemInfo = wepy.getSystemInfoSync();
-    wepy.setStorageSync('systemInfo', systemInfo);
+    wepy.setStorageSync('systemInfo', systemInfo.system);
   }
 }
 </script>

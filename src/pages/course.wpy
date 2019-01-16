@@ -81,7 +81,7 @@ import {
 } from '@/utils/constant';
 export default class course extends wepy.page {
   config = {
-    navigationBarTitleText: "课程",
+    navigationBarTitleText: "文章",
     enablePullDownRefresh:true,
     enableReachBottom:true,
   }

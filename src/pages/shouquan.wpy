@@ -34,7 +34,7 @@ export default class shouquan extends wepy.page {
       // let userInfores=await wepy.getUserInfo();
       if (loginres.code) {
         try{
-          let system = wepy.getStorageSync(SYSTEM_INFO).system;
+          let system = wepy.getStorageSync(SYSTEM_INFO);
           let options = wepy.getStorageSync('options');
           let rlt = await api.getOpenid({
             query: {

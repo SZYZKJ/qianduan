@@ -7,29 +7,35 @@
         </swiper-item>
       </block>
     </swiper>
-    <view class="move" bindtouchstart='touchStart' bindtouchend="touchEnd">
+    <view class="move" bindtouchstart='touchStart0' bindtouchend="touchEnd0">
       <view class="kuai" bindtap="gotosearchpage(0)">
-        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/huashu.jpg"/>
+        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/huashu.jpeg"/>
       </view>
       <view class="kuai" bindtap="gototuweiqinghua">
-        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/tuweiqinghua.jpg"/>
+        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/tuweiqinghua.jpeg"/>
       </view>
       <view class="kuai" bindtap="gotolilun">
-        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/liaomeitaolu.jpg"/>
+        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/liaomeitaolu.jpeg"/>
       </view>
       <view class="kuai" bindtap="gotosearchpage(2)">
-        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/douqubiaoqing.jpg"/>
+        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/douqubiaoqing.jpeg"/>
       </view>
     </view>
     <view class="kecheng">
-        <image class="neirong" mode="scaleToFill" src="https://www.lianaizhuli.com/liaomeishizhan.jpg" bindtap="change(1)"/>
-        <image class="neirong" mode="scaleToFill" src="https://www.lianaizhuli.com/xingxiangjianshe.jpg" bindtap="change(0)"/>
+      <view class="button" wx:if="{{currentTab==1}}">
+        <view class="button00" bindtap="change(1)"></view>
+        <view class="button01" bindtap="change(0)"></view>
+      </view>
+      <view class="button" wx:if="{{currentTab==0}}">
+        <view class="button10" bindtap="change(1)"></view>
+        <view class="button11" bindtap="change(0)"></view>
+      </view>
     </view>
-    <view wx:for="{{KechengList[currentTab]}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+    <view  bindtouchstart='touchStart1' bindtouchend="touchEnd1" wx:for="{{KechengList[currentTab]}}" wx:key="key" wx:for-item='item' wx:for-index="index">
       <view class="wenzhang" bindtap="goToimage({{item}})">
         <view class="wenzhangkuai">
           <text selectable='true' class="title">{{item.title}}</text>
-          <image class="image" src="cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/bonjour.jpg" mode="scaleToFill"></image>
+          <image class="image" src="https://www.lianaizhuli.com/currentTab{{currentTab}}.jpg" mode="scaleToFill"></image>
         </view>
       </view>
     </view>
@@ -73,31 +79,43 @@ export default class home extends wepy.page {
   async getKechengList() {
     let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
     let openid = userSpecialInfo.openid;
+    let that=this;
     if(typeof(openid) == "undefined"){
-      wepy.navigateTo({
-        url: '/pages/shouquan'
-      })
-      return false;
-    }
-    const json = await api.getKechengList({
+        setTimeout(function () {
+          that.getKechengList();
+        }, 1000);
+        return false;
+      }
+    const json0 = await api.getKechengList({
       query: {
         openid:openid,
-        scroll:this.scroll[this.currentTab],
-        tab:this.currentTab,
+        scroll:this.scroll[0],
+        tab:0,
       }
     });
-    if(json.data.data.length<10) this.isend[this.currentTab]=true;
-    this.KechengList[this.currentTab]=this.KechengList[this.currentTab].concat(json.data.data);
-    this.scroll[this.currentTab]=json.data.scroll;
+    if(json0.data.data.length<10) this.isend[0]=true;
+    this.KechengList[0]=this.KechengList[0].concat(json0.data.data);
+    this.scroll[0]=json0.data.scroll;
+    const json1 = await api.getKechengList({
+      query: {
+        openid:openid,
+        scroll:this.scroll[1],
+        tab:1,
+      }
+    });
+    if(json1.data.data.length<10) this.isend[1]=true;
+    this.KechengList[1]=this.KechengList[1].concat(json1.data.data);
+    this.scroll[1]=json1.data.scroll;
     this.$apply();
   }
   async getAdList(){
     let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
     let openid = userSpecialInfo.openid;
+    let that=this;
     if(typeof(openid) == "undefined"){
-      wepy.navigateTo({
-        url: '/pages/shouquan'
-      })
+      setTimeout(function () {
+        that.getAdList();
+      }, 1000);
       return false;
     }
     const json = await api.getAdList({
@@ -109,18 +127,20 @@ export default class home extends wepy.page {
     this.$apply();
   }
   async checkOpenid() {
+    let userInfo = wepy.getStorageSync(USER_INFO);
+    let system = wepy.getStorageSync(SYSTEM_INFO);
     let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
     let openid = userSpecialInfo.openid;
     const json = await api.checkOpenid({
       query: {
         openid:openid,
+        userInfo:userInfo,
+        system:system,
       }
     });
     if(json.data.MSG=='NO'){
         let res = await wepy.login();
         if (res.code) {
-          let userInfo = wepy.getStorageSync(USER_INFO);
-          let system = wepy.getStorageSync(SYSTEM_INFO).system;
           let options = wepy.getStorageSync('options');
           let rlt = await api.getOpenid({
             query: {
@@ -152,11 +172,12 @@ export default class home extends wepy.page {
   async getIslianmeng() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
       let openid = userSpecialInfo.openid;
+      let that=this;
       if(typeof(openid) == "undefined"){
-      wepy.navigateTo({
-          url: '/pages/shouquan'
-      })
-      return false;
+        setTimeout(function () {
+          that.getIslianmeng();
+        }, 1000);
+        return false;
       }
       const json = await api.getIslianmeng({
       query: {
@@ -184,16 +205,12 @@ export default class home extends wepy.page {
         this.getKechengList();
   }
   async onLoad(){
+    let systemInfo = wepy.getSystemInfoSync();
+    wepy.setStorageSync(SYSTEM_INFO, systemInfo.system);
     let res = await wepy.getSetting();
     if ((res.authSetting)['scope.userInfo']) {
-      let userInfo = wepy.getStorageSync(USER_INFO);
-      if (!userInfo.nickName) {
-        let data  = await wepy.getUserInfo()
-        if (data) {
-          wepy.setStorageSync(USER_INFO, data.userInfo)
-        }
-      }
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      const data = await wepy.getUserInfo();
+      wepy.setStorageSync(USER_INFO, data.userInfo);
       this.checkOpenid();
     }
     else{
@@ -205,15 +222,29 @@ export default class home extends wepy.page {
     this.getIslianmeng();
     this.getKechengList();
   }
-  changeTab() {
+  changeTab(e) {
     if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
-      wx.switchTab({
-        url: "./info"
-      })
+      if(e==0){
+        wx.switchTab({
+          url: "./info"
+        })
+      }
+      else{
+        this.currentTab=1-this.currentTab;
+        if(!this.isend[this.currentTab])
+          this.getKechengList();
+      }
     } else if (this.endX - this.startX < -30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
-      wx.switchTab({
-        url: "./course"
-      })
+      if(e==0){
+        wx.switchTab({
+          url: "./course"
+        })
+      }
+      else{
+        this.currentTab=1-this.currentTab;
+        if(!this.isend[this.currentTab])
+          this.getKechengList();
+      }
     }
   }
   methods = {
@@ -246,14 +277,23 @@ export default class home extends wepy.page {
         url: '/pages/lilun'
       })
     },
-    touchStart(e){
+    touchStart0(e){
       this.startX=e.changedTouches[0].clientX;
       this.startY=e.changedTouches[0].clientY;
     },
-    touchEnd(e){
+    touchEnd0(e){
       this.endX=e.changedTouches[0].clientX;
       this.endY=e.changedTouches[0].clientY;
-      this.changeTab();
+      this.changeTab(0);
+    },
+    touchStart1(e){
+      this.startX=e.changedTouches[0].clientX;
+      this.startY=e.changedTouches[0].clientY;
+    },
+    touchEnd1(e){
+      this.endX=e.changedTouches[0].clientX;
+      this.endY=e.changedTouches[0].clientY;
+      this.changeTab(1);
     },
     gototwqh(){
       wx.navigateTo({
@@ -327,6 +367,57 @@ export default class home extends wepy.page {
 }
 .kecheng{
     display: flex;
+    .button{
+      margin-top: 20rpx;
+      margin-bottom: 20rpx;
+      border-radius:50rpx;
+      background: #efefef;
+      width: 60%;
+      height: 100rpx;
+      position: relative;
+      .button00{
+        background: url(https://www.lianaizhuli.com/liaomeishizhan0.jpg) no-repeat left top;
+        background-size: 100% 100%;
+        z-index: 99;
+        position:absolute;
+        border-radius:50rpx;
+        height: 100rpx;
+        width: 60%;
+      }
+      .button01{
+        z-index: 98;
+        position:absolute;
+        background: url(https://www.lianaizhuli.com/xingxiangjianshe1.jpg) no-repeat left top;
+        background-size: 100% 100%;
+        top: 0;
+        right:0;
+        border-radius:50rpx;
+        height: 100rpx;
+        width: 60%;
+      }
+      .button10{
+        z-index: 98;
+        position:absolute;
+        background: url(https://www.lianaizhuli.com/liaomeishizhan1.jpg) no-repeat left top;
+        background-size: 100% 100%;
+        top: 0;
+        left:0;
+        border-radius:50rpx;
+        height: 100rpx;
+        width: 60%;
+      }
+      .button11{
+        background: url(https://www.lianaizhuli.com/xingxiangjianshe0.jpg) no-repeat left top;
+        background-size: 100% 100%;
+        z-index: 99;
+        position:absolute;
+        border-radius:50rpx;
+        top:0;
+        right: 0;
+        height: 100rpx;
+        width: 60%;
+      }
+    }
     .neirong{
       margin-left: 5%;
       margin-right: 5%;

@@ -9,22 +9,13 @@ export default class Tips {
    * 弹出提示框
    */
 
-  static success(title, duration = 300) {
-    setTimeout(() => {
-      wx.showToast({
-        title: title,
-        icon: "success",
-        mask: true,
-        duration: duration
-      });
-    }, 300);
-    if (duration > 0) {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve();
-        }, duration);
-      });
-    }
+  static success(title, duration = 800) {
+    wx.showToast({
+      title: title,
+      icon: "success",
+      mask: true,
+      duration: duration
+    });
   }
 
   /**

@@ -1,0 +1,228 @@
+<template>
+  <view class="container">
+    <image class="banner" mode="widthFix" src="{{kecheng.image}}" />
+    <view class="title">{{kecheng.title}}</view>
+    <view scroll-x="true" class="tab-h" scroll-left="{{scrollLeft}}">
+      <view wx:for="{{tablist}}" wx:key="key" wx:for-item='item' wx:for-index="index" class="tab-item{{currentTab==index?'active':''}}" data-current="{{index}}" bindtap="swichNav">{{item}}</view>
+    </view>
+    <image class="banner" wx:if="{{currentTab==0}}" mode="widthFix" src="{{kecheng.url}}" />
+    <view wx:else class="libiao">
+      <view wx:for="{{kecheng.children}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+        <view class="titlekuang" bindtap="goTohtml({{item}},{{index}})">
+          <view class="itemtitle">{{item.title}}</view>
+          <view class="yigoumai" wx:if="{{kecheng.yigoumai}}">去学习</view>
+          <view wx:else>
+            <view class="yigoumai" wx:if="{{index<2}}">免费</view>
+            <image class="suo" wx:else src="../images/suo.png" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&issystem==1}}">
+      <view class="text" bindtap="zhifukecheng">特价 {{kecheng.jiage}}</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from "wepy";
+  import api from "@/api/api";
+  import tip from '@/utils/tip';
+  import {
+    SYSTEM_INFO,
+    USER_SPECICAL_INFO,
+    USER_INFO
+  } from "@/utils/constant";
+  export default class kecheng extends wepy.page {
+    config = {
+      navigationBarTitleText: ""
+    };
+    Page = {};
+    data = {
+      kecheng: {},
+      issystem: 1,
+      currentTab: 0,
+      paySign_data: {},
+      tablist: ['课程介绍', '课程列表'],
+    };
+    onShareAppMessage() {
+      return {
+        title: "恋爱联盟",
+        path: "/pages/home"
+      };
+    }
+    tiaoqizhifu() {
+      let that = this;
+      wx.requestPayment({
+        timeStamp: this.paySign_data.timeStamp,
+        nonceStr: this.paySign_data.nonceStr,
+        package: this.paySign_data.package,
+        signType: this.paySign_data.signType,
+        paySign: this.paySign_data.paySign,
+        'success': function(res) {
+          tip.confirm('恭喜您购买成功');
+          that.kecheng.yigoumai = 1;
+          that.currentTab = 1;
+        },
+      })
+      this.$apply();
+    }
+    async zhifukecheng() {
+      if (this.issystem == 0) {
+        tip.confirm('由于相关规范，iOS功能暂不可用');
+        return;
+      }
+      var timestamp = Date.parse(new Date());
+      if (timestamp - this.nowtime < 3000) {
+        return false;
+      } else {
+        this.nowtime = timestamp;
+      }
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      if (typeof(openid) == "undefined") {
+        wepy.navigateTo({
+          url: '/pages/shouquan'
+        })
+        return false;
+      }
+      const json = await api.get_kechengprepay_id({
+        query: {
+          'openid': openid,
+          'kechengid': this.kecheng.id,
+          'detail': '课程：' + this.kecheng.title,
+        }
+      });
+      this.paySign_data = json.data.data;
+      if (json.data.MSG == 'nophoneNumber') {
+        wepy.navigateTo({
+          url: '/pages/phonenumber'
+        });
+      } else {
+        this.tiaoqizhifu();
+      }
+      this.$apply();
+    }
+    onShow() {
+      var phoneNumber = wepy.getStorageSync('phoneNumber');
+      if (phoneNumber == 1) {
+        wepy.setStorageSync('phoneNumber', 0);
+        this.tiaoqizhifu();
+      }
+    }
+    methods = {
+      goTohtml(item, index) {
+        if (this.kecheng.yigoumai || index < 2) {
+          wx.navigateTo({
+            url: "./kechengneirong?neirongid=" + item.id,
+          })
+        } else {
+          if (this.issystem == 0) {
+            tip.confirm('由于相关规范，iOS功能暂不可用');
+            return;
+          }
+          tip.confirm('尊敬的恋爱联盟用户，当前内容为付费阅读，请先购买~');
+        }
+      },
+      swichNav(e) {
+        var cur = e.target.dataset.current;
+        if (this.currentTab == cur) {
+          return false;
+        } else {
+          this.currentTab = cur;
+        }
+      },
+    }
+    onLoad(options) {
+      this.kecheng = JSON.parse(options.json);
+      this.issystem = wepy.getStorageSync('issystem');
+    }
+  }
+</script>
+
+<style lang="less">
+  .container {
+    background: #ffffff;
+    color: #000;
+    word-break: break-all;
+    text-align: center;
+    padding-bottom: 80rpx;
+  }
+  .banner {
+    width: 100%;
+  }
+  .title {
+    color: #333;
+    font-size: 40rpx;
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+  }
+  .tab-h {
+    display: flex;
+    justify-content: space-around;
+    height: 80rpx;
+    font-size: 28px;
+    border-bottom: 2rpx solid #dfdfdf;
+    .tab-item {
+      color: #000;
+      margin-left: 20rpx;
+      margin-right: 20rpx;
+      display: inline;
+    }
+    .tab-itemactive {
+      color: #ff7e00;
+      margin-left: 15rpx;
+      margin-right: 15rpx;
+      display: inline;
+      padding-bottom: 6rpx;
+      border-bottom: 6rpx solid #ff7e00;
+    }
+  }
+  .libiao {
+    margin-bottom: 50rpx;
+  }
+  .titlekuang {
+    width: 90%;
+    margin-left: 5%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2rpx solid #dfdfdf;
+    min-height: 120rpx;
+    line-height: 120rpx;
+  }
+  .itemtitle {
+    text-align: left;
+    color: #333;
+  }
+  .yigoumai {
+    margin-top: 45rpx;
+    width: 100rpx;
+    height: 30rpx;
+    line-height: 30rpx;
+    color: #fff;
+    background: #ff7e00;
+    border-radius: 20rpx;
+    font-size: 25rpx;
+  }
+  .suo {
+    margin-top: 40rpx;
+    width: 40rpx;
+    height: 40rpx;
+  }
+  .kuang {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 100rpx;
+    background: #ffffff;
+    .text {
+      margin-left: 20%;
+      width: 60%;
+      border-radius: 20rpx;
+      color: #ffffff;
+      text-align: center;
+      background: #09BB07;
+      line-height: 100rpx;
+    }
+  }
+</style>

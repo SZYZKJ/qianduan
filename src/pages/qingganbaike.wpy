@@ -1,0 +1,206 @@
+<template>
+  <view class="container">
+    <view class="tubiao">
+      <view class="box" wx:for="{{wenda}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+        <view bindtap="goTowendalist({{item}})">
+          <image class="image" mode="scaleToFill" src="{{item.image}}" />
+          <view class="title">{{item.title}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="kuai">
+      <view class="hang">
+        <image class="image" mode="aspectFit" src="{{rumenjieduan}}" />
+      </view>
+      <view class="neikuai">
+        <view class="bigbox">
+          <view class="box" wx:for="{{rumen}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+            <view bindtap="gotobaike({{item}})">
+              <view class="image-group">
+                <image class="image" mode="scaleToFill" src="{{item.image}}" />
+                <view class="image-tip">{{item.category_name}}</view>
+              </view>
+              <view class="text">
+                {{item.title}}
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="kuai">
+      <view class="hang">
+        <image class="image" mode="aspectFit" src="{{jinjiejieduan}}" />
+      </view>
+      <view class="neikuai">
+        <view class="bigbox">
+          <view class="box" wx:for="{{jinjie}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+            <view bindtap="gotobaike({{item}})">
+              <view class="image-group">
+                <image class="image" mode="scaleToFill" src="{{item.image}}" />
+                <view class="image-tip">{{item.category_name}}</view>
+              </view>
+              <view class="text">
+                {{item.title}}
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import tip from '@/utils/tip';
+  import api from '@/api/api';
+  import {
+    SYSTEM_INFO,
+    USER_SPECICAL_INFO
+  } from '@/utils/constant';
+  export default class qingganbaike extends wepy.page {
+    config = {
+      navigationBarTitleText: '情感百科',
+    }
+    data = {
+      wenda: [],
+      rumen: [],
+      jinjie: [],
+      rumenjieduan: '',
+      jinjiejieduan: '',
+    }
+    async getQingganbaike() {
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      if (typeof(openid) == "undefined") {
+        wepy.navigateTo({
+          url: '/pages/shouquan'
+        })
+        return false;
+      }
+      let json = await api.getQingganbaike({
+        query: {
+          openid: openid,
+        }
+      })
+      this.wenda = json.data.wenda;
+      this.rumen = json.data.rumen;
+      this.jinjie = json.data.jinjie;
+      this.rumenjieduan = json.data.rumenjieduan;
+      this.jinjiejieduan = json.data.jinjiejieduan;
+      this.$apply();
+    }
+    onShareAppMessage() {
+      return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+      };
+    }
+    methods = {
+      gotobaike(item) {
+        wx.navigateTo({
+          url: "./baikelist?json=" + JSON.stringify(item)
+        })
+      },
+      goTowendalist(item) {
+        wx.navigateTo({
+          url: "./wendalist?json=" + JSON.stringify(item)
+        })
+      }
+    }
+    async onLoad() {
+      this.getQingganbaike();
+    }
+    onShareAppMessage() {
+      return {
+        title: '情感百科',
+        path: '/pages/qingganbaike',
+      };
+    }
+    onUnload() {
+      var pages = getCurrentPages();
+      if (pages.length == 1) {
+        wx.switchTab({
+          url: "/pages/home"
+        })
+      }
+    }
+  }
+</script>
+
+<style lang="less">
+  .container {
+    color: #000000;
+    background: #efefef;
+  }
+  .tubiao {
+    background: #ffffff;
+    padding-top: 50rpx;
+    padding-bottom: 50rpx;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    .box {
+      box-sizing: border-box;
+      text-align: center;
+      .image {
+        width: 70rpx;
+        height: 60rpx;
+      }
+      .title {
+        font-size: 26rpx;
+      }
+    }
+  }
+  .kuai {
+    background: #ffffff;
+    margin-top: 4rpx;
+    padding-top: 30rpx;
+    padding-bottom: 30rpx;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+    .hang {
+      height: 40rpx;
+      line-height: 40rpx;
+      margin-bottom: 30rpx;
+      .image {
+        width: 137rpx;
+        height: 40rpx;
+      }
+    }
+    .neikuai {
+      .bigbox {
+        display: inline-flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        .box {
+          margin-bottom: 30rpx;
+          display: flex;
+          flex-direction: column;
+          width: 340rpx;
+          text-align: left;
+          .image-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .image {
+              width: 100%;
+              height: 200rpx;
+            }
+            .image-tip {
+              position: absolute;
+              font-size: 36rpx;
+              color: #ffffff;
+            }
+          }
+          .text {
+            text-align: left;
+            font-size: 26rpx;
+          }
+        }
+      }
+    }
+  }
+</style>

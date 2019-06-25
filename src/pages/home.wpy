@@ -1,457 +1,692 @@
 <template>
   <view class="container">
     <swiper class="swiper" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
-      <block wx:for="{{adList}}" wx:key="key">
+      <block wx:for="{{lunbotu}}" wx:key="key">
         <swiper-item>
-          <image src="{{item.adurl}}" mode="scaleToFill" class="slide-image"  @tap="goToAdvert({{item}})"/>
+          <image src="{{item.adurl}}" mode="scaleToFill" class="slide-image" bindtap="goToAdvert({{item}})" />
         </swiper-item>
       </block>
     </swiper>
-    <view class="move" bindtouchstart='touchStart0' bindtouchend="touchEnd0">
-      <view class="kuai" bindtap="gotosearchpage(0)">
-        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/huashu.jpeg"/>
-      </view>
-      <view class="kuai" bindtap="gototuweiqinghua">
-        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/tuweiqinghua.jpeg"/>
-      </view>
-      <view class="kuai" bindtap="gotolilun">
-        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/liaomeitaolu.jpeg"/>
-      </view>
-      <view class="kuai" bindtap="gotosearchpage(2)">
-        <image class="image" mode="scaleToFill" src="https://www.lianaizhuli.com/douqubiaoqing.jpeg"/>
-      </view>
-    </view>
-    <view class="kecheng">
-      <view class="button" wx:if="{{currentTab==1}}">
-        <view class="button00" bindtap="change(1)"></view>
-        <view class="button01" bindtap="change(0)"></view>
-      </view>
-      <view class="button" wx:if="{{currentTab==0}}">
-        <view class="button10" bindtap="change(1)"></view>
-        <view class="button11" bindtap="change(0)"></view>
-      </view>
-    </view>
-    <view  bindtouchstart='touchStart1' bindtouchend="touchEnd1" wx:for="{{KechengList[currentTab]}}" wx:key="key" wx:for-item='item' wx:for-index="index">
-      <view class="wenzhang" bindtap="goToimage({{item}})">
-        <view class="wenzhangkuai">
-          <text selectable='true' class="title">{{item.title}}</text>
-          <image class="image" src="https://www.lianaizhuli.com/currentTab{{currentTab}}.jpg" mode="scaleToFill"></image>
+    <view class="tubiao">
+      <view class="box" wx:for="{{tubiao}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+        <view bindtap="goTopage({{item.page}})">
+          <image class="image" mode="scaleToFill" src="{{item.image}}" />
+          <view class="title">{{item.title}}</view>
         </view>
       </view>
     </view>
-    <view class="textend" wx:if="{{!isend[currentTab]}}">加载中......</view>
-    <view class="textend" wx:if="{{isend[currentTab]}}">恋爱联盟良心出品</view>
+    <view bindtap="gotosearchpage">
+      <view class="search">
+        <view class="text">
+          {{inputValue}}
+        </view>
+        <image class="image" mode="scaleToFill" src="{{searchicon}}" />
+      </view>
+      <view class="searchmiaoshu">
+        {{miaoshu}}
+      </view>
+      <view class="tuijiankuang">
+        <view class="tuijian" wx:for="{{tuijian}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="fuzhituijian({{item}})">{{item}}</view>
+      </view>
+    </view>
+    <view class="kuai3">
+      <view class="shouhang">
+        <image class="image1" mode="scaleToFill" src="{{kecheng.image}}" />
+        <view class="gengduo" bindtap="goTopage('kechenglist')">
+          {{gengduotext}}
+          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+        </view>
+      </view>
+      <view class="box" wx:for="{{kecheng.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="tokecheng({{item}},{{index}})">
+        <view>
+          <image class="image" mode="scaleToFill" src="{{item.image}}" />
+        </view>
+        <view class="text">
+          <view class="bigtext">
+            {{item.title}}
+          </view>
+          <view class="minlan">
+            <view class="laiyuan">{{item.count}}人学习</view>
+            <view wx:if="{{item.yigoumai}}" class="yigoumai">去学习</view>
+            <view wx:if="{{item.yigoumai==0&&issystem==1}}" class="yigoumai">¥{{item.jiage}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="kuai4">
+      <view class="shouhang">
+        <image class="image1" mode="scaleToFill" src="{{xingxiangjianshe.image}}" />
+        <view class="gengduo" bindtap="goTopage('xingxiangjianshelist')">
+          {{gengduotext}}
+          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+        </view>
+      </view>
+      <view class="bigbox">
+        <view class="box" wx:for="{{xingxiangjianshe.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toxingxiang({{item}},{{index}})">
+          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+          <view class="text">
+            <view class="bigtext">
+              {{item.title}}
+            </view>
+            <view class="mintext">
+              {{item.count}}次阅读
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="kuai3">
+      <view class="shouhang">
+        <image class="image1" mode="scaleToFill" src="{{qingganbaike.image}}" />
+        <view class="gengduo" bindtap="goTopage('qingganbaike')">
+          {{gengduotext}}
+          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+        </view>
+      </view>
+      <view class="box" wx:for="{{qingganbaike.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toqingganbaike({{item}},{{index}})">
+        <view>
+          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+        </view>
+        <view class="text">
+          <view class="bigtext">
+            {{item.title}}
+          </view>
+          <view class="mintext">
+            {{item.count}}次阅读
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="kuai4">
+      <view class="shouhang">
+        <image class="image1" mode="scaleToFill" src="{{liaomeishizhan.image}}" />
+        <view class="gengduo" bindtap="goTopage('liaomeishizhanlist')">
+          {{gengduotext}}
+          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+        </view>
+      </view>
+      <view class="bigbox">
+        <view class="box" wx:for="{{liaomeishizhan.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toliaomei({{item}},{{index}})">
+          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+          <view class="text">
+            <view class="bigtext">
+              {{item.title}}
+            </view>
+            <view class="mintext">
+              {{item.count}}次阅读
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="kuai3">
+      <view class="shouhang">
+        <image class="image1" mode="scaleToFill" src="{{sijiao.image}}" />
+        <view class="gengduo" bindtap="goTopage('sijiaolist')">
+          {{gengduotext}}
+          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+        </view>
+      </view>
+      <view class="box" wx:for="{{sijiao.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="tosijiao({{item}},{{index}})">
+        <view>
+          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+        </view>
+        <view class="text">
+          <view class="bigtext">
+            {{item.title}}
+          </view>
+          <view class="mintext">
+            {{item.count}}人学习
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="kuai4">
+      <view class="shouhang">
+        <image class="image1" mode="scaleToFill" src="{{xinliceshi.image}}" />
+        <view class="gengduo" bindtap="goTopage('xinliceshilist')">
+          {{gengduotext}}
+          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+        </view>
+      </view>
+      <view class="bigbox">
+        <view class="box" wx:for="{{xinliceshi.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toxinliceshi({{item}},{{index}})">
+          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+          <view class="text">
+            <view class="bigtext">
+              {{item.title}}
+            </view>
+            <view class="mintext">
+              {{item.count}}次测试
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
+
 <script>
-import wepy from "wepy";
-import api from "@/api/api";
-import {
-  SYSTEM_INFO,
-  USER_SPECICAL_INFO,
-  USER_INFO
-} from '@/utils/constant';
-import tip from "@/utils/tip";
-export default class home extends wepy.page {
-  config = {
-    navigationBarTitleText: "恋爱联盟",
-    enablePullDownRefresh:true,
-    enableReachBottom:true,
-  };
-  Page={}
-  data = {
-    startX:0,
-    startY:0,
-    endX:0,
-    endY:0,
-    indicatorDots: true,
-    autoplay: true,
-    interval: 3000,
-    duration: 1000,
-    indicatorActiveColor: "#ffffff",
-    active:0,
-    currentTab:1,
-    scroll:['',''],
-    isend:[false,false],
-    KechengList:[[],[]],
-    adList: [],
-  };
-  async getKechengList() {
-    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-    let openid = userSpecialInfo.openid;
-    let that=this;
-    if(typeof(openid) == "undefined"){
-        setTimeout(function () {
-          that.getKechengList();
+  import wepy from "wepy";
+  import api from "@/api/api";
+  import {
+    SYSTEM_INFO,
+    USER_SPECICAL_INFO,
+    USER_INFO
+  } from '@/utils/constant';
+  import tip from "@/utils/tip";
+  export default class home extends wepy.page {
+    config = {
+      navigationBarTitleText: "恋爱联盟",
+      enablePullDownRefresh: true,
+      enableReachBottom: true,
+    };
+    Page = {}
+    data = {
+      startX: 0,
+      startY: 0,
+      endX: 0,
+      endY: 0,
+      issystem: 1,
+      indicatorDots: true,
+      autoplay: true,
+      interval: 3000,
+      duration: 1000,
+      indicatorActiveColor: "#ffffff",
+      inputValue: "海量聊天话术每日更新",
+      searchicon: '',
+      gengduotext: '',
+      gengduoicon: '',
+      miaoshu: '',
+      tuijian: [],
+      kecheng: {},
+      xingxiangjianshe: {},
+      qingganbaike: {},
+      liaomeishizhan: {},
+      sijiao: {},
+      xinliceshi: {},
+      isend: [false, false],
+      lunbotu: [],
+      tubiao: [],
+    };
+    async getShouyekuai() {
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      let that = this;
+      if (typeof(openid) == "undefined") {
+        setTimeout(function() {
+          that.getShouyekuai();
         }, 1000);
         return false;
       }
-    const json0 = await api.getKechengList({
-      query: {
-        openid:openid,
-        scroll:this.scroll[0],
-        tab:0,
-      }
-    });
-    if(json0.data.data.length<10) this.isend[0]=true;
-    this.KechengList[0]=this.KechengList[0].concat(json0.data.data);
-    this.scroll[0]=json0.data.scroll;
-    const json1 = await api.getKechengList({
-      query: {
-        openid:openid,
-        scroll:this.scroll[1],
-        tab:1,
-      }
-    });
-    if(json1.data.data.length<10) this.isend[1]=true;
-    this.KechengList[1]=this.KechengList[1].concat(json1.data.data);
-    this.scroll[1]=json1.data.scroll;
-    this.$apply();
-  }
-  async getAdList(){
-    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-    let openid = userSpecialInfo.openid;
-    let that=this;
-    if(typeof(openid) == "undefined"){
-      setTimeout(function () {
-        that.getAdList();
-      }, 1000);
-      return false;
+      const json = await api.getShouyekuai({
+        query: {
+          openid: openid,
+        }
+      });
+      this.lunbotu = json.data.lunbotu;
+      this.tubiao = json.data.tubiao;
+      this.miaoshu = json.data.miaoshu;
+      this.searchicon = json.data.searchicon;
+      this.tuijian = json.data.tuijian;
+      this.$apply();
     }
-    const json = await api.getAdList({
-      query: {
-        openid:openid,
+    async getShouyeman() {
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      let that = this;
+      if (typeof(openid) == "undefined") {
+        setTimeout(function() {
+          that.getShouyeman();
+        }, 1000);
+        return false;
       }
-    });
-    this.adList=json.data.data;
-    this.$apply();
-  }
-  async checkOpenid() {
-    let userInfo = wepy.getStorageSync(USER_INFO);
-    let system = wepy.getStorageSync(SYSTEM_INFO);
-    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-    let openid = userSpecialInfo.openid;
-    const json = await api.checkOpenid({
-      query: {
-        openid:openid,
-        userInfo:userInfo,
-        system:system,
-      }
-    });
-    if(json.data.MSG=='NO'){
+      const json = await api.getShouyeman({
+        query: {
+          openid: openid,
+        }
+      });
+      this.kecheng = json.data.kecheng;
+      this.xingxiangjianshe = json.data.xingxiangjianshe;
+      this.qingganbaike = json.data.qingganbaike;
+      this.liaomeishizhan = json.data.liaomeishizhan;
+      this.sijiao = json.data.sijiao;
+      this.xinliceshi = json.data.xinliceshi;
+      this.gengduotext = json.data.gengduotext;
+      this.gengduoicon = json.data.gengduoicon;
+      this.$apply();
+    }
+    async checkOpenid() {
+      let userInfo = wepy.getStorageSync(USER_INFO);
+      let system = wepy.getStorageSync(SYSTEM_INFO);
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      const json = await api.checkOpenid({
+        query: {
+          openid: openid,
+          userInfo: userInfo,
+          system: system,
+        }
+      });
+      if (json.data.MSG == 'NO') {
         let res = await wepy.login();
         if (res.code) {
           let options = wepy.getStorageSync('options');
           let rlt = await api.getOpenid({
             query: {
               jsCode: res.code,
-              userInfo:userInfo,
-              system:system,
-              options:options,
+              userInfo: userInfo,
+              system: system,
+              options: options,
             }
           })
           if (rlt.data.MSG) {
             let data = rlt.data;
             if (data.data.openid) {
               wepy.setStorageSync(USER_SPECICAL_INFO, data.data);
-            }
-            else{
+            } else {
               wepy.navigateTo({
                 url: '/pages/shouquan'
               })
             }
-          }
-          else{
+          } else {
             wepy.navigateTo({
-            url: '/pages/shouquan'
+              url: '/pages/shouquan'
             })
           }
         }
+      }
     }
-  }
-  async getIslianmeng() {
+    async getIslianmeng() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
       let openid = userSpecialInfo.openid;
-      let that=this;
-      if(typeof(openid) == "undefined"){
-        setTimeout(function () {
+      let that = this;
+      if (typeof(openid) == "undefined") {
+        setTimeout(function() {
           that.getIslianmeng();
         }, 1000);
         return false;
       }
       const json = await api.getIslianmeng({
-      query: {
-          openid:openid,
-      }
+        query: {
+          openid: openid,
+        }
       });
+      this.issystem = json.data.issystem;
       wepy.setStorageSync('issystem', json.data.issystem);
       wepy.setStorageSync('islianmeng', json.data.islianmeng);
       this.$apply();
-  }
-  onShareAppMessage() {
-    return {
-      title: '恋爱联盟',
-      path: '/pages/home',
-    };
-  }
-  onPullDownRefresh() {
-    wx.stopPullDownRefresh();
-    wx.switchTab({
-        url: "/pages/searchpage"
-    })
-  }
-  onReachBottom(){
-    if(!this.isend[this.currentTab])
-        this.getKechengList();
-  }
-  async onLoad(){
-    let systemInfo = wepy.getSystemInfoSync();
-    wepy.setStorageSync(SYSTEM_INFO, systemInfo.system);
-    let res = await wepy.getSetting();
-    if ((res.authSetting)['scope.userInfo']) {
-      const data = await wepy.getUserInfo();
-      wepy.setStorageSync(USER_INFO, data.userInfo);
-      this.checkOpenid();
     }
-    else{
-      wepy.navigateTo({
-        url: '/pages/shouquan'
+    onShareAppMessage() {
+      return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+      };
+    }
+    onPullDownRefresh() {
+      wx.stopPullDownRefresh();
+      wx.switchTab({
+        url: "/pages/searchpage"
       })
     }
-    this.getAdList();
-    this.getIslianmeng();
-    this.getKechengList();
-  }
-  changeTab(e) {
-    if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
-      if(e==0){
+    onShow() {
+      let that = this;
+      wx.getClipboardData({
+        success: function(res) {
+          var copyvalue = res.data.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
+          if (copyvalue.length > 0) {
+            that.inputValue = copyvalue;
+          }
+        }
+      });
+      this.getShouyeman();
+      this.$apply();
+    }
+    async onLoad() {
+      let systemInfo = wepy.getSystemInfoSync();
+      wepy.setStorageSync(SYSTEM_INFO, systemInfo.system);
+      let res = await wepy.getSetting();
+      if ((res.authSetting)['scope.userInfo']) {
+        const data = await wepy.getUserInfo();
+        wepy.setStorageSync(USER_INFO, data.userInfo);
+        this.checkOpenid();
+      } else {
+        wepy.navigateTo({
+          url: '/pages/shouquan'
+        })
+      }
+      this.getShouyekuai();
+      this.getShouyeman();
+      this.getIslianmeng();
+    }
+    changeTab() {
+      if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {
         wx.switchTab({
           url: "./info"
         })
-      }
-      else{
-        this.currentTab=1-this.currentTab;
-        if(!this.isend[this.currentTab])
-          this.getKechengList();
-      }
-    } else if (this.endX - this.startX < -30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
-      if(e==0){
+      } else if (this.endX - this.startX < -30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {
         wx.switchTab({
           url: "./course"
         })
       }
-      else{
-        this.currentTab=1-this.currentTab;
-        if(!this.isend[this.currentTab])
-          this.getKechengList();
-      }
     }
-  }
-  methods = {
-    change(e){
-      if(this.currentTab!=e){
-        this.currentTab=e;
-        if(!this.isend[this.currentTab])
-          this.getKechengList();
-      }
-    },
-    gotosearchpage(e){
-      wepy.$instance.globalData.currentTab=e;
-      wx.switchTab({
-        url: "/pages/searchpage"
-      })
-    },
-    goToimage(item){
-      item.title=item.title.replace(",","，");
-      wx.navigateTo({
-        url: "./viewimage?title="+item.title+"&url="+item.url,
-      })
-    },
-    gototuweiqinghua(){
-      wepy.navigateTo({
-        url: '/pages/twqh'
-      })
-    },
-    gotolilun(){
-      wepy.navigateTo({
-        url: '/pages/lilun'
-      })
-    },
-    touchStart0(e){
-      this.startX=e.changedTouches[0].clientX;
-      this.startY=e.changedTouches[0].clientY;
-    },
-    touchEnd0(e){
-      this.endX=e.changedTouches[0].clientX;
-      this.endY=e.changedTouches[0].clientY;
-      this.changeTab(0);
-    },
-    touchStart1(e){
-      this.startX=e.changedTouches[0].clientX;
-      this.startY=e.changedTouches[0].clientY;
-    },
-    touchEnd1(e){
-      this.endX=e.changedTouches[0].clientX;
-      this.endY=e.changedTouches[0].clientY;
-      this.changeTab(1);
-    },
-    gototwqh(){
-      wx.navigateTo({
-        url: "./twqh"
-      })
-    },
-    gotoLilun(obj){
-      wx.navigateTo({
-        url: "./lilun?json="+JSON.stringify({'cid':obj})
-      })
-    },
-    goToAdvert(item) {
-      if(item.type=='html'){
+    methods = {
+      tokecheng(item, e) {
         wx.navigateTo({
-          url: "./viewhtml?url="+item.url,
+          url: "./kecheng?json=" + JSON.stringify(item),
         })
-      }
-      else if(item.type=='image'){
-        item.title=item.title.replace(",","，");
+      },
+      toxingxiang(item, e) {
         wx.navigateTo({
-          url: "./viewimage?title="+item.title+"&url="+item.url,
+          url: "./xingxiangjianshe?id=" + item.id,
+          success: res => {
+            setTimeout(() => {
+              this.xingxiangjianshe.data[e].count += 1;
+            }, 1000);
+          },
         })
-      }
-      else if(item.type=='ganhuo'){
-        item.title=item.title.replace(",","，");
+      },
+      toqingganbaike(item, e) {
         wx.navigateTo({
-          url: "./viewganhuo?url="+item.url+"&duration="+item.duration+"&title="+item.title+"&direction="+item.direction,
+          url: "./baike?id=" + item.id,
+          success: res => {
+            setTimeout(() => {
+              this.qingganbaike.data[e].count += 1;
+            }, 1000);
+          },
         })
-      }
-      else{
-        wepy.navigateTo({
-          url: 'adding'
+      },
+      toliaomei(item, e) {
+        wx.navigateTo({
+          url: "./liaomeishizhan?id=" + item.id,
+          success: res => {
+            setTimeout(() => {
+              this.liaomeishizhan.data[e].count += 1;
+            }, 1000);
+          },
+        })
+      },
+      tosijiao(item, e) {
+        wx.navigateTo({
+          url: "./sijiao?json=" + JSON.stringify(item),
+        })
+      },
+      toxinliceshi(item, e) {
+        wx.navigateTo({
+          url: "./xinliceshi?id=" + item.id,
+        })
+      },
+      fuzhituijian(e) {
+        wx.setClipboardData({
+          data: e,
+          success: function() {
+            wx.showToast({
+              title: "复制成功",
+              duration: 1
+            });
+            wx.switchTab({
+              url: "/pages/searchpage"
+            })
+          }
         });
-      }
-    },
-  };
-}
+      },
+      goTopage(page) {
+        if (page == 'liaomeitaolulist') {
+          wx.switchTab({
+            url: "/pages/liaomeitaolulist"
+          })
+        } else {
+          wx.navigateTo({
+            url: page,
+          })
+        }
+      },
+      gotosearchpage() {
+        wx.switchTab({
+          url: "/pages/searchpage"
+        })
+      },
+      touchStart0(e) {
+        this.startX = e.changedTouches[0].clientX;
+        this.startY = e.changedTouches[0].clientY;
+      },
+      touchEnd0(e) {
+        this.endX = e.changedTouches[0].clientX;
+        this.endY = e.changedTouches[0].clientY;
+        this.changeTab();
+      },
+      touchStart1(e) {
+        this.startX = e.changedTouches[0].clientX;
+        this.startY = e.changedTouches[0].clientY;
+      },
+      touchEnd1(e) {
+        this.endX = e.changedTouches[0].clientX;
+        this.endY = e.changedTouches[0].clientY;
+        this.changeTab();
+      },
+      goToAdvert(item) {
+        if (item.type == 'html') {
+          wx.navigateTo({
+            url: "./viewhtml?url=" + item.url,
+          })
+        } else if (item.type == 'image') {
+          item.title = item.title.replace(",", "，");
+          wx.navigateTo({
+            url: "./viewimage?title=" + item.title + "&url=" + item.url,
+          })
+        } else if (item.type == 'ganhuo') {
+          item.title = item.title.replace(",", "，");
+          wx.navigateTo({
+            url: "./viewganhuo?url=" + item.url + "&duration=" + item.duration + "&title=" + item.title + "&direction=" + item.direction,
+          })
+        } else {
+          wepy.navigateTo({
+            url: 'adding'
+          });
+        }
+      },
+    };
+  }
 </script>
+
 <style lang="less">
-.swiper {
-  height: 300rpx;
-}
-.container{
-  background: rgba(0, 0, 0, 0.1);
-}
-.slide-image {
-  width: 100%;
-  height: 100%;
-}
-.kuai{
-  margin:20rpx 20rpx 20rpx 20rpx;
-  height: 200rpx;
-  background: #ffffff;
-  border-radius:20rpx;
-  .image{
-    border-radius:20rpx;
+  .swiper {
+    height: 300rpx;
+  }
+  .container {
+    background: #ffffff;
+    text-align: center;
+    padding-bottom: 30rpx;
+  }
+  .slide-image {
     width: 100%;
     height: 100%;
   }
-  .title{
-    color: #000;
-    font-size: 50rpx;
-    text-align: center;
-    line-height: 80rpx;
-  }
-  .content{
-    color: #000;
-    font-size: 28rpx;
-    text-align: center;
-  }
-}
-.kecheng{
+  .tubiao {
+    margin-top: 20rpx;
+    width: 100%;
     display: flex;
-    .button{
-      margin-top: 20rpx;
-      margin-bottom: 20rpx;
-      border-radius:50rpx;
-      background: #efefef;
-      width: 60%;
-      height: 100rpx;
-      position: relative;
-      .button00{
-        background: url(https://www.lianaizhuli.com/liaomeishizhan0.jpg) no-repeat left top;
-        background-size: 100% 100%;
-        z-index: 99;
-        position:absolute;
-        border-radius:50rpx;
-        height: 100rpx;
-        width: 60%;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    .box {
+      box-sizing: border-box;
+      text-align: center;
+      .image {
+        width: 60rpx;
+        height: 60rpx;
       }
-      .button01{
-        z-index: 98;
-        position:absolute;
-        background: url(https://www.lianaizhuli.com/xingxiangjianshe1.jpg) no-repeat left top;
-        background-size: 100% 100%;
-        top: 0;
-        right:0;
-        border-radius:50rpx;
-        height: 100rpx;
-        width: 60%;
+      .title {
+        font-size: 20rpx;
       }
-      .button10{
-        z-index: 98;
-        position:absolute;
-        background: url(https://www.lianaizhuli.com/liaomeishizhan1.jpg) no-repeat left top;
-        background-size: 100% 100%;
-        top: 0;
-        left:0;
-        border-radius:50rpx;
-        height: 100rpx;
-        width: 60%;
-      }
-      .button11{
-        background: url(https://www.lianaizhuli.com/xingxiangjianshe0.jpg) no-repeat left top;
-        background-size: 100% 100%;
-        z-index: 99;
-        position:absolute;
-        border-radius:50rpx;
-        top:0;
-        right: 0;
-        height: 100rpx;
-        width: 60%;
-      }
-    }
-    .neirong{
-      margin-left: 5%;
-      margin-right: 5%;
-      width: 40%;
-      height: 100rpx;
     }
   }
-.wenzhang{
-  background: #ffffff;
-  width: 96%;
-  padding-top: 16rpx;
-  margin-top:10rpx;
-  margin-left: 2%;
-  margin-right: 2%;
-  .wenzhangkuai{
-    padding-left:20rpx;
-    padding-right:20rpx;   
-    color: #000;
+  .search {
+    margin-left: 10%;
+    margin-top: 30rpx;
+    width: 80%;
+    border-radius: 50rpx;
+    border: 4rpx solid #ff7e00;
+    height: 80rpx;
+    line-height: 100rpx;
     display: flex;
-    justify-content: space-between;
-    .title{
-      width: 80%;
-      font-size: 28rpx;
+    .text {
+      margin-left: 15%;
+      line-height: 80rpx;
+      width: 70%;
+      overflow: hidden;
     }
-    .image{
-      margin-left:16rpx; 
-      height: 138rpx;
-      width: 223rpx;
+    .image {
+      margin-top: 15rpx;
+      width: 50rpx;
+      height: 50rpx;
     }
   }
-}
-.textend{
-  padding-top: 30rpx;
-  padding-bottom: 30rpx;
-  text-align:center;
-}
+  .searchmiaoshu {
+    margin-top: 10rpx;
+    font-size: 20rpx;
+    color: #ff7e00;
+  }
+  .tuijiankuang {
+    margin-top: 10rpx;
+    display: flex;
+    justify-content: space-around;
+    .tuijian {
+      padding-left: 10rpx;
+      padding-right: 10rpx;
+      font-size: 20rpx;
+      color: #ffffff;
+      background: #FFCC66;
+      border-radius: 10rpx;
+    }
+  }
+  .kuai3 {
+    margin-top: 30rpx;
+    .shouhang {
+      width: 100%;
+      height: 40rpx;
+      display: flex;
+      justify-content: space-between;
+      .image1 {
+        margin-left: 10rpx;
+        height: 40rpx;
+        width: 176rpx;
+      }
+      .image2 {
+        margin-top: 10rpx;
+        margin-left: 10rpx;
+        width: 20rpx;
+        height: 20rpx;
+      }
+      .gengduo {
+        color: #ff7e00;
+        font-size: 22rpx;
+        line-height: 40rpx;
+        display: flex;
+        margin-right: 30rpx;
+      }
+    }
+    .box {
+      margin-top: 30rpx;
+      margin-left: 20rpx;
+      display: flex;
+      width: 100%;
+      height: 149rpx;
+      .image {
+        border: 10rpx;
+        width: 328rpx;
+        height: 149rpx;
+      }
+      .text {
+        margin-left: 30rpx;
+        margin-right: 30rpx;
+        margin-top: 10rpx;
+        margin-bottom: 10rpx;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .bigtext {
+          color: #333;
+        }
+        .minlan {
+          width: 320rpx;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          text-align: center;
+          .laiyuan {
+            font-size: 20rpx;
+          }
+          .yigoumai {
+            width: 100rpx;
+            color: #fff;
+            background: #ff7e00;
+            border-radius: 20rpx;
+            font-size: 20rpx;
+          }
+        }
+        .mintext {
+          font-size: 24rpx;
+        }
+      }
+    }
+  }
+  .kuai4 {
+    margin-top: 30rpx;
+    .shouhang {
+      width: 100%;
+      height: 40rpx;
+      display: flex;
+      justify-content: space-between;
+      .image1 {
+        margin-left: 10rpx;
+        height: 40rpx;
+        width: 176rpx;
+      }
+      .image2 {
+        margin-top: 10rpx;
+        margin-left: 10rpx;
+        width: 20rpx;
+        height: 20rpx;
+      }
+      .gengduo {
+        color: #ff7e00;
+        font-size: 20rpx;
+        line-height: 40rpx;
+        display: flex;
+        margin-right: 30rpx;
+      }
+    }
+    .bigbox {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-content: space-around;
+      width: 100%;
+      .box {
+        display: flex;
+        flex-direction: column;
+        align-content: space-around;
+        width: 375rpx;
+        text-align: left;
+        .image {
+          border: 10rpx;
+          margin: 20rpx;
+          width: 335rpx;
+          height: 203rpx;
+        }
+        .text {
+          margin-left: 30rpx;
+          margin-right: 30rpx;
+          text-align: left;
+          .bigtext {
+            color: #333;
+          }
+          .mintext {
+            margin-top: 10rpx;
+            font-size: 24rpx;
+          }
+        }
+      }
+    }
+  }
 </style>

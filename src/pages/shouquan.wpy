@@ -8,100 +8,97 @@
     </view>
   </view>
 </template>
+
 <script>
-import wepy from 'wepy';
-import api from '@/api/api';
-import {
-  SYSTEM_INFO,
-  USER_SPECICAL_INFO,
-  USER_INFO
-} from '@/utils/constant';
-export default class shouquan extends wepy.page {
-  config = {
-    navigationBarTitleText: '授权登录',
-  }
-  onShareAppMessage() {
-    return {
-      title: '恋爱联盟',
-      path: '/pages/home',
-    };
-  }
-  onLoad() { 
-  }
-  async onGotUserInfo(e) {
-    if (e.detail.errMsg == 'getUserInfo:ok') {
-      let loginres = await wepy.login();
-      // let userInfores=await wepy.getUserInfo();
-      if (loginres.code) {
-        try{
-          let system = wepy.getStorageSync(SYSTEM_INFO);
-          let options = wepy.getStorageSync('options');
-          let rlt = await api.getOpenid({
-            query: {
-              jsCode: loginres.code,
-              userInfo:e.detail.userInfo,
-              system:system,
-              options:options,
-              // encryptedData:userInfores.encryptedData,
-              // iv:userInfores.iv,
+  import wepy from 'wepy';
+  import api from '@/api/api';
+  import {
+    SYSTEM_INFO,
+    USER_SPECICAL_INFO,
+    USER_INFO
+  } from '@/utils/constant';
+  export default class shouquan extends wepy.page {
+    config = {
+      navigationBarTitleText: '授权登录',
+    }
+    onShareAppMessage() {
+      return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+      };
+    }
+    onLoad() {}
+    async onGotUserInfo(e) {
+      if (e.detail.errMsg == 'getUserInfo:ok') {
+        let loginres = await wepy.login();
+        // let userInfores=await wepy.getUserInfo();
+        if (loginres.code) {
+          try {
+            let system = wepy.getStorageSync(SYSTEM_INFO);
+            let options = wepy.getStorageSync('options');
+            let rlt = await api.getOpenid({
+              query: {
+                jsCode: loginres.code,
+                userInfo: e.detail.userInfo,
+                system: system,
+                options: options,
+                // encryptedData:userInfores.encryptedData,
+                // iv:userInfores.iv,
+              }
+            })
+            wepy.setStorageSync(USER_INFO, e.detail.userInfo);
+            if (rlt.data.data.openid) {
+              let data = rlt.data.data;
+              if (data.openid) {
+                wepy.setStorageSync(USER_SPECICAL_INFO, data);
+                wx.navigateBack({
+                  delta: 1,
+                })
+              } else {
+                wepy.showModal({
+                  title: '系统有误',
+                  content: '授权失败'
+                })
+              }
             }
-          })
-          wepy.setStorageSync(USER_INFO, e.detail.userInfo);
-          if (rlt.data.data.openid) {
-            let data = rlt.data.data;
-            if (data.openid) {
-              wepy.setStorageSync(USER_SPECICAL_INFO, data);
-              wx.navigateBack({
-                delta: 1,
-              })
-            }
-            else{
-              wepy.showModal({
+          } catch (err) {
+            wepy.showModal({
               title: '系统有误',
               content: '授权失败'
-              })
-            }
+            })
           }
         }
-        catch(err){
-          wepy.showModal({
-            title: '系统有误',
-            content: '授权失败'
-          })
-        }
+      } else {
+        wx.showModal({
+          title: '友情提示',
+          content: '尊敬的用户，为确保对您的服务质量，请允许我们获取您的公开信息',
+        })
       }
     }
-    else{
-      wx.showModal({
-        title: '友情提示',
-        content: '尊敬的用户，为确保对您的服务质量，请允许我们获取您的公开信息',
-      })
+  }
+</script>
+
+<style lang="less">
+  page {
+    height: 100%;
+  }
+  .authorize-contianer {
+    height: 100%;
+    background: #fff;
+    text-align: center;
+    padding-top: 100rpx;
+    .authorize-icon {
+      width: 128rpx;
+      height: 128rpx;
+      display: block;
+      margin: 0 auto;
+      padding-bottom: 10rpx;
+    }
+    .auth-item {
+      padding: 5rpx 0;
+    }
+    .btn-authorize {
+      margin: 100rpx 50rpx;
     }
   }
-}
-</script>
-<style lang="less">
-page {
-  height: 100%;
-}
-
-.authorize-contianer {
-  height: 100%;
-  background: #fff;
-  text-align: center;
-  padding-top: 100rpx;
-  .authorize-icon {
-    width: 128rpx;
-    height: 128rpx;
-    display: block;
-    margin: 0 auto;
-    padding-bottom: 10rpx;
-  }
-  .auth-item {
-    padding: 5rpx 0;
-  }
-  .btn-authorize {
-    margin: 100rpx 50rpx;
-  }
-}
 </style>

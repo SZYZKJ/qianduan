@@ -1,118 +1,135 @@
 <template>
-<view class="container">
-    <view wx:if="{{vipdengji<2}}" class="tequan">您当前为非正式会员</view>
-    <image wx:if="{{vipdengji>1}}" class="image_box" bindtap="imgYu({{images[vipdengji]}})" src="{{images[vipdengji]}}" mode="scaleToFill"/>
-    <view wx:if="{{vipdengji>1}}" class="tequan1">您的会员特权，扫码添加导师微信，免费让他把您拉进答疑交流群，添加请备注“恋爱联盟”</view>
+  <view class="container">
+    <view wx:if="{{vipdengji<1}}" class="tequan">您当前为非正式会员</view>
+    <image wx:if="{{vipdengji>0}}" class="image_box" bindtap="imgYu({{images[vipdengji]}})" src="{{images[vipdengji]}}" mode="scaleToFill" />
+    <view wx:if="{{vipdengji>0}}" class="tequan1">您的会员特权，扫码添加导师微信，免费让他把您拉进答疑交流群，添加请备注“恋爱联盟”</view>
     <view wx:if="{{vipdengji<6}}">
-        <view class="kaitongtext">点击升级，解锁更多会员专属服务，为您提供更多恋爱能力~</view>
-        <navigator class="vip" url="/pages/vip">升级会员</navigator>
+      <view class="kaitongtext">点击升级，解锁更多会员专属服务，为您提供更多恋爱能力~</view>
+      <navigator class="vip" url="/pages/vip">升级会员</navigator>
     </view>
     <view class="tequan">恋爱联盟官方公众号</view>
-    <image class="image" bindtap="imgYu({{gongzhonghao}})" src="{{gongzhonghao}}" mode="scaleToFill"/>
-</view>
+    <image class="image" bindtap="imgYu({{gongzhonghao}})" src="{{gongzhonghao}}" mode="scaleToFill" />
+  </view>
 </template>
-<script>
-import wepy from 'wepy';
-import tip from '@/utils/tip';
-import api from '@/api/api';
-import {
-  SYSTEM_INFO,
-  USER_SPECICAL_INFO
-} from '@/utils/constant';
 
-export default class weixin extends wepy.page {
+<script>
+  import wepy from "wepy";
+  import tip from "@/utils/tip";
+  import api from "@/api/api";
+  import {
+    SYSTEM_INFO,
+    USER_SPECICAL_INFO
+  } from "@/utils/constant";
+  export default class weixin extends wepy.page {
     config = {
-        navigationBarTitleText: '导师微信',
-    }
+      navigationBarTitleText: "导师微信"
+    };
     data = {
-        weixin:['','','pym421542148','job_zhou','wxid_07n79yngevq222','zzc345479413','pym421542148'],
-        images:['','','cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/pangyuming.jpg','cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/zhouguangyu.jpg','cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/zhangzhicheng.jpg','cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/zhouguangyu.jpeg','cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/pangyuming.jpg'],
-        gongzhonghao:'cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/gongzhonghao.png',
-        vipdengji:0,
-    }
-    imgYu(e){
-        var url=e.currentTarget.dataset.wpyimgyuA;
+      weixin: [
+        "",
+        "pym421542148",
+        "job_zhou",
+        "pym421542148",
+        "job_zhou",
+        "pym421542148",
+        "job_zhou",
+      ],
+      images: [
+        "",
+        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/pangyuming.jpg",
+        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/zhouguangyu.jpg",
+        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/pangyuming.jpg",
+        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/zhouguangyu.jpg",
+        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/pangyuming.jpg",
+        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/zhouguangyu.jpg"
+      ],
+      gongzhonghao: "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/gongzhonghao.png",
+      vipdengji: 0
+    };
+    imgYu(e) {
+      var url = e.currentTarget.dataset.wpyimgyuA;
       wx.previewImage({
         current: url,
-        urls: [url],
-      })
+        urls: [url]
+      });
     }
-    async getTequan(){
-        let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-        let openid = userSpecialInfo.openid;
-        if(typeof(openid) == "undefined"){
-            wepy.navigateTo({
-            url: '/pages/shouquan'
-            })
-            return false;
+    async getTequan() {
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      if (typeof openid == "undefined") {
+        wepy.navigateTo({
+          url: "/pages/shouquan"
+        });
+        return false;
+      }
+      let json = await api.getTequan({
+        query: {
+          openid: openid
         }
-        let json = await api.getTequan({
-            query: {
-                openid:openid,
-            }
-        })
-        this.vipdengji=json.data.vipdengji;
-        this.$apply();
+      });
+      this.vipdengji = json.data.vipdengji;
+      this.$apply();
     }
     onShareAppMessage() {
-        return {
-        title: '恋爱联盟',
-        path: '/pages/home',
-        };
+      return {
+        title: "恋爱联盟",
+        path: "/pages/home"
+      };
     }
     async onLoad() {
-        this.getTequan();
+      this.getTequan();
     }
-}
+  }
 </script>
+
 <style lang="less">
-.container{
+  .container {
     align-items: center;
     text-align: center;
     margin-top: 0rpx;
     background: #ffffff;
-}
-.kaitongtext{
+  }
+  .kaitongtext {
     margin-top: 50rpx;
     margin-left: 200rpx;
     margin-right: 200rpx;
     color: #000000;
-}
-.weixin{
+  }
+  .weixin {
     margin-top: 50rpx;
-    border-radius:20rpx;
+    border-radius: 20rpx;
     background: #ffffff;
-    color: #09BB07;
+    color: #09bb07;
     width: 50%;
     margin-left: 25%;
-}
-.image_box{
+  }
+  .image_box {
     width: 200rpx;
     height: 336rpx;
-}
-.image{
+  }
+  .image {
     width: 100%;
     height: 214rpx;
     margin-top: 50rpx;
-}
-.vip{
+  }
+  .vip {
     height: 60rpx;
-    background: #09BB07;
+    background: #09bb07;
     color: #ffffff;
-    border-radius:20rpx;
+    border-radius: 20rpx;
     margin-top: 50rpx;
     padding-top: 16rpx;
     width: 60%;
     margin-left: 20%;
-}
-.tequan{
+  }
+  .tequan {
     padding-top: 50rpx;
     color: #000000;
-}
-.tequan1{
+  }
+  .tequan1 {
     padding-top: 50rpx;
     padding-left: 50rpx;
     padding-right: 50rpx;
     color: #000000;
-}
+  }
 </style>

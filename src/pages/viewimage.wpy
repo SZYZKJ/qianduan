@@ -1,83 +1,66 @@
 <template>
-    <view class="container">
-        <text selectable='true' class="title">{{title}}</text>
-        <image class="image" src="{{url}}" mode="widthFix"></image>
-    </view>
+  <view class="container">
+    <text selectable='true' class="title">{{title}}</text>
+    <image class="image" src="{{url}}" mode="widthFix"></image>
+  </view>
 </template>
+
 <script>
-import wepy from 'wepy';
-import api from "@/api/api";
-import {
-  SYSTEM_INFO,
-  USER_SPECICAL_INFO,
-  USER_INFO
-} from '@/utils/constant';
-export default class viewimage extends wepy.page {
-  config = {
-    navigationBarTitleText: '',
-  }
-  Page={}
-  data = {
-    title:"",
-    url:"",
-  }
-  async setJilu() {
-    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-    let openid = userSpecialInfo.openid;
-    if(typeof(openid) == "undefined"){
-      wepy.navigateTo({
-          url: '/pages/shouquan'
+  import wepy from 'wepy';
+  import api from "@/api/api";
+  import {
+    SYSTEM_INFO,
+    USER_SPECICAL_INFO,
+    USER_INFO
+  } from '@/utils/constant';
+  export default class viewimage extends wepy.page {
+    config = {
+      navigationBarTitleText: '',
+    }
+    Page = {}
+    data = {
+      title: "",
+      url: "",
+    }
+    onShareAppMessage() {
+      return {
+        title: '恋爱联盟',
+        path: '/pages/viewimage?title=' + this.title + '&url=' + this.url,
+      };
+    }
+    onLoad(options) {
+      this.title = options.title;
+      wepy.setNavigationBarTitle({
+        title: options.title,
       })
-      return false;
+      this.url = options.url;
+      this.$apply();
     }
-    const json = await api.setJilu({
-    query: {
-      openid:openid,
-      jilutype:'image',
-      jilucontent:this.url,
-    }
-    });
-    this.$apply();
-  }
-  onShareAppMessage() {
-    return {
-      title: '恋爱联盟',
-      path: '/pages/viewimage?title='+this.title+'&url='+this.url,
-    };
-  }
-  onLoad(options) {
-    this.title=options.title;
-    wepy.setNavigationBarTitle({
-      title: options.title,
-    })
-    this.url=options.url;
-    this.setJilu();
-    this.$apply();
-  }
-  onUnload(){
-    var pages = getCurrentPages();
-    if(pages.length==1){
+    onUnload() {
+      var pages = getCurrentPages();
+      if (pages.length == 1) {
         wx.switchTab({
-            url: "/pages/home"
+          url: "/pages/home"
         })
+      }
     }
   }
-}
 </script>
+
 <style lang="less">
-.container{
+  .container {
     background: #FFFFFF;
-    .title{
-        padding-left: 20rpx;
-        padding-right: 20rpx;
-        padding-top: 20rpx;
-        padding-bottom: 20rpx;
-        font-weight: bolder;
-        font-size: 38rpx;
-        color: #000000;
+    .title {
+      padding-left: 20rpx;
+      padding-right: 20rpx;
+      padding-top: 20rpx;
+      padding-bottom: 20rpx;
+      font-weight: bolder;
+      font-size: 38rpx;
+      color: #000000;
     }
-    .image{
-        width: 100%;
+    .image {
+      width: 100%;
     }
-}
+  }
 </style>

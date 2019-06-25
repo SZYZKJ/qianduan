@@ -1,0 +1,75 @@
+<template>
+    <view class="kuang">
+        <!-- <view class="title">{{kecheng.biaoti}}</view> -->
+        <rich-text nodes="{{kecheng.content}}"></rich-text>
+    </view>
+</template>
+
+<script>
+    import wepy from "wepy";
+    import api from "@/api/api";
+    import tip from '@/utils/tip';
+    import {
+        SYSTEM_INFO,
+        USER_SPECICAL_INFO,
+        USER_INFO
+    } from "@/utils/constant";
+    export default class kecheng extends wepy.page {
+        config = {
+            navigationBarTitleText: ""
+        };
+        Page = {};
+        data = {
+            neirongid: '',
+            kecheng: {},
+        };
+        async getKecheng() {
+            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+            let openid = userSpecialInfo.openid;
+            if (typeof openid == "undefined") {
+                wepy.navigateTo({
+                    url: "/pages/shouquan"
+                });
+                return false;
+            }
+            let json = await api.getKecheng({
+                query: {
+                    openid: openid,
+                    neirongid:this.neirongid,
+                }
+            });
+            this.kecheng = json.data.data;
+            wx.setNavigationBarTitle({
+                title: this.kecheng.biaoti
+            });
+            this.$apply();
+        }
+        onShareAppMessage() {
+            return {
+                title: "恋爱联盟",
+                path: "/pages/home"
+            };
+        }
+        methods = {
+        }
+        onLoad(e) {
+            this.neirongid = e.neirongid;
+            this.getKecheng();
+        }
+    }
+</script>
+
+<style lang="less">
+    .kuang {
+        background: #ffffff;
+        padding-left: 30rpx;
+        padding-right: 30rpx;
+        color: #333;
+        word-break: break-all;
+        text-align: justify;
+    }
+    .title{
+            color: #333;
+            font-size: 40rpx;
+        }
+</style>

@@ -1,118 +1,100 @@
 <template>
   <view class="kuai">
-    <view wx:if="{{istiyan}}">
-      <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index<5}}">
-        <view class="duihua">
-          <view class="girl">
-            <text selectable='true' @tap="copycontent({{item.MM}})">{{item.MM}}</text>
+    <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item="item" wx:for-index="index">
+      <view class="duihua">
+        <view wx:for="{{item.chat_content}}" wx:key="minitem" wx:for-item="huashu" wx:for-index="index">
+          <view wx:if="{{huashu.ans_sex==2}}" class="nv">
+            <image class="item_img" src="../images/nv.png" />
+            <view class="textkuang" bindtap="copycontent({{huashu.content}})">
+              <text class="text" selectable="true">{{huashu.content}}</text>
+            </view>
           </view>
-          <view wx:for="{{item.GG}}" wx:key="minitem" wx:for-item='centence' wx:for-index="index">
-            <view class="man"><text selectable='true' @tap="copycontent({{centence}})">{{centence}}</text></view>
-          </view>
-        </view>
-      </view>
-      <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item='item' wx:for-index="index" wx:if="{{index>=5&&issystem}}">
-        <view class="duihua">
-          <view class="girl">
-            <text selectable='true' @tap="copycontent({{item.MM}})">{{item.MM}}</text>
-          </view>
-          <navigator class="vip" url="/pages/vip">
-            <image class="item_img" mode="scaleToFill" src="../images/vip.jpg"></image>
-          </navigator>
-        </view>
-      </view>
-    </view>
-    <view wx:if="{{istiyan==0}}">
-      <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
-        <view class="duihua">
-          <view class="girl">
-            <text selectable='true' @tap="copycontent({{item.MM}})">{{item.MM}}</text>
-          </view>
-          <view wx:for="{{item.GG}}" wx:key="minitem" wx:for-item='centence' wx:for-index="index">
-            <view class="man"><text selectable='true' @tap="copycontent({{centence}})">{{centence}}</text></view>
+          <view wx:else class="nan">
+            <image class="item_img" src="../images/nan.png" />
+            <view class="textkuang" bindtap="copycontent({{huashu.content}})">
+              <text class="text" selectable="true">{{huashu.content}}</text>
+            </view>
           </view>
         </view>
       </view>
     </view>
   </view>
 </template>
+
 <script>
-import wepy from 'wepy'
-
-export default class huashu extends wepy.component {
-  data = {
-    huashuList: [],
-    istiyan:false,
-    issystem:0,
-  }
-  changeistiyan(val){
-    this.istiyan=val;
-    this.$apply();
-  }
-  methods = {
-    copycontent(GG){
-      wx.setClipboardData({
-        data:GG,
-        success: function() {
-          wx.showToast({
-            title: "复制成功",
-            duration: 500,
-          });
-        }
-      })
-      this.$emit('jilu','huashu',GG);
+  import wepy from "wepy";
+  export default class huashu extends wepy.component {
+    data = {
+      huashuList: [],
+      issystem: 0
+    };
+    methods = {
+      copycontent(GG) {
+        wx.setClipboardData({
+          data: GG,
+          success: function() {
+            wx.showToast({
+              title: "复制成功",
+              duration: 500
+            });
+          }
+        });
+        this.$emit("jilu", "huashu", GG);
+      }
+    };
+    onLoad() {
+      this.issystem = wepy.getStorageSync("issystem");
+      this.$apply();
     }
   }
-  onLoad() {
-    this.issystem=wepy.getStorageSync('issystem');
-    this.$apply();
-  }
-}
 </script>
+
 <style lang="less">
-.kuai{
-  text-align: justify;
-}
-.huashuList {
-  .duihua{
-    margin-top: 20rpx;
-    border-radius:20rpx;
-    margin-left: 20rpx;
-    margin-right: 20rpx;
-    padding-left: 20rpx;
-    padding-right: 20rpx;
-    padding-top: 20rpx;
-    padding-bottom: 20rpx;
-    background: #ffffff;
-  }
-  .girl{
-    background: url(https://www.lianaizhuli.com/girl.png) no-repeat left top;
-    background-size: 25px 25px;
-    line-height: 25px;
-    padding-left: 30px;
-    font-size: 28rpx;
-    color: #000000; 
-    box-sizing: border-box;
-    position: relative;
-  }
-  .man{
-    background: url(https://www.lianaizhuli.com/man.png) no-repeat left top;
-    background-size: 25px 25px;
-    line-height: 25px;
-    padding-left: 30px;
-    font-size: 28rpx;
-    color: #000000; 
-  }
-  .vip{
-    margin-top: 20rpx;
-    text-align:center;
+  .kuai {}
+  .huashuList {
+    .duihua {
+      margin-top: 20rpx;
+      border-radius: 20rpx;
+      margin-left: 20rpx;
+      margin-right: 20rpx;
+      padding-left: 20rpx;
+      padding-right: 20rpx;
+      padding-top: 20rpx;
+      padding-bottom: 20rpx;
+      background: #ffffff;
+    }
+    .nv {
+      line-height: 25px;
+      display: flex;
+      left: 0;
+    }
+    .nan {
+      line-height: 25px;
+      display: flex;
+      left: 0;
+    }
     .item_img {
-      padding: 0rpx;
-      border-radius:20rpx;
-      width: 368rpx;
-      height: 248rpx;
+      padding-top: 10rpx;
+      padding-right: 10rpx;
+      width: 35rpx;
+      height: 35rpx;
+    }
+    .textkuang {
+      width: 100%;
+    }
+    .text {
+      font-size: 28rpx;
+      color: #333;
+    }
+    .vip {
+      margin-top: 20rpx;
+      text-align: center;
+      .item_img {
+        padding: 0rpx;
+        border-radius: 20rpx;
+        width: 368rpx;
+        height: 248rpx;
+      }
     }
   }
-}
-
 </style>

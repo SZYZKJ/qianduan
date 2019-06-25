@@ -2,267 +2,309 @@
   <view class="info">
     <view class="header">
       <view class="headcontent">
+        <view class="wenhouyu">{{wenhouyu}}</view>
         <view class="userinfo-avatar">
-          <open-data  class="avatarUrl" type="userAvatarUrl"></open-data>
+          <open-data class="avatarUrl" type="userAvatarUrl"></open-data>
         </view>
-        <view class="shuxian"></view>
         <view>
           <open-data class="headercontent0" type="userNickName"></open-data>
-          <view class="headercontent1" @tap="tovip">{{huiyuan[vipdengji]}}</view>
-          <view class="headercontent2" @tap="tojifen">积分 <text class="jifen">{{jifen}}</text></view>
+          <image class="headercontent3" wx:if="{{vipdengji}}" src="https://www.lianaizhuli.com/geren/VIP.png" />
+          <image class="headercontent3" wx:else src="https://www.lianaizhuli.com/geren/feiVIP.png" />
+          <view class="headercontent1" @tap="totequan">{{huiyuan[vipdengji]}}
+            <view class="headercontent2" @tap="tojifen">积分 <text class="jifen">{{jifen}}</text></view>
+          </view>
+        </view>
+        <view class="imagekuang">
+          <image class="banimage" @tap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
+          <image class="banimage" @tap="toshoucang" src="https://www.lianaizhuli.com/geren/wodeshoucang.png" />
         </view>
       </view>
     </view>
     <view class="info_block" bindtouchstart='touchStart' bindtouchend="touchEnd">
-      <navigator wx:if="{{issystem}}" class="item" url="/pages/vip">
+      <navigator class="item" url="/pages/vip">
         <view class="item_content">
-          <image class="item_img" src="../images/icon_my_01.png"></image>
-          <view class="text">升级会员</view>
+          <image class="item_img" src="../images/shengjihuiyuan.png" />
+          <view class="text">
+            <view class="text1">升级会员</view>
+            <image class="text2" src="../images/jiantou.png" />
+          </view>
         </view>
       </navigator>
       <navigator class="item" url="/pages/tequan">
         <view class="item_content">
-          <image class="item_img" src="../images/icon_my_02.png"></image>
-          <view class="text">我的特权</view>
+          <image class="item_img" src="../images/wodetequan.png" />
+          <view class="text">
+            <view class="text1">我的特权</view>
+            <image class="text2" src="../images/jiantou.png" />
+          </view>
         </view>
       </navigator>
       <navigator class="item" url="/pages/jifen">
         <view class="item_content">
-          <image class="item_img" src="../images/icon_my_03.png"></image>
-          <view class="text">我的积分</view>
+          <image class="item_img" src="../images/wodejifen.png" />
+          <view class="text">
+            <view class="text1">我的积分</view>
+            <image class="text2" src="../images/jiantou.png" />
+          </view>
         </view>
       </navigator>
-      <button class="item0" open-type="contact" session-from="weapp">
-        <view class="item_content">
-          <image class="item_img" src="../images/kefu.png"></image>
-          <view class="text">在线客服</view>
-        </view>
-      </button>
+      <button class="item" open-type="contact" session-from="weapp" plain=false>
+                  <view class="item_content">
+                    <image class="item_img" src="../images/zaixiankefu.png">
+                    <view class="text">
+                      <view class="text1">在线客服</view>
+                      <image class="text2" src="../images/jiantou.png" />
+                    </view>
+                  </view>
+                </button>
       <navigator class="item" url="/pages/weixin">
         <view class="item_content">
-          <image class="item_img" src="../images/weixin.png"></image>
-          <view class="text">导师微信</view>
+          <image class="item_img" src="../images/daoshiweixin.png" />
+          <view class="text">
+            <view class="text1">导师微信</view>
+            <image class="text2" src="../images/jiantou.png" />
+          </view>
         </view>
       </navigator>
       <navigator class="item" url="/pages/dingdan">
         <view class="item_content">
-          <image class="item_img" src="../images/icon_my_04.png"></image>
-          <view class="text">全部订单</view>
-        </view>
-      </navigator>
-      <navigator class="item" url="/pages/adding">
-        <view class="item_content">
-          <image class="item_img" src="../images/icon_my_05.png"></image>
-          <view class="text">我的收藏</view>
-        </view>
-      </navigator>
-      <navigator class="item" url="/pages/adding">
-        <view class="item_content">
-          <image class="item_img" src="../images/icon_my_06.png"></image>
-          <view class="text">我的消息</view>
-        </view>
-      </navigator>
-      <navigator class="item" url="/pages/adding">
-        <view class="item_content">
-          <image class="item_img" src="../images/icon_my_07.png"></image>
-          <view class="text">设置</view>
+          <image class="item_img" src="../images/quanbudingdan.png">
+            <view class="text">
+              <view class="text1">全部订单</view>
+              <image class="text2" src="../images/jiantou.png" />
+            </view>
         </view>
       </navigator>
     </view>
   </view>
 </template>
+
 <script>
-import wepy from 'wepy';
-import api from '@/api/api';
-import {
-  USER_INFO,USER_SPECICAL_INFO
-} from '@/utils/constant';
-export default class info extends wepy.page {
-  config = {
-    navigationBarTitleText: '个人',
-  }
-  data = {
-    startX:0,
-    startY:0,
-    endX:0,
-    endY:0,
-    avatarUrl: "",
-    nickName: "",
-    huiyuan:['非会员','体验会员','月会员','年会员','终身会员(含私教3个月)','终身会员(含私教一年)','联盟会员(含私教终身)'],
-    vipdengji : 0,
-    jifen:0,
-    issystem:0,
-  }
-  onShareAppMessage() {
-    return {
-      title: '恋爱联盟',
-      path: '/pages/home',
-    };
-  }
-  async getJifen(){
-    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-    let openid = userSpecialInfo.openid;
-    if(typeof(openid) == "undefined"){
+  import wepy from 'wepy';
+  import api from '@/api/api';
+  import {
+    USER_INFO,
+    USER_SPECICAL_INFO
+  } from '@/utils/constant';
+  export default class info extends wepy.page {
+    config = {
+      navigationBarTitleText: '个人',
+      navigationBarBackgroundColor: '#f8b11b',
+      navigationBarTextStyle: 'white',
+    }
+    data = {
+      startX: 0,
+      startY: 0,
+      endX: 0,
+      endY: 0,
+      wenhouyu: "HI，欢迎您~",
+      avatarUrl: "",
+      nickName: "",
+      huiyuan: ['非会员', '体验会员', '月会员', '年会员', '终身会员(含私教3个月)', '终身会员(含私教一年)', '联盟会员(含私教终身)'],
+      vipdengji: 0,
+      jifen: 0,
+      issystem: 0,
+    }
+    onShareAppMessage() {
+      return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+      };
+    }
+    async getJifen() {
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      if (typeof(openid) == "undefined") {
         wepy.navigateTo({
-            url: '/pages/shouquan'
+          url: '/pages/shouquan'
         })
         return false;
-    }
-    let json = await api.getJifen({
-      query: {
-        openid:openid,
-        iszhudong:0,
       }
-    })
-    this.vipdengji=json.data.data.vipdengji;
-    this.jifen=json.data.data.jifen;
-    this.$apply();
-  }
-  tovip(){
-    wepy.navigateTo({
-      url: '/pages/tequan'
-    })
-  }
-  tojifen(){
-    wepy.navigateTo({
-      url: '/pages/jifen'
-    })
-  }
-  async onLoad() {
-    let that = this;
-    let userInfo = wepy.getStorageSync(USER_INFO);
-    that.avatarUrl = userInfo.avatarUrl;
-    that.nickName = userInfo.nickName;
-    that.issystem = wepy.getStorageSync('issystem');
-    that.$apply();
-  }
-  async onShow(){
-    this.getJifen();
-  }
-  changeTab() {
-    if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
-      wx.switchTab({
-        url: "./searchpage"
+      let json = await api.getJifen({
+        query: {
+          openid: openid,
+          iszhudong: 0,
+        }
       })
-    } else if (this.endX - this.startX < -30 && Math.abs(this.endY - this.startY)*1.5 < Math.abs(this.endX - this.startX)) {
-      wx.switchTab({
-        url: "./home"
+      this.vipdengji = json.data.data.vipdengji;
+      this.jifen = json.data.data.jifen;
+      this.wenhouyu = json.data.data.wenhouyu;
+      this.$apply();
+    }
+    tovip() {
+      wepy.navigateTo({
+        url: '/pages/vip'
       })
     }
+    toshoucang() {
+      wepy.navigateTo({
+        url: '/pages/shoucang'
+      })
+    }
+    totequan() {
+      wepy.navigateTo({
+        url: '/pages/tequan'
+      })
+    }
+    tojifen() {
+      wepy.navigateTo({
+        url: '/pages/jifen'
+      })
+    }
+    async onLoad() {
+      let that = this;
+      let userInfo = wepy.getStorageSync(USER_INFO);
+      that.avatarUrl = userInfo.avatarUrl;
+      that.nickName = userInfo.nickName;
+      that.issystem = wepy.getStorageSync('issystem');
+      that.$apply();
+    }
+    async onShow() {
+      this.getJifen();
+    }
+    changeTab() {
+      if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {
+        wx.switchTab({
+          url: "./searchpage"
+        })
+      } else if (this.endX - this.startX < -30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {
+        wx.switchTab({
+          url: "./home"
+        })
+      }
+    }
+    methods = {
+      touchStart(e) {
+        this.startX = e.changedTouches[0].clientX;
+        this.startY = e.changedTouches[0].clientY;
+      },
+      touchEnd(e) {
+        this.endX = e.changedTouches[0].clientX;
+        this.endY = e.changedTouches[0].clientY;
+        this.changeTab();
+      },
+    }
   }
-  methods = {
-    touchStart(e){
-      this.startX=e.changedTouches[0].clientX;
-      this.startY=e.changedTouches[0].clientY;
-    },
-    touchEnd(e){
-      this.endX=e.changedTouches[0].clientX;
-      this.endY=e.changedTouches[0].clientY;
-      this.changeTab();
-    },
-  }
-}
-
 </script>
+
 <style lang="less">
-.header {
-  padding-left:216rpx; 
-  background: #ffffff;
-  background: url(https://www.lianaizhuli.com/zhunian.jpg);
-  background-size: 750rpx 300rpx;
-  height: 300rpx;
-  .headcontent{
-    padding-top: 86rpx;
-    display: flex;
-  }
-  .shuxian{
-    width: 2rpx;
-    background: #FFD700;
-    height: 128rpx;
-  }
-  .headercontent0{
-    margin-left: 30rpx;
-    color: #FFD700;
-  }
-  .headercontent1{
-    margin-left: 30rpx;
-    margin-top: 10rpx;
-    color: #ff00ff;
-  }
-  .headercontent2{
-    margin-left: 30rpx;
-    margin-top: 10rpx;
-    color: #FFD700;
-    .jifen{
-      color: #ff00ff;
+  .header {
+    background: #ffffff;
+    background: url(https://www.lianaizhuli.com/geren/gerenbeijing.png);
+    background-size: 750rpx 240rpx;
+    height: 240rpx;
+    .headcontent {
+      position: fixed;
+      height: 300rpx;
+      margin-left: 5%;
+      width: 90%;
+      margin-top: 80rpx;
+      padding-top: 20rpx;
+      background: #ffffff;
+      border-radius: 20rpx;
+      border: 1rpx solid #efefef;
+      .imagekuang {
+        margin-top: 55rpx;
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        .banimage {
+          width: 200rpx;
+          height: 100rpx;
+        }
+      }
+      .wenhouyu {
+        position: fixed;
+        top: 0rpx;
+        left: 60rpx;
+        color: #ffffff;
+      }
+    }
+    .headercontent0 {
+      width: 100%;
+      margin-left: 200rpx;
+      color: #000000;
+    }
+    .headercontent3 {
+      margin-left: 20rpx;
+      width: 45rpx;
+      height: 35rpx;
+    }
+    .headercontent1 {
+      margin-left: 200rpx;
+      margin-top: 20rpx;
+      font-size: 26rpx;
+      display: flex;
+      color: #ff7e00;
+      .headercontent2 {
+        margin-left: 50rpx;
+        color: #000000;
+        .jifen {
+          color: #ff7e00;
+        }
+      }
     }
   }
-}
-.userinfo-avatar{
-  overflow:hidden;  
-  width: 128rpx;  
-  height: 128rpx;  
-  border-radius: 50%;  
-  margin-right:30rpx; 
-}
-.nickName {
-  color: #000;
-  font-size: 32rpx;
-  padding-top: 18rpx;
-  padding-bottom: 18rpx;
-}
-.tequanming{
+  .userinfo-avatar {
+    position: fixed;
+    top: 50rpx;
+    left: 60rpx;
+    overflow: hidden;
+    width: 150rpx;
+    height: 150rpx;
+    border-radius: 10rpx;
+  }
+  .tequanming {
     margin-left: 50rpx;
-    color:#000000;
-}
-.info_block {
-  background: rgba(0, 0, 0, 0.1);
-  padding-top: 20rpx;
-  padding-bottom: 20rpx;
-  .item {
-    height: 20rpx;
-    border-radius:20rpx;
-    margin-top: 10rpx;
-    margin-left: 20rpx;
-    margin-bottom: 10rpx;
-    margin-right:  20rpx;
-    background: #ffffff;
-    padding: 38rpx 28rpx;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .item0 {
-    height: 96rpx;
-    border-radius:26rpx;
-    margin-top: 10rpx;
-    margin-left: 20rpx;
-    margin-bottom: 10rpx;
-    margin-right:  20rpx;
-    background: #ffffff;
-    padding: 38rpx 28rpx;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .item_content {
-    display: flex;
-    align-items: center;
-  }
-  .text {
-    margin-left: 20rpx;
     color: #000000;
   }
-  .item_img {
-    width: 38rpx;
-    height: 38rpx;
+  .info_block {
+    background: #ffffff;
+    padding-top: 180rpx;
+    padding-bottom: 180rpx;
+    .item {
+      height: 100rpx;
+      line-height: 100rpx;
+      border-color: #ffffff;
+      background: #ffffff;
+      padding-left: 0rpx;
+      border-bottom: 1px solid #efefef;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #000000;
+      margin-left: 3%;
+      width: 94%;
+      border-radius: 0rpx;
+    }
+    .item_content {
+      display: flex;
+      align-items: center;
+    }
+    .text {
+      width: 640rpx;
+      display: flex;
+      justify-content: space-between;
+      margin-left: 25rpx;
+      .text1 {
+        font-size: 26rpx;
+        color: #000;
+      }
+      .text2 {
+        margin-top: 40rpx;
+        width: 20rpx;
+        height: 20rpx;
+      }
+    }
+    .item_img {
+      width: 30rpx;
+      height: 28rpx;
+    }
+    .tip {
+      color: #ffffff;
+      font-size: 28rpx;
+      margin-top: 20rpx;
+      margin-left: 60rpx;
+    }
   }
-  .tip {
-    color: #ffffff;
-    font-size: 28rpx;
-    margin-top: 20rpx;
-    margin-left: 60rpx;
-  }
-}
-
 </style>

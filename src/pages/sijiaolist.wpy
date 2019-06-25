@@ -1,0 +1,128 @@
+<template>
+    <view class="container">
+        <view wx:for="{{sijiaoList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+            <view class="wenzhang" bindtap="goTohtml({{item}})">
+                <view class="kuai">
+                    <view class="textkuang">
+                        <text selectable='true' class="title">{{item.title}}</text>
+                        <view class="laiyuan">{{item.count}}次学习</view>
+                    </view>
+                    <image class="image" src="{{item.image}}" mode="scaleToFill" lazy-load="false" />
+                </view>
+            </view>
+        </view>
+        <view class="textend" wx:if="{{!isend}}">加载中......</view>
+        <view class="textend" wx:if="{{isend}}">恋爱脱单上恋爱联盟</view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import tip from '@/utils/tip';
+    import api from '@/api/api';
+    import {
+        SYSTEM_INFO,
+        USER_SPECICAL_INFO
+    } from '@/utils/constant';
+    export default class sijiaolist extends wepy.page {
+        config = {
+            navigationBarTitleText: '私教',
+            enableReachBottom: true,
+        }
+        data = {
+            title: '',
+            category_id: 10,
+            sijiaoList: [],
+            scroll: '',
+            isend: false,
+        }
+        async getSijiaoList(e) {
+            if (this.isend) return;
+            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+            let openid = userSpecialInfo.openid;
+            if (typeof(openid) == "undefined") {
+                wepy.navigateTo({
+                    url: '/pages/shouquan'
+                })
+                return false;
+            }
+            let json = await api.getSijiaoList({
+                query: {
+                    openid: openid,
+                }
+            })
+            if (json.data.data.length < 10) this.isend = true;
+            if (e) this.sijiaoList = json.data.data.concat(this.sijiaoList);
+            else this.sijiaoList = this.sijiaoList.concat(json.data.data);
+            this.scroll = json.data.scroll;
+            this.$apply();
+        }
+        onPullDownRefresh() {
+            wx.stopPullDownRefresh();
+            this.getSijiaoList(1);
+        }
+        onReachBottom() {
+            this.getSijiaoList(0);
+        }
+        methods = {
+            goTohtml(item) {
+                wx.navigateTo({
+                    url: "./sijiao?json=" + JSON.stringify(item)
+                })
+            }
+        }
+        async onLoad() {
+            this.getSijiaoList(0);
+        }
+        onShareAppMessage() {
+            return {
+                title: this.title,
+                path: '/pages/home',
+            };
+        }
+    }
+</script>
+
+<style lang="less">
+    .container {
+        background: #ffffff;
+        .wenzhang {
+            background: #ffffff;
+            width: 92%;
+            margin-left: 4%;
+            padding-top: 20rpx;
+            padding-bottom: 20rpx;
+            border-bottom: 1px solid #efefef;
+            .kuai {
+                padding-left: 16rpx;
+                padding-right: 16rpx;
+                display: flex;
+                justify-content: space-between;
+                .textkuang {
+                    width: 80%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    .title {
+                        color: #333;
+                        font-size: 28rpx;
+                        width: 420rpx;
+                    }
+                    .laiyuan {
+                        font-size: 20rpx;
+                    }
+                }
+                .image {
+                    margin-left: 16rpx;
+                    height: 138rpx;
+                    width: 250rpx;
+                }
+            }
+        }
+        .textend {
+            padding-top: 30rpx;
+            padding-bottom: 30rpx;
+            text-align: center;
+        }
+    }
+</style>

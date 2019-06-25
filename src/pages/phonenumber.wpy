@@ -5,101 +5,98 @@
     <view class="auth-item">恋爱联盟申请获取以下权限：</view>
     <view class="auth-item">获取您的手机号码</view>
     <view class="btn-authorize">
-        <button open-type="getPhoneNumber" type="primary" bindgetphonenumber="getPhoneNumber">授权</button> 
+      <button open-type="getPhoneNumber" type="primary" bindgetphonenumber="getPhoneNumber">授权</button>
     </view>
   </view>
 </template>
+
 <script>
-import wepy from 'wepy';
-import api from '@/api/api';
-import {
-  SYSTEM_INFO,
-  USER_SPECICAL_INFO,
-  USER_INFO
-} from '@/utils/constant';
-export default class Authorize extends wepy.page {
-  config = {
-    navigationBarTitleText: '授权获取手机号码',
-  }
-  data={
-      loginres:{},
-  }
-  onShareAppMessage() {
-    return {
-      title: '恋爱联盟',
-      path: '/pages/home',
-    };
-  }
-  async onLoad() { 
-    this.loginres = await wepy.login();
-  }
-  async getPhoneNumber(e) {
-    let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-    let openid = userSpecialInfo.openid;
-    if (e.detail.errMsg == 'getPhoneNumber:ok') {
-      if (this.loginres.code) {
-        let rlt = await api.getPhoneNumber({
-          query: {
-            openid:openid,
-            jsCode: this.loginres.code,
-            encryptedData:e.detail.encryptedData,
-            iv:e.detail.iv,
-          }
-        })
-        wepy.setStorageSync(USER_INFO, e.detail.userInfo);
-        if (rlt.data.data.openid) {
-          let data = rlt.data.data;
-          if (data.openid) {
-            wepy.setStorageSync(USER_SPECICAL_INFO, data);
-            wx.navigateBack({
+  import wepy from 'wepy';
+  import api from '@/api/api';
+  import {
+    SYSTEM_INFO,
+    USER_SPECICAL_INFO,
+    USER_INFO
+  } from '@/utils/constant';
+  export default class Authorize extends wepy.page {
+    config = {
+      navigationBarTitleText: '授权获取手机号码',
+    }
+    data = {
+      loginres: {},
+    }
+    onShareAppMessage() {
+      return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+      };
+    }
+    async onLoad() {
+      this.loginres = await wepy.login();
+    }
+    async getPhoneNumber(e) {
+      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
+      let openid = userSpecialInfo.openid;
+      if (e.detail.errMsg == 'getPhoneNumber:ok') {
+        if (this.loginres.code) {
+          let rlt = await api.getPhoneNumber({
+            query: {
+              openid: openid,
+              jsCode: this.loginres.code,
+              encryptedData: e.detail.encryptedData,
+              iv: e.detail.iv,
+            }
+          })
+          wepy.setStorageSync(USER_INFO, e.detail.userInfo);
+          if (rlt.data.data.openid) {
+            let data = rlt.data.data;
+            if (data.openid) {
+              wepy.setStorageSync(USER_SPECICAL_INFO, data);
+              wepy.setStorageSync('phoneNumber', 1);
+              wx.navigateBack({
                 delta: 1
+              })
+            }
+          } else {
+            let res = await wepy.showModal({
+              title: 'appid有误',
+              content: '授权失败'
             })
           }
-        } else {
-          let res = await wepy.showModal({
-            title: 'appid有误',
-            content: '授权失败'
-          })
         }
+      } else {
+        wx.showModal({
+          title: '友情提示',
+          content: '尊敬的用户，为确保对您的服务质量，请允许我们获取您的手机号码',
+        })
       }
     }
-    else{
-      wx.showModal({
-        title: '友情提示',
-        content: '尊敬的用户，为确保对您的服务质量，请允许我们获取您的手机号码',
-      })
+    methods = {}
+    events = {}
+  }
+</script>
+
+<style lang="less">
+  page {
+    height: 100%;
+  }
+  .authorize-contianer {
+    height: 100%;
+    background: #fff;
+    text-align: center;
+    padding-top: 100rpx;
+    .authorize-icon {
+      width: 128rpx;
+      height: 128rpx;
+      display: block;
+      margin: 0 auto;
+      padding-bottom: 10rpx;
+    }
+    .auth-item {
+      padding: 5rpx 0;
+    }
+    .btn-authorize {
+      margin: 100rpx 50rpx;
     }
   }
-  methods = {
-
-  }
-  events = {
-
-  }
-}
-</script>
-<style lang="less">
-page {
-  height: 100%;
-}
-
-.authorize-contianer {
-  height: 100%;
-  background: #fff;
-  text-align: center;
-  padding-top: 100rpx;
-  .authorize-icon {
-    width: 128rpx;
-    height: 128rpx;
-    display: block;
-    margin: 0 auto;
-    padding-bottom: 10rpx;
-  }
-  .auth-item {
-    padding: 5rpx 0;
-  }
-  .btn-authorize {
-    margin: 100rpx 50rpx;
-  }
-}
 </style>

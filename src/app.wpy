@@ -1,86 +1,99 @@
 <style lang="less">
-@import "./styles/base";
-@import "./styles/icon";
-@import "./styles/style";
+  @import "./styles/base";
+  @import "./styles/icon";
+  @import "./styles/style";
 </style>
+
 <script>
-import wepy from 'wepy';
-import 'wepy-async-function'
-export default class extends wepy.app {
-  config = {
-    pages: [
-      'pages/home',
-      'pages/shouquan',
-      'pages/adding',
-      'pages/course',
-      'pages/mall',
-      'pages/info',
-      'pages/searchpage',
-      'pages/lilun',
-      'pages/methodology',
-      'pages/searchWS',
-      'pages/vip',
-      'pages/viewhtml',
-      'pages/viewimage',
-      'pages/viewganhuo',
-      'pages/phonenumber',
-      'pages/tequan',
-      'pages/jifen',
-      'pages/weixin',
-      'pages/dingdan',
-      'pages/twqh',
-      'pages/tuweiqinghua'
-    ],
-    window: {
-      backgroundTextStyle: 'dark',
-      navigationBarBackgroundColor: '#ffffff',
-      navigationBarTitleText: '恋爱联盟',
-      navigationBarTextStyle: 'black',
-      enablePullDownRefresh: true,
-      backgroundColor: '#ffffff'
-    },
-    tabBar: {
-      "color": "#999999",
-      "selectedColor": "#ff4500",
-      "backgroundColor": "#ffffff",
-      "borderStyle": "black",
-      "list": [{
-        "pagePath": "pages/home",
-        "text": "首页",
-        "iconPath": "images/home.png",
-        "selectedIconPath": "images/home_active.png"
-      }, {
-        "pagePath": "pages/course",
-        "text": "文章",
-        "iconPath": "images/wenzhang.png",
-        "selectedIconPath": "images/wenzhang_active.png"
-      }, {
-        "pagePath": "pages/searchpage",
-        "text": "话术",
-        "iconPath": "images/huashu.png",
-        "selectedIconPath": "images/huashu_active.png"
-      }, {
-        "pagePath": "pages/info",
-        "text": "个人",
-        "iconPath": "images/info.png",
-        "selectedIconPath": "images/info_active.png"
-      }]
+  import wepy from 'wepy';
+  import 'wepy-async-function'
+  export default class extends wepy.app {
+    config = {
+      pages: [
+        'pages/home',
+        'pages/shouquan',
+        'pages/adding',
+        'pages/info',
+        'pages/searchpage',
+        'pages/liaomeitaolulist',
+        'pages/liaomeitaolu',
+        'pages/vip',
+        'pages/viewhtml',
+        'pages/viewimage',
+        'pages/viewganhuo',
+        'pages/phonenumber',
+        'pages/tequan',
+        'pages/jifen',
+        'pages/weixin',
+        'pages/dingdan',
+        'pages/tuweiqinghualist',
+        'pages/tuweiqinghua',
+        'pages/kechenglist',
+        'pages/kecheng',
+        'pages/kechengneirong',
+        'pages/sijiaolist',
+        'pages/sijiao',
+        'pages/xingxiangjianshelist',
+        'pages/xingxiangjianshe',
+        'pages/liaomeishizhanlist',
+        'pages/liaomeishizhan',
+        'pages/qingganbaike',
+        'pages/baikelist',
+        'pages/baike',
+        'pages/wendalist',
+        'pages/wenda',
+        'pages/xinliceshilist',
+        'pages/xinliceshi',
+        'pages/shoucang',
+      ],
+      window: {
+        backgroundTextStyle: 'dark',
+        navigationBarBackgroundColor: '#ffffff',
+        navigationBarTitleText: '恋爱联盟',
+        navigationBarTextStyle: 'black',
+        enablePullDownRefresh: true,
+        backgroundColor: '#ffffff'
+      },
+      tabBar: {
+        color: "#999999",
+        selectedColor: "#ff4500",
+        backgroundColor: "#ffffff",
+        borderStyle: "black",
+        list: [{
+          pagePath: "pages/home",
+          text: "首页",
+          iconPath: "images/shouye.png",
+          selectedIconPath: "images/shouye_active.png"
+        }, {
+          pagePath: "pages/liaomeitaolulist",
+          text: "套路",
+          iconPath: "images/wenzhang.png",
+          selectedIconPath: "images/wenzhang_active.png"
+        }, {
+          pagePath: "pages/searchpage",
+          text: "搜索",
+          iconPath: "images/search.png",
+          selectedIconPath: "images/search_active.png"
+        }, {
+          pagePath: "pages/info",
+          text: "个人",
+          iconPath: "images/geren.png",
+          selectedIconPath: "images/geren_active.png"
+        }]
+      }
+    }
+    globalData = {
+      currentTab: 0,
+    }
+    constructor() {
+      super()
+      this.use('requestfix')
+      this.use('promisify');
+    }
+    async onLaunch(options) {
+      wepy.setStorageSync('options', JSON.stringify(options));
+      let systemInfo = wepy.getSystemInfoSync();
+      wepy.setStorageSync('systemInfo', systemInfo.system);
     }
   }
-  globalData = {
-    currentTab:0,
-    istiyan:true,
-  }
-  constructor() {
-    super()
-    this.use('requestfix')
-    this.use('promisify');
-
-  }
-  async onLaunch(options) {
-    wepy.setStorageSync('options', JSON.stringify(options));
-    let systemInfo = wepy.getSystemInfoSync();
-    wepy.setStorageSync('systemInfo', systemInfo.system);
-  }
-}
 </script>

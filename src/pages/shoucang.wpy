@@ -93,8 +93,8 @@
           }
           this.bianji = 1;
           let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-          let openid = userSpecialInfo.openid;
-          if (typeof(openid) == "undefined") {
+          let unionid = userSpecialInfo.unionid;
+          if (typeof(unionid) == "undefined") {
             wepy.navigateTo({
               url: '/pages/shouquan'
             })
@@ -102,10 +102,8 @@
           }
           this.$apply();
           api.setDianzanshoucang({
-            query: {
-              openid: openid,
-              DianzanshoucangList: this.DianzanshoucangList,
-            }
+            unionid: unionid,
+            DianzanshoucangList: this.DianzanshoucangList,
           })
         },
       });
@@ -126,8 +124,8 @@
           }
           this.bianji = 1;
           let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-          let openid = userSpecialInfo.openid;
-          if (typeof(openid) == "undefined") {
+          let unionid = userSpecialInfo.unionid;
+          if (typeof(unionid) == "undefined") {
             wepy.navigateTo({
               url: '/pages/shouquan'
             })
@@ -135,30 +133,26 @@
           }
           this.$apply();
           api.setDianzanshoucang({
-            query: {
-              openid: openid,
-              DianzanshoucangList: this.DianzanshoucangList
-            }
+            unionid: unionid,
+            DianzanshoucangList: this.DianzanshoucangList
           })
         },
       });
     }
     async getDianzanshoucangList() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof(openid) == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof(unionid) == "undefined") {
         wepy.navigateTo({
           url: '/pages/shouquan'
         })
         return false;
       }
       let json = await api.getDianzanshoucangList({
-        query: {
-          openid: openid,
-        }
+        unionid: unionid,
       })
       this.bianji = 1;
-      this.DianzanshoucangList = json.data.data;
+      this.DianzanshoucangList = json.data;
       for (var i = 0; i < this.DianzanshoucangList.length; ++i)
         this.DianzanshoucangList[i].xuanze = 0;
       this.shanchushu = 0;

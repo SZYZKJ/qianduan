@@ -42,24 +42,22 @@
         async getQingganbaikeList(e) {
             if (this.isend) return;
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof(openid) == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof(unionid) == "undefined") {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
             let json = await api.getQingganbaikeList({
-                query: {
-                    openid: openid,
-                    category_id: this.inputdata.category_id,
-                    scroll: this.scroll,
-                }
+                unionid: unionid,
+                category_id: this.inputdata.category_id,
+                scroll: this.scroll,
             })
-            if (json.data.data.length < 10) this.isend = true;
-            if (e) this.baikeList = json.data.data.concat(this.baikeList);
-            else this.baikeList = this.baikeList.concat(json.data.data);
-            this.scroll = json.data.scroll;
+            if (json.data.length < 10) this.isend = true;
+            if (e) this.baikeList = json.data.concat(this.baikeList);
+            else this.baikeList = this.baikeList.concat(json.data);
+            this.scroll = json.scroll;
             this.$apply();
         }
         onPullDownRefresh() {

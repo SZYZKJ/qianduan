@@ -1,6 +1,6 @@
 <template>
     <view class="kuang">
-        <!-- <view class="title">{{kecheng.biaoti}}</view> -->
+        <view class="title">{{kecheng.title}}</view>
         <rich-text nodes="{{kecheng.content}}"></rich-text>
     </view>
 </template>
@@ -25,20 +25,18 @@
         };
         async getKecheng() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof openid == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof unionid == "undefined") {
                 wepy.navigateTo({
                     url: "/pages/shouquan"
                 });
                 return false;
             }
             let json = await api.getKecheng({
-                query: {
-                    openid: openid,
-                    neirongid:this.neirongid,
-                }
+                unionid: unionid,
+                neirongid: this.neirongid,
             });
-            this.kecheng = json.data.data;
+            this.kecheng = json.data;
             wx.setNavigationBarTitle({
                 title: this.kecheng.biaoti
             });
@@ -50,8 +48,7 @@
                 path: "/pages/home"
             };
         }
-        methods = {
-        }
+        methods = {}
         onLoad(e) {
             this.neirongid = e.neirongid;
             this.getKecheng();
@@ -67,9 +64,10 @@
         color: #333;
         word-break: break-all;
         text-align: justify;
+        padding-bottom: 100rpx;
     }
-    .title{
-            color: #333;
-            font-size: 40rpx;
-        }
+    .title {
+        color: #333;
+        font-size: 40rpx;
+    }
 </style>

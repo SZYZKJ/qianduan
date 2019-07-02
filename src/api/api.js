@@ -2,14 +2,14 @@ import {
   wxRequestPost
 } from '@/utils/wxRequest';
 
-const apiMain = 'https://www.lianaizhuli.com/api/'
+const apiMain = 'https://www.lianaizhuli.com/xcx/'
 // const apiMain = 'https://www.xingnanzhuli.com/api/'
 const wangzhi = 'https://www.xingnanzhuli.com/'
 
 //微信的jscode换取sessionKey
-const getOpenid = (params) => wxRequestPost(params, apiMain + 'getOpenid');
-//判断是否存在openid
-const checkOpenid = (params) => wxRequestPost(params, apiMain + 'checkOpenid');
+const getUnionid = (params) => wxRequestPost(params, apiMain + 'getUnionid');
+//判断是否存在unionid
+const checkUnionid = (params) => wxRequestPost(params, apiMain + 'checkUnionid');
 //获取手机号码
 const getPhoneNumber = (params) => wxRequestPost(params, apiMain + 'getPhoneNumber');
 //搜索话术
@@ -108,8 +108,8 @@ export default {
   getXingxiangjianshe,
   getLiaomeishizhan,
   wangzhi,
-  getOpenid,
-  checkOpenid,
+  getUnionid,
+  checkUnionid,
   getPhoneNumber,
   searchLiaomeihuashu,
   searchGuanli,

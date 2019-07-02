@@ -4,7 +4,7 @@
       <view class="secondkuai">
         <view class="duihua">
           <view class="biaoti" bindtap="copycontent({{item.title}})">
-          <text selectable="true">{{item.title}}\n</text>
+            <text selectable="true">{{item.title}}\n</text>
           </view>
           <view wx:for="{{item.datalist}}" wx:key="key" wx:for-item="minitem">
             <view class="nv" wx:if="{{minitem.person==0}}">
@@ -142,24 +142,22 @@
     }
     async getLiaomeitaoluList() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       const json = await api.getLiaomeitaoluList({
-        query: {
-          openid: openid,
-          cid: this.cid,
-          scroll: this.scroll
-        }
+        unionid: unionid,
+        cid: this.cid,
+        scroll: this.scroll
       });
-      if (json.data.MSG == "OK") {
-        if (json.data.data.length < 10) this.isend = true;
-        this.LilunList = this.LilunList.concat(json.data.data);
-        this.scroll = json.data.scroll;
+      if (json.MSG == "OK") {
+        if (json.data.length < 10) this.isend = true;
+        this.LilunList = this.LilunList.concat(json.data);
+        this.scroll = json.scroll;
         this.$apply();
       } else {
         this.confirm();

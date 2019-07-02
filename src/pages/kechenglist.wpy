@@ -7,7 +7,7 @@
                         <text selectable='true' class="title">{{item.title}}</text>
                         <view class="minlan">
                             <view class="laiyuan">{{item.count}}次学习</view>
-                            <view class="yigoumai">¥{{item.jiage}}</view>
+                            <view class="yigoumai" wx:if="{{issystem==1}}">¥{{item.jiage}}</view>
                             <view class="yigoumai" wx:if="{{item.yigoumai}}">已购买</view>
                             <view class="weigoumai" wx:else>去试读</view>
                         </view>
@@ -39,6 +39,7 @@
             inputdata: {
                 title: '',
             },
+            issystem: 1,
             kechenglist: [],
             scroll: '',
             isend: false,
@@ -46,23 +47,21 @@
         async getKechengList(e) {
             if (this.isend) return;
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof(openid) == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof(unionid) == "undefined") {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
             let json = await api.getKechengList({
-                query: {
-                    openid: openid,
-                    scroll: this.scroll,
-                }
+                unionid: unionid,
+                scroll: this.scroll,
             })
-            if (json.data.data.length < 10) this.isend = true;
-            if (e) this.kechenglist = json.data.data.concat(this.kechenglist);
-            else this.kechenglist = this.kechenglist.concat(json.data.data);
-            this.scroll = json.data.scroll;
+            if (json.data.length < 10) this.isend = true;
+            if (e) this.kechenglist = json.data.concat(this.kechenglist);
+            else this.kechenglist = this.kechenglist.concat(json.data);
+            this.scroll = json.scroll;
             this.$apply();
         }
         onPullDownRefresh() {
@@ -80,6 +79,7 @@
             }
         }
         async onLoad() {
+            this.issystem = wepy.getStorageSync('issystem');
             this.getKechengList(0);
         }
         onShareAppMessage() {
@@ -116,27 +116,27 @@
                         font-size: 28rpx;
                         width: 420rpx;
                     }
-                    .minlan{
+                    .minlan {
                         display: flex;
                         justify-content: space-between;
                         text-align: center;
-                    .laiyuan {
-                        font-size: 20rpx;
-                    }
-                    .yigoumai{
-                        width: 100rpx;
-                        color: #fff;
-                        background: #ff7e00;
-                        border-radius: 20rpx;
-                        font-size: 20rpx;
-                    }
-                    .weigoumai{
-                        width: 100rpx;
-                        color: #fff;
-                        background: #09BB07;
-                        border-radius: 20rpx;
-                        font-size: 20rpx;
-                    }
+                        .laiyuan {
+                            font-size: 20rpx;
+                        }
+                        .yigoumai {
+                            width: 100rpx;
+                            color: #fff;
+                            background: #ff7e00;
+                            border-radius: 20rpx;
+                            font-size: 20rpx;
+                        }
+                        .weigoumai {
+                            width: 100rpx;
+                            color: #fff;
+                            background: #09BB07;
+                            border-radius: 20rpx;
+                            font-size: 20rpx;
+                        }
                     }
                 }
                 .image {

@@ -1,7 +1,7 @@
 import wepy from 'wepy';
 var CryptoJS = require('./aes.js');
-var key = CryptoJS.enc.Utf8.parse("pangyuming920318");
-var iv = CryptoJS.enc.Utf8.parse("abcdefabcdefabcd");
+var key = CryptoJS.enc.Utf8.parse("szyzkjpangyuming");
+var iv = CryptoJS.enc.Utf8.parse("abcde920318abcde");
 function Encrypt(word) {
     var srcs = CryptoJS.enc.Utf8.parse(word);
     var encrypted = CryptoJS.AES.encrypt(srcs, key, { iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 });
@@ -15,7 +15,7 @@ function Decrypt(word) {
     return decryptedStr.toString();
 }
 const wxRequestPost = async(params = {}, url) => {
-    let data = params.query || {};
+    let data = params || {};
     var newdata=JSON.stringify(data);
     newdata=Encrypt(newdata);
     let res = await wepy.request({
@@ -24,7 +24,7 @@ const wxRequestPost = async(params = {}, url) => {
         data: newdata,
         header: { 'Content-Type': 'application/json' },
     });
-    res.data=JSON.parse(Decrypt(res.data));
+    res=JSON.parse(Decrypt(res.data));
     return res;
 };
 

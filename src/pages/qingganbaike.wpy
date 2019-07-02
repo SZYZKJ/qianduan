@@ -72,23 +72,21 @@
     }
     async getQingganbaike() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof(openid) == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof(unionid) == "undefined") {
         wepy.navigateTo({
           url: '/pages/shouquan'
         })
         return false;
       }
       let json = await api.getQingganbaike({
-        query: {
-          openid: openid,
-        }
+        unionid: unionid,
       })
-      this.wenda = json.data.wenda;
-      this.rumen = json.data.rumen;
-      this.jinjie = json.data.jinjie;
-      this.rumenjieduan = json.data.rumenjieduan;
-      this.jinjiejieduan = json.data.jinjiejieduan;
+      this.wenda = json.wenda;
+      this.rumen = json.rumen;
+      this.jinjie = json.jinjie;
+      this.rumenjieduan = json.rumenjieduan;
+      this.jinjiejieduan = json.jinjiejieduan;
       this.$apply();
     }
     onShareAppMessage() {

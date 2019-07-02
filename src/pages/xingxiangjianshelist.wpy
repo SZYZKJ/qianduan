@@ -44,18 +44,16 @@
     async getXingxiangjiansheList(e) {
       if (this.isend) return;
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
+      let unionid = userSpecialInfo.unionid;
       let that = this;
       const json = await api.getXingxiangjiansheList({
-        query: {
-          openid: openid,
-          scroll: this.scroll,
-        }
+        unionid: unionid,
+        scroll: this.scroll,
       });
-      if (json.data.data.length < 10) this.isend = true;
-      if (e) this.xingxiangjiansheList = json.data.data.concat(this.xingxiangjiansheList);
-      else this.xingxiangjiansheList = this.xingxiangjiansheList.concat(json.data.data);
-      this.scroll = json.data.scroll;
+      if (json.data.length < 10) this.isend = true;
+      if (e) this.xingxiangjiansheList = json.data.concat(this.xingxiangjiansheList);
+      else this.xingxiangjiansheList = this.xingxiangjiansheList.concat(json.data);
+      this.scroll = json.scroll;
       this.$apply();
     }
     onPullDownRefresh() {

@@ -74,24 +74,22 @@
         async getXinliceshiList(e) {
             if (this.isend[this.changeTab]) return;
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof(openid) == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof(unionid) == "undefined") {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
             let json = await api.getXinliceshiList({
-                query: {
-                    openid: openid,
-                    category_id: this.titletab[this.currentTab].category_id,
-                    scroll: this.scroll[this.currentTab],
-                }
+                unionid: unionid,
+                category_id: this.titletab[this.currentTab].category_id,
+                scroll: this.scroll[this.currentTab],
             })
-            if (json.data.data.length < 10) this.isend[this.currentTab] = true;
-            if (e) this.XinliceshiList[this.currentTab] = json.data.data.concat(this.XinliceshiList[this.currentTab]);
-            else this.XinliceshiList[this.currentTab] = this.XinliceshiList[this.currentTab].concat(json.data.data);
-            this.scroll[this.currentTab] = json.data.scroll;
+            if (json.data.length < 10) this.isend[this.currentTab] = true;
+            if (e) this.XinliceshiList[this.currentTab] = json.data.concat(this.XinliceshiList[this.currentTab]);
+            else this.XinliceshiList[this.currentTab] = this.XinliceshiList[this.currentTab].concat(json.data);
+            this.scroll[this.currentTab] = json.scroll;
             this.$apply();
         }
         changeTab() {

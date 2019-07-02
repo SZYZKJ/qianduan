@@ -45,53 +45,47 @@
         }
         async getLiaomeishizhan() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof openid == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof unionid == "undefined") {
                 wepy.navigateTo({
                     url: "/pages/shouquan"
                 });
                 return false;
             }
             let json = await api.getLiaomeishizhan({
-                query: {
-                    openid: openid,
-                    liaomeishizhanid: this.id
-                }
+                unionid: unionid,
+                liaomeishizhanid: this.id
             });
-            this.liaomeishizhan = json.data.data;
+            this.liaomeishizhan = json.data;
             wx.setNavigationBarTitle({
                 title: this.liaomeishizhan.title
             });
             let newjson = await api.getDianzanshoucang({
-                query: {
-                    openid: openid,
-                    doctype: 'liaomeishizhan',
-                    docid: this.id,
-                }
+                unionid: unionid,
+                doctype: 'liaomeishizhan',
+                docid: this.id,
             });
-            this.dianzan = newjson.data.dianzan;
-            this.shoucang = newjson.data.shoucang;
+            this.dianzan = newjson.dianzan;
+            this.shoucang = newjson.shoucang;
             this.$apply();
         }
         async setDianzanshoucangshu() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof openid == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof unionid == "undefined") {
                 wepy.navigateTo({
                     url: "/pages/shouquan"
                 });
                 return false;
             }
             await api.setDianzanshoucangshu({
-                query: {
-                    openid: openid,
-                    doctype: 'liaomeishizhan',
-                    docid: this.id,
-                    dianzanshu: this.liaomeishizhan.dianzan,
-                    shoucangshu: this.liaomeishizhan.shoucang,
-                    dianzan: this.dianzan,
-                    shoucang: this.shoucang,
-                }
+                unionid: unionid,
+                doctype: 'liaomeishizhan',
+                docid: this.id,
+                dianzanshu: this.liaomeishizhan.dianzan,
+                shoucangshu: this.liaomeishizhan.shoucang,
+                dianzan: this.dianzan,
+                shoucang: this.shoucang,
             });
         }
         onShareAppMessage() {

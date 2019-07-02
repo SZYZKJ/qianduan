@@ -108,36 +108,32 @@
     };
     async getRecommend() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       const json = await api.getRecommend({
-        query: {
-          openid: openid
-        }
+        unionid: unionid
       });
-      this.hotWordsList = json.data.data.hotWordsList;
+      this.hotWordsList = json.data.hotWordsList;
       this.$apply();
     }
     async getHiswordList() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       const json = await api.getHiswordList({
-        query: {
-          openid: openid
-        }
+        unionid: unionid
       });
-      this.hisWordsList = json.data.data;
+      this.hisWordsList = json.data;
       this.$apply();
     }
     computed = {};
@@ -176,25 +172,23 @@
     async searchLiaomeihuashu() {
       let that = this;
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       const json = await api.searchLiaomeihuashu({
-        query: {
-          query: that.inputValue,
-          openid: openid,
-          scroll: that.scroll0
-        }
+        query: that.inputValue,
+        unionid: unionid,
+        scroll: that.scroll0
       });
       that.oldhuashu = that.inputValue;
-      if (json.data.MSG == "OK") {
-        that.huashuList = that.huashuList.concat(json.data.data);
-        if (json.data.data.length < 10) this.isend0 = true;
-        that.scroll0 = json.data.scroll;
+      if (json.MSG == "OK") {
+        that.huashuList = that.huashuList.concat(json.data);
+        if (json.data.length < 10) this.isend0 = true;
+        that.scroll0 = json.scroll;
       } else {
         this.confirm();
       }
@@ -204,25 +198,23 @@
     async searchBiaoqing() {
       let that = this;
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       const json = await api.searchBiaoqing({
-        query: {
-          query: that.inputValue,
-          openid: openid,
-          scroll: that.scroll1
-        }
+        query: that.inputValue,
+        unionid: unionid,
+        scroll: that.scroll1
       });
       that.oldbiaoqing = that.inputValue;
-      if (json.data.MSG == "OK") {
-        that.biaoqingList = that.biaoqingList.concat(json.data.data);
-        if (json.data.data.length < 10) this.isend1 = true;
-        that.scroll1 = json.data.scroll;
+      if (json.MSG == "OK") {
+        that.biaoqingList = that.biaoqingList.concat(json.data);
+        if (json.data.length < 10) this.isend1 = true;
+        that.scroll1 = json.scroll;
       } else {
         this.confirm();
       }
@@ -232,25 +224,23 @@
     async searchBaike() {
       let that = this;
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       const json = await api.searchBaike({
-        query: {
-          query: that.inputValue,
-          openid: openid,
-          scroll: that.scroll2
-        }
+        query: that.inputValue,
+        unionid: unionid,
+        scroll: that.scroll2
       });
       that.oldbaike = that.inputValue;
-      if (json.data.MSG == "OK") {
-        that.baikeList = that.baikeList.concat(json.data.data);
-        if (json.data.data.length < 10) this.isend2 = true;
-        that.scroll2 = json.data.scroll;
+      if (json.MSG == "OK") {
+        that.baikeList = that.baikeList.concat(json.data);
+        if (json.data.length < 10) this.isend2 = true;
+        that.scroll2 = json.scroll;
       } else {
         this.confirm();
       }
@@ -259,17 +249,15 @@
     }
     async clearHiswords() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       const json = await api.clearHiswords({
-        query: {
-          openid: openid
-        }
+        unionid: unionid
       });
       this.hisWordsList = [];
       this.$apply();
@@ -375,20 +363,18 @@
     }
     async setJilu() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       const json = await api.setJilu({
-        query: {
-          openid: openid,
-          query: this.inputValue,
-          jilutype: this.jilutype,
-          jilucontent: this.jilucontent
-        }
+        unionid: unionid,
+        query: this.inputValue,
+        jilutype: this.jilutype,
+        jilucontent: this.jilucontent
       });
       this.$apply();
     }
@@ -406,7 +392,7 @@
       ) {
         if (this.currentTab > 0) {
           this.currentTab--;
-          console.log(this.currentTab,this.inputValue,this.oldbiaoqing)
+          console.log(this.currentTab, this.inputValue, this.oldbiaoqing)
           if (this.currentTab == 0 && this.inputValue != this.oldhuashu) {
             this.huashuList = [];
             this.scroll0 = "";
@@ -433,7 +419,7 @@
       ) {
         if (this.currentTab < 2) {
           this.currentTab++;
-          console.log(this.currentTab,this.inputValue,this.oldbiaoqing)
+          console.log(this.currentTab, this.inputValue, this.oldbiaoqing)
           if (this.currentTab == 0 && this.inputValue != this.oldhuashu) {
             this.huashuList = [];
             this.scroll0 = "";

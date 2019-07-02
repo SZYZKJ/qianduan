@@ -55,19 +55,17 @@
     }
     async getTequan() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       let json = await api.getTequan({
-        query: {
-          openid: openid
-        }
+        unionid: unionid
       });
-      this.vipdengji = json.data.vipdengji;
+      this.vipdengji = json.vipdengji;
       this.$apply();
     }
     onShareAppMessage() {

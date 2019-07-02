@@ -44,18 +44,16 @@
     async getLiaomeishizhanList(e) {
       if (this.isend) return;
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
+      let unionid = userSpecialInfo.unionid;
       let that = this;
       const json = await api.getLiaomeishizhanList({
-        query: {
-          openid: openid,
-          scroll: this.scroll,
-        }
+        unionid: unionid,
+        scroll: this.scroll,
       });
-      if (json.data.data.length < 10) this.isend = true;
-      if (e) this.liaomeishizhanList = json.data.data.concat(this.liaomeishizhanList);
-      else this.liaomeishizhanList = this.liaomeishizhanList.concat(json.data.data);
-      this.scroll = json.data.scroll;
+      if (json.data.length < 10) this.isend = true;
+      if (e) this.liaomeishizhanList = json.data.concat(this.liaomeishizhanList);
+      else this.liaomeishizhanList = this.liaomeishizhanList.concat(json.data);
+      this.scroll = json.scroll;
       this.$apply();
     }
     onPullDownRefresh() {

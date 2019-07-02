@@ -32,19 +32,17 @@
         }
         async getDingdan() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof(openid) == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof(unionid) == "undefined") {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
             let json = await api.getDingdan({
-                query: {
-                    openid: openid,
-                }
+                unionid: unionid,
             })
-            this.dingdan = json.data.data;
+            this.dingdan = json.data;
             this.$apply();
         }
         onShareAppMessage() {

@@ -12,7 +12,7 @@
           <view class="itemtitle">{{item.title}}</view>
           <view class="yigoumai" wx:if="{{kecheng.yigoumai}}">去学习</view>
           <view wx:else>
-            <view class="yigoumai" wx:if="{{index<2}}">免费</view>
+            <view class="yigoumai" wx:if="{{index<1||(index<2&&kecheng.children.length>=5)}}">免费</view>
             <image class="suo" wx:else src="../images/suo.png" />
           </view>
         </view>
@@ -79,22 +79,20 @@
         this.nowtime = timestamp;
       }
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof(openid) == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof(unionid) == "undefined") {
         wepy.navigateTo({
           url: '/pages/shouquan'
         })
         return false;
       }
       const json = await api.get_kechengprepay_id({
-        query: {
-          'openid': openid,
-          'kechengid': this.kecheng.id,
-          'detail': '课程：' + this.kecheng.title,
-        }
+        'unionid': unionid,
+        'kechengid': this.kecheng.id,
+        'detail': '课程：' + this.kecheng.title,
       });
-      this.paySign_data = json.data.data;
-      if (json.data.MSG == 'nophoneNumber') {
+      this.paySign_data = json.data;
+      if (json.MSG == 'nophoneNumber') {
         wepy.navigateTo({
           url: '/pages/phonenumber'
         });
@@ -112,7 +110,7 @@
     }
     methods = {
       goTohtml(item, index) {
-        if (this.kecheng.yigoumai || index < 2) {
+        if (this.kecheng.yigoumai || index < 1 || (index < 2 && this.kecheng.children.length >= 5)) {
           wx.navigateTo({
             url: "./kechengneirong?neirongid=" + item.id,
           })

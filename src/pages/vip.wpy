@@ -1,109 +1,105 @@
 <template>
-    <view wx:if="{{issystem==0}}" class="issystem">
-        由于相关规范，iOS功能暂不可用
-    </view>
-    <view wx:if="{{issystem}}" class="container">
-        <view class="vip">
-            <button class="try {{currentTab==1 ? 'active' : ''}}" @tap="swichtab(1)">
-                    <view class="viptext {{currentTab==1 ? 'active' : ''}}">月会员(1个月)</view>
-                    <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥29.00</view>
-                </button>
-            <button class="month {{currentTab==2 ? 'active' : ''}}" @tap="swichtab(2)">
-                    <view class="viptext {{currentTab==2 ? 'active' : ''}}">年会员(1年)</view>
-                    <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥199.00</view>
-                </button>
+    <view>
+        <view wx:if="{{issystem==0}}" class="issystem">
+            由于相关规范，iOS功能暂不可用。如有疑问请咨询客服或恋爱联盟公众号。
         </view>
-        <view class="vip">
-            <button class="year {{currentTab==3 ? 'active' : ''}}" @tap="swichtab(3)">
-                    <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送年会员)</view>
-                    <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
-                </button>
-            <button class="lifelong {{currentTab==4 ? 'active' : ''}}" @tap="swichtab(4)">
-                    <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送年会员)</view>
-                    <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
-                </button>
-        </view>
-        <view class="vip">
-            <button class="year {{currentTab==5 ? 'active' : ''}}" @tap="swichtab(5)">
-                    <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
-                    <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
-                </button>
-            <button class="lifelong {{currentTab==6 ? 'active' : ''}}" @tap="swichtab(6)">
-                    <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
-                    <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
-                </button>
-        </view>
-        <button class="zhifu" @tap="weixinzhifu">立即支付</button>
-        <view class="tequan">
-            会员特权
-            <view class="tequanneirong" wx:if="{{currentTab==1}}">
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条话术可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、20万+条惯例可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
-                <view wx:if="{{islianmeng==0}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章干货</view>
-                <view wx:if="{{islianmeng}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章视频</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人初级答疑群</view>
+        <view wx:if="{{issystem==1}}" class="container">
+            <view class="vip">
+                <button class="try {{currentTab==1 ? 'active' : ''}}" @tap="swichtab(1)">
+                                <view class="viptext {{currentTab==1 ? 'active' : ''}}">月会员(1个月)</view>
+                                <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥29.00</view>
+                            </button>
+                <button class="month {{currentTab==2 ? 'active' : ''}}" @tap="swichtab(2)">
+                                <view class="viptext {{currentTab==2 ? 'active' : ''}}">年会员(1年)</view>
+                                <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥199.00</view>
+                            </button>
             </view>
-            <view class="tequanneirong" wx:if="{{currentTab==2}}">
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条话术可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、20万+条惯例可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
-                <view wx:if="{{islianmeng==0}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章干货</view>
-                <view wx:if="{{islianmeng}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章视频</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人中级答疑群</view>
+            <view class="vip">
+                <button class="year {{currentTab==3 ? 'active' : ''}}" @tap="swichtab(3)">
+                                <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送年会员)</view>
+                                <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
+                            </button>
+                <button class="lifelong {{currentTab==4 ? 'active' : ''}}" @tap="swichtab(4)">
+                                <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送年会员)</view>
+                                <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
+                            </button>
             </view>
-            <view class="tequanneirong" wx:if="{{currentTab==3}}">
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条话术可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、20万+条惯例可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
-                <view wx:if="{{islianmeng==0}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章干货</view>
-                <view wx:if="{{islianmeng}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章视频</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人高级答疑群</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、恋爱联盟书籍全册</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、恋爱挽回婚姻一对一私教指导（1个月）</view>
+            <view class="vip">
+                <button class="year {{currentTab==5 ? 'active' : ''}}" @tap="swichtab(5)">
+                                <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
+                                <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
+                            </button>
+                <button class="lifelong {{currentTab==6 ? 'active' : ''}}" @tap="swichtab(6)">
+                                <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
+                                <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
+                            </button>
             </view>
-            <view class="tequanneirong" wx:if="{{currentTab==4}}">
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条话术可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、20万+条惯例可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
-                <view wx:if="{{islianmeng==0}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章干货</view>
-                <view wx:if="{{islianmeng}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章视频</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人高级答疑群</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、恋爱联盟书籍全册</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、恋爱挽回婚姻一对一私教指导（3个月）</view>
-            </view>
-            <view class="tequanneirong" wx:if="{{currentTab==5}}">
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条话术可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、20万+条惯例可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
-                <view wx:if="{{islianmeng==0}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章干货</view>
-                <view wx:if="{{islianmeng}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章视频</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人高级答疑群</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、恋爱联盟书籍全册</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、恋爱挽回婚姻一对一私教指导（1年）</view>
-            </view>
-            <view class="tequanneirong" wx:if="{{currentTab==6}}">
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条话术可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、20万+条惯例可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
-                <view wx:if="{{islianmeng==0}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章干货</view>
-                <view wx:if="{{islianmeng}}" class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱文章视频</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人高级答疑群</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、恋爱联盟书籍全册</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、恋爱挽回婚姻一对一私教指导（终身）</view>
-                <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>10、联盟会员专属服务</view>
+            <button class="zhifu" @tap="weixinzhifu">立即支付</button>
+            <view class="tequan">
+                会员特权
+                <view class="tequanneirong" wx:if="{{currentTab==1}}">
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条撩妹话术可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、上万+条撩妹套路可供参考</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱百科知识</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人初级答疑群</view>
+                </view>
+                <view class="tequanneirong" wx:if="{{currentTab==2}}">
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条撩妹话术可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、上万+条撩妹套路可供参考</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱百科知识</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人中级答疑群</view>
+                </view>
+                <view class="tequanneirong" wx:if="{{currentTab==3}}">
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条撩妹话术可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、上万+条撩妹套路可供参考</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱百科知识</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人高级答疑群</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、恋爱联盟书籍全册</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、恋爱挽回婚姻一对一私教指导（1个月）</view>
+                </view>
+                <view class="tequanneirong" wx:if="{{currentTab==4}}">
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条撩妹话术可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、上万+条撩妹套路可供参考</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱百科知识</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人高级答疑群</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、恋爱联盟书籍全册</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、恋爱挽回婚姻一对一私教指导（3个月）</view>
+                </view>
+                <view class="tequanneirong" wx:if="{{currentTab==5}}">
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条撩妹话术可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、上万+条撩妹套路可供参考</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱百科知识</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人高级答疑群</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、恋爱联盟书籍全册</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、恋爱挽回婚姻一对一私教指导（1年）</view>
+                </view>
+                <view class="tequanneirong" wx:if="{{currentTab==6}}">
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条撩妹话术可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、上万+条撩妹套路可供参考</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱百科知识</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、500人高级答疑群</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、恋爱联盟书籍全册</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、恋爱挽回婚姻一对一私教指导（终身）</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>10、联盟会员专属服务</view>
+                </view>
             </view>
         </view>
     </view>
@@ -124,12 +120,11 @@
         data = {
             nowtime: 0,
             issystem: 1,
-            islianmeng: 0,
             currentTab: 1,
-            paySign_data:{},
+            paySign_data: {},
             detail: ['', '月会员(1个月)', '年会员(1年)', '私教一个月(送年会员)', '私教3个月(送年会员)', '私教一年(送终身会员)', '联盟会员(含私教终身)'],
         }
-        tiaoqizhifu(){
+        tiaoqizhifu() {
             wx.requestPayment({
                 timeStamp: this.paySign_data.timeStamp,
                 nonceStr: this.paySign_data.nonceStr,
@@ -152,27 +147,24 @@
                 this.nowtime = timestamp;
             }
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof(openid) == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof(unionid) == "undefined") {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
             const json = await api.get_prepay_id({
-                query: {
-                    'openid': openid,
-                    'zhifutype': this.currentTab,
-                    'detail': this.detail[this.currentTab],
-                }
+                'unionid': unionid,
+                'zhifutype': this.currentTab,
+                'detail': this.detail[this.currentTab],
             });
-            this.paySign_data=json.data.data;
-            if (json.data.MSG == 'nophoneNumber') {
+            this.paySign_data = json.data;
+            if (json.MSG == 'nophoneNumber') {
                 wepy.navigateTo({
                     url: '/pages/phonenumber'
                 });
-            }
-            else{
+            } else {
                 this.tiaoqizhifu();
             }
             this.$apply();
@@ -192,15 +184,14 @@
                 path: '/pages/home',
             };
         }
-        onShow(){
-            var phoneNumber=wepy.getStorageSync('phoneNumber');
-            if(phoneNumber==1){
+        onShow() {
+            var phoneNumber = wepy.getStorageSync('phoneNumber');
+            if (phoneNumber == 1) {
                 wepy.setStorageSync('phoneNumber', 0);
                 this.tiaoqizhifu();
             }
         }
         onLoad() {
-            this.islianmeng = wepy.getStorageSync('islianmeng');
             this.issystem = wepy.getStorageSync('issystem');
             this.$apply();
         }

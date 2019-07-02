@@ -49,14 +49,14 @@
         </view>
       </navigator>
       <button class="item" open-type="contact" session-from="weapp" plain=false>
-                  <view class="item_content">
-                    <image class="item_img" src="../images/zaixiankefu.png">
-                    <view class="text">
-                      <view class="text1">在线客服</view>
-                      <image class="text2" src="../images/jiantou.png" />
-                    </view>
-                  </view>
-                </button>
+                      <view class="item_content">
+                        <image class="item_img" src="../images/zaixiankefu.png">
+                        <view class="text">
+                          <view class="text1">在线客服</view>
+                          <image class="text2" src="../images/jiantou.png" />
+                        </view>
+                      </view>
+                    </button>
       <navigator class="item" url="/pages/weixin">
         <view class="item_content">
           <image class="item_img" src="../images/daoshiweixin.png" />
@@ -100,7 +100,7 @@
       wenhouyu: "HI，欢迎您~",
       avatarUrl: "",
       nickName: "",
-      huiyuan: ['非会员', '体验会员', '月会员', '年会员', '终身会员(含私教3个月)', '终身会员(含私教一年)', '联盟会员(含私教终身)'],
+      huiyuan: ['非会员', '月会员(1个月)', '年会员(1年)', '私教一个月(送年会员)', '私教3个月(送年会员)', '私教一年(送终身会员)', '联盟会员(含私教终身)'],
       vipdengji: 0,
       jifen: 0,
       issystem: 0,
@@ -113,22 +113,20 @@
     }
     async getJifen() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof(openid) == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof(unionid) == "undefined") {
         wepy.navigateTo({
           url: '/pages/shouquan'
         })
         return false;
       }
       let json = await api.getJifen({
-        query: {
-          openid: openid,
-          iszhudong: 0,
-        }
+        unionid: unionid,
+        iszhudong: 0,
       })
-      this.vipdengji = json.data.data.vipdengji;
-      this.jifen = json.data.data.jifen;
-      this.wenhouyu = json.data.data.wenhouyu;
+      this.vipdengji = json.data.vipdengji;
+      this.jifen = json.data.jifen;
+      this.wenhouyu = json.data.wenhouyu;
       this.$apply();
     }
     tovip() {

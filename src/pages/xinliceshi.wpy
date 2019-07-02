@@ -89,73 +89,65 @@
     }
     async getXinliceshi() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       let json = await api.getXinliceshi({
-        query: {
-          openid: openid,
-          ceshiid: this.ceshiid,
-        }
+        unionid: unionid,
+        ceshiid: this.ceshiid,
       });
-      this.xinliceshi = json.data.data;
+      this.xinliceshi = json.data;
       this.xinliceshi.image = '<img style="max-width:100%;height:auto;" src="' + this.xinliceshi.image + '"/>';
       this.ceshitype = this.xinliceshi.type;
       let newjson = await api.getDianzanshoucang({
-        query: {
-          openid: openid,
-          doctype: 'xinliceshi',
-          docid: this.ceshiid,
-        }
+        unionid: unionid,
+        doctype: 'xinliceshi',
+        docid: this.ceshiid,
       });
-      this.dianzan = newjson.data.dianzan;
-      this.shoucang = newjson.data.shoucang;
+      this.dianzan = newjson.dianzan;
+      this.shoucang = newjson.shoucang;
       this.$apply();
     }
     async setDianzanshoucangshu() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       await api.setDianzanshoucangshu({
-        query: {
-          openid: openid,
-          doctype: 'xinliceshi',
-          docid: this.ceshiid,
-          dianzanshu: this.xinliceshi.dianzan,
-          shoucangshu: this.xinliceshi.shoucang,
-          dianzan: this.dianzan,
-          shoucang: this.shoucang,
-        }
+        unionid: unionid,
+        doctype: 'xinliceshi',
+        docid: this.ceshiid,
+        dianzanshu: this.xinliceshi.dianzan,
+        shoucangshu: this.xinliceshi.shoucang,
+        dianzan: this.dianzan,
+        shoucang: this.shoucang,
       });
     }
     async getCeshidaan() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof openid == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof unionid == "undefined") {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
       let json = await api.getCeshidaan({
-        query: {
-          openid: openid,
-          ceshiid: this.ceshiid,
-          ceshitype: this.ceshitype,
-          score: this.score,
-          optionId: this.xuanze[this.xuanze.length - 1].options[this.xuanze[this.xuanze.length - 1].xuanze].optionId,
-        }
+        unionid: unionid,
+        ceshiid: this.ceshiid,
+        ceshitype: this.ceshitype,
+        score: this.score,
+        optionId: this.xuanze[this.xuanze.length - 1].options[this.xuanze[this.xuanze.length - 1].xuanze].optionId,
       });
-      this.ceshidaan = json.data.data;
+      this.ceshidaan = json.data;
       wx.setNavigationBarTitle({
         title: '测试结果'
       });

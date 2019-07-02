@@ -34,19 +34,17 @@
     }
     async setJilu() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      if (typeof(openid) == "undefined") {
+      let unionid = userSpecialInfo.unionid;
+      if (typeof(unionid) == "undefined") {
         wepy.navigateTo({
           url: '/pages/shouquan'
         })
         return false;
       }
       const json = await api.setJilu({
-        query: {
-          openid: openid,
-          jilutype: 'ganhuo',
-          jilucontent: this.url,
-        }
+        unionid: unionid,
+        jilutype: 'ganhuo',
+        jilucontent: this.url,
       });
       this.$apply();
     }

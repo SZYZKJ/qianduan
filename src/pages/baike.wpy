@@ -38,53 +38,47 @@
         };
         async getBaike() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof openid == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof unionid == "undefined") {
                 wepy.navigateTo({
                     url: "/pages/shouquan"
                 });
                 return false;
             }
             let json = await api.getBaike({
-                query: {
-                    openid: openid,
-                    baikeid: this.id
-                }
+                unionid: unionid,
+                baikeid: this.id
             });
-            this.baike = json.data.data;
+            this.baike = json.data;
             wx.setNavigationBarTitle({
                 title: this.baike.title
             });
             let newjson = await api.getDianzanshoucang({
-                query: {
-                    openid: openid,
-                    doctype: 'baike',
-                    docid: this.id,
-                }
+                unionid: unionid,
+                doctype: 'baike',
+                docid: this.id,
             });
-            this.dianzan = newjson.data.dianzan;
-            this.shoucang = newjson.data.shoucang;
+            this.dianzan = newjson.dianzan;
+            this.shoucang = newjson.shoucang;
             this.$apply();
         }
         async setDianzanshoucangshu() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof openid == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof unionid == "undefined") {
                 wepy.navigateTo({
                     url: "/pages/shouquan"
                 });
                 return false;
             }
             await api.setDianzanshoucangshu({
-                query: {
-                    openid: openid,
-                    doctype: 'baike',
-                    docid: this.id,
-                    dianzanshu: this.baike.dianzan,
-                    shoucangshu: this.baike.shoucang,
-                    dianzan: this.dianzan,
-                    shoucang: this.shoucang,
-                }
+                unionid: unionid,
+                doctype: 'baike',
+                docid: this.id,
+                dianzanshu: this.baike.dianzan,
+                shoucangshu: this.baike.shoucang,
+                dianzan: this.dianzan,
+                shoucang: this.shoucang,
             });
         }
         onShareAppMessage() {
@@ -139,10 +133,10 @@
         word-break: break-all;
         text-align: center;
     }
-    .title{
-            color: #000;
-            font-size: 40rpx;
-        }
+    .title {
+        color: #000;
+        font-size: 40rpx;
+    }
     .dikuang {
         padding-bottom: 100rpx;
         width: 100%;

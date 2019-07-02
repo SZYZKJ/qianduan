@@ -39,53 +39,47 @@
         };
         async getWenda() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof openid == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof unionid == "undefined") {
                 wepy.navigateTo({
                     url: "/pages/shouquan"
                 });
                 return false;
             }
             let json = await api.getWenda({
-                query: {
-                    openid: openid,
-                    wendaid: this.id
-                }
+                unionid: unionid,
+                wendaid: this.id
             });
-            this.wenda = json.data.data;
+            this.wenda = json.data;
             wx.setNavigationBarTitle({
                 title: this.wenda.title
             });
             let newjson = await api.getDianzanshoucang({
-                query: {
-                    openid: openid,
-                    doctype: 'wenda',
-                    docid: this.id,
-                }
+                unionid: unionid,
+                doctype: 'wenda',
+                docid: this.id,
             });
-            this.dianzan = newjson.data.dianzan;
-            this.shoucang = newjson.data.shoucang;
+            this.dianzan = newjson.dianzan;
+            this.shoucang = newjson.shoucang;
             this.$apply();
         }
         async setDianzanshoucangshu() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof openid == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof unionid == "undefined") {
                 wepy.navigateTo({
                     url: "/pages/shouquan"
                 });
                 return false;
             }
             await api.setDianzanshoucangshu({
-                query: {
-                    openid: openid,
-                    doctype: 'wenda',
-                    docid: this.id,
-                    dianzanshu: this.wenda.dianzan,
-                    shoucangshu: this.wenda.shoucang,
-                    dianzan: this.dianzan,
-                    shoucang: this.shoucang,
-                }
+                unionid: unionid,
+                doctype: 'wenda',
+                docid: this.id,
+                dianzanshu: this.wenda.dianzan,
+                shoucangshu: this.wenda.shoucang,
+                dianzan: this.dianzan,
+                shoucang: this.shoucang,
             });
         }
         onShareAppMessage() {
@@ -138,7 +132,7 @@
         padding-right: 30rpx;
         color: #000;
         word-break: break-all;
-        .title{
+        .title {
             color: #000;
             font-size: 40rpx;
             margin-bottom: 30rpx;

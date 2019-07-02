@@ -55,20 +55,18 @@
         }
         async getTuweiqinghua() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof(openid) == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof(unionid) == "undefined") {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
             let json = await api.getTuweiqinghua({
-                query: {
-                    openid: openid,
-                }
+                unionid: unionid,
             })
-            this.cententsList.push(json.data.data.datalist);
-            this.wordsList = json.data.data.datalist;
+            this.cententsList.push(json.data.datalist);
+            this.wordsList = json.data.datalist;
             this.nowid++;
             this.$apply();
         }

@@ -211,79 +211,71 @@
     };
     async getShouyekuai() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
+      let unionid = userSpecialInfo.unionid;
       let that = this;
-      if (typeof(openid) == "undefined") {
+      if (typeof(unionid) == "undefined") {
         setTimeout(function() {
           that.getShouyekuai();
         }, 1000);
         return false;
       }
       const json = await api.getShouyekuai({
-        query: {
-          openid: openid,
-        }
+        unionid: unionid,
       });
-      this.lunbotu = json.data.lunbotu;
-      this.tubiao = json.data.tubiao;
-      this.miaoshu = json.data.miaoshu;
-      this.searchicon = json.data.searchicon;
-      this.tuijian = json.data.tuijian;
+      this.lunbotu = json.lunbotu;
+      this.tubiao = json.tubiao;
+      this.miaoshu = json.miaoshu;
+      this.searchicon = json.searchicon;
+      this.tuijian = json.tuijian;
       this.$apply();
     }
     async getShouyeman() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
+      let unionid = userSpecialInfo.unionid;
       let that = this;
-      if (typeof(openid) == "undefined") {
+      if (typeof(unionid) == "undefined") {
         setTimeout(function() {
           that.getShouyeman();
         }, 1000);
         return false;
       }
       const json = await api.getShouyeman({
-        query: {
-          openid: openid,
-        }
+        unionid: unionid,
       });
-      this.kecheng = json.data.kecheng;
-      this.xingxiangjianshe = json.data.xingxiangjianshe;
-      this.qingganbaike = json.data.qingganbaike;
-      this.liaomeishizhan = json.data.liaomeishizhan;
-      this.sijiao = json.data.sijiao;
-      this.xinliceshi = json.data.xinliceshi;
-      this.gengduotext = json.data.gengduotext;
-      this.gengduoicon = json.data.gengduoicon;
+      this.kecheng = json.kecheng;
+      this.xingxiangjianshe = json.xingxiangjianshe;
+      this.qingganbaike = json.qingganbaike;
+      this.liaomeishizhan = json.liaomeishizhan;
+      this.sijiao = json.sijiao;
+      this.xinliceshi = json.xinliceshi;
+      this.gengduotext = json.gengduotext;
+      this.gengduoicon = json.gengduoicon;
       this.$apply();
     }
-    async checkOpenid() {
-      let userInfo = wepy.getStorageSync(USER_INFO);
+    async checkUnionid() {
+      let userinfo = wepy.getStorageSync(USER_INFO);
       let system = wepy.getStorageSync(SYSTEM_INFO);
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
-      const json = await api.checkOpenid({
-        query: {
-          openid: openid,
-          userInfo: userInfo,
-          system: system,
-        }
+      let unionid = userSpecialInfo.unionid;
+      const json = await api.checkUnionid({
+        unionid: unionid,
+        userinfo: userinfo,
+        system: system,
       });
-      if (json.data.MSG == 'NO') {
+      if (json.MSG == 'NO') {
         let res = await wepy.login();
         if (res.code) {
           let options = wepy.getStorageSync('options');
-          let rlt = await api.getOpenid({
-            query: {
-              jsCode: res.code,
-              userInfo: userInfo,
-              system: system,
-              options: options,
-            }
+          let rlt = await api.getUnionid({
+            jsCode: res.code,
+            userinfo: userinfo,
+            system: system,
+            options: options,
           })
-          if (rlt.data.MSG) {
+          if (rlt.MSG) {
             let data = rlt.data;
-            if (data.data.openid) {
-              wepy.setStorageSync(USER_SPECICAL_INFO, data.data);
+            if (data.unionid) {
+              wepy.setStorageSync(USER_SPECICAL_INFO, data);
             } else {
               wepy.navigateTo({
                 url: '/pages/shouquan'
@@ -299,22 +291,20 @@
     }
     async getIslianmeng() {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
+      let unionid = userSpecialInfo.unionid;
       let that = this;
-      if (typeof(openid) == "undefined") {
+      if (typeof(unionid) == "undefined") {
         setTimeout(function() {
           that.getIslianmeng();
         }, 1000);
         return false;
       }
       const json = await api.getIslianmeng({
-        query: {
-          openid: openid,
-        }
+        unionid: unionid,
       });
-      this.issystem = json.data.issystem;
-      wepy.setStorageSync('issystem', json.data.issystem);
-      wepy.setStorageSync('islianmeng', json.data.islianmeng);
+      this.issystem = json.issystem;
+      wepy.setStorageSync('issystem', json.issystem);
+      wepy.setStorageSync('islianmeng', json.islianmeng);
       this.$apply();
     }
     onShareAppMessage() {
@@ -349,7 +339,7 @@
       if ((res.authSetting)['scope.userInfo']) {
         const data = await wepy.getUserInfo();
         wepy.setStorageSync(USER_INFO, data.userInfo);
-        this.checkOpenid();
+        this.checkUnionid();
       } else {
         wepy.navigateTo({
           url: '/pages/shouquan'
@@ -530,15 +520,15 @@
     line-height: 100rpx;
     display: flex;
     .text {
-      margin-left: 15%;
+      margin-left: 12%;
       line-height: 80rpx;
-      width: 70%;
+      width: 76%;
       overflow: hidden;
     }
     .image {
-      margin-top: 15rpx;
-      width: 50rpx;
-      height: 50rpx;
+      margin-top: 20rpx;
+      width: 40rpx;
+      height: 40rpx;
     }
   }
   .searchmiaoshu {
@@ -573,15 +563,13 @@
       }
       .image2 {
         margin-top: 10rpx;
-        margin-left: 10rpx;
         width: 20rpx;
         height: 20rpx;
       }
       .gengduo {
         color: #ff7e00;
-        font-size: 22rpx;
+        font-size: 26rpx;
         line-height: 40rpx;
-        display: flex;
         margin-right: 30rpx;
       }
     }
@@ -590,11 +578,11 @@
       margin-left: 20rpx;
       display: flex;
       width: 100%;
-      height: 149rpx;
+      min-height: 203rpx;
       .image {
-        border: 10rpx;
-        width: 328rpx;
-        height: 149rpx;
+        border-radius: 15rpx;
+        width: 335rpx;
+        height: 203rpx;
       }
       .text {
         margin-left: 30rpx;
@@ -606,6 +594,8 @@
         flex-direction: column;
         justify-content: space-between;
         .bigtext {
+          min-height: 80rpx;
+          font-size: 26rpx;
           color: #333;
         }
         .minlan {
@@ -645,15 +635,13 @@
       }
       .image2 {
         margin-top: 10rpx;
-        margin-left: 10rpx;
         width: 20rpx;
         height: 20rpx;
       }
       .gengduo {
         color: #ff7e00;
-        font-size: 20rpx;
+        font-size: 26rpx;
         line-height: 40rpx;
-        display: flex;
         margin-right: 30rpx;
       }
     }
@@ -669,7 +657,7 @@
         width: 375rpx;
         text-align: left;
         .image {
-          border: 10rpx;
+          border-radius: 15rpx;
           margin: 20rpx;
           width: 335rpx;
           height: 203rpx;
@@ -679,6 +667,8 @@
           margin-right: 30rpx;
           text-align: left;
           .bigtext {
+            min-height: 80rpx;
+            font-size: 26rpx;
             color: #333;
           }
           .mintext {

@@ -36,21 +36,19 @@
     }
     async getPhoneNumber(e) {
       let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let openid = userSpecialInfo.openid;
+      let unionid = userSpecialInfo.unionid;
       if (e.detail.errMsg == 'getPhoneNumber:ok') {
         if (this.loginres.code) {
           let rlt = await api.getPhoneNumber({
-            query: {
-              openid: openid,
-              jsCode: this.loginres.code,
-              encryptedData: e.detail.encryptedData,
-              iv: e.detail.iv,
-            }
+            unionid: unionid,
+            jsCode: this.loginres.code,
+            encryptedData: e.detail.encryptedData,
+            iv: e.detail.iv,
           })
           wepy.setStorageSync(USER_INFO, e.detail.userInfo);
-          if (rlt.data.data.openid) {
+          if (rlt.data.data.unionid) {
             let data = rlt.data.data;
-            if (data.openid) {
+            if (data.unionid) {
               wepy.setStorageSync(USER_SPECICAL_INFO, data);
               wepy.setStorageSync('phoneNumber', 1);
               wx.navigateBack({

@@ -28,21 +28,19 @@
         }
         async getJifen() {
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof(openid) == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof(unionid) == "undefined") {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
             let json = await api.getJifen({
-                query: {
-                    openid: openid,
-                    iszhudong: 1,
-                }
+                unionid: unionid,
+                iszhudong: 1,
             })
-            this.vipdengji = json.data.data.vipdengji;
-            this.jifen = json.data.data.jifen;
+            this.vipdengji = json.data.vipdengji;
+            this.jifen = json.data.jifen;
             this.$apply();
         }
         methods = {}

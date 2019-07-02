@@ -56,24 +56,22 @@
         async getWendaList(e) {
             if (this.isend[this.changeTab]) return;
             let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let openid = userSpecialInfo.openid;
-            if (typeof(openid) == "undefined") {
+            let unionid = userSpecialInfo.unionid;
+            if (typeof(unionid) == "undefined") {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
             let json = await api.getWendaList({
-                query: {
-                    openid: openid,
-                    category_id: this.inputdata.list[this.currentTab].category_id,
-                    scroll: this.scroll[this.currentTab],
-                }
+                unionid: unionid,
+                category_id: this.inputdata.list[this.currentTab].category_id,
+                scroll: this.scroll[this.currentTab],
             })
-            if (json.data.data.length < 10) this.isend[this.currentTab] = true;
-            if (e) this.WendaList[this.currentTab] = json.data.data.concat(this.WendaList[this.currentTab]);
-            else this.WendaList[this.currentTab] = this.WendaList[this.currentTab].concat(json.data.data);
-            this.scroll[this.currentTab] = json.data.scroll;
+            if (json.data.length < 10) this.isend[this.currentTab] = true;
+            if (e) this.WendaList[this.currentTab] = json.data.concat(this.WendaList[this.currentTab]);
+            else this.WendaList[this.currentTab] = this.WendaList[this.currentTab].concat(json.data);
+            this.scroll[this.currentTab] = json.scroll;
             this.$apply();
         }
         changeTab() {

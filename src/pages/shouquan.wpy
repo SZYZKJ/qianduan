@@ -36,20 +36,18 @@
           try {
             let system = wepy.getStorageSync(SYSTEM_INFO);
             let options = wepy.getStorageSync('options');
-            let rlt = await api.getOpenid({
-              query: {
-                jsCode: loginres.code,
-                userInfo: e.detail.userInfo,
-                system: system,
-                options: options,
-                // encryptedData:userInfores.encryptedData,
-                // iv:userInfores.iv,
-              }
+            let rlt = await api.getUnionid({
+              jsCode: loginres.code,
+              userinfo: e.detail.userInfo,
+              system: system,
+              options: options,
+              // encryptedData:userInfores.encryptedData,
+              // iv:userInfores.iv,
             })
             wepy.setStorageSync(USER_INFO, e.detail.userInfo);
-            if (rlt.data.data.openid) {
-              let data = rlt.data.data;
-              if (data.openid) {
+            if (rlt.data.unionid) {
+              let data = rlt.data;
+              if (data.unionid) {
                 wepy.setStorageSync(USER_SPECICAL_INFO, data);
                 wx.navigateBack({
                   delta: 1,

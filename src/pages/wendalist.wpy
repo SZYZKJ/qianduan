@@ -1,5 +1,5 @@
 <template>
-    <view class="container">
+    <view class="wendalist">
         <scroll-view scroll-x="true" class="tab-h" scroll-left="{{scrollLeft}}">
             <view wx:for="{{inputdata.list}}" wx:key="key" wx:for-item='item' wx:for-index="index" class="tab-item{{currentTab==index?'active':''}}" data-current="{{index}}" bindtap="swichNav">{{item.category_name}}</view>
         </scroll-view>
@@ -25,15 +25,10 @@
     import wepy from 'wepy';
     import tip from '@/utils/tip';
     import api from '@/api/api';
-    import {
-        SYSTEM_INFO,
-        USER_SPECICAL_INFO
-    } from '@/utils/constant';
     export default class baikelist extends wepy.page {
         config = {
             navigationBarTitleText: '情感百科',
             enablePullDownRefresh: true,
-            enableReachBottom: true,
         }
         data = {
             title: '',
@@ -55,15 +50,14 @@
         }
         async getWendaList(e) {
             if (this.isend[this.changeTab]) return;
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof(unionid) == "undefined") {
+            let unionid = wepy.getStorageSync('unionid') || '';
+            if (unionid == '') {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
-            let json = await api.getWendaList({
+            const json = await api.getWendaList({
                 unionid: unionid,
                 category_id: this.inputdata.list[this.currentTab].category_id,
                 scroll: this.scroll[this.currentTab],
@@ -90,13 +84,6 @@
             }
             this.checkCor();
             this.$apply();
-        }
-        onPullDownRefresh() {
-            wx.stopPullDownRefresh();
-            this.getWendaList(1);
-        }
-        onReachBottom() {
-            this.getWendaList(0);
         }
         checkCor() {
             if (this.currentTab > 3) {
@@ -138,7 +125,14 @@
                 this.checkCor();
             },
         }
-        async onLoad(e) {
+        onPullDownRefresh() {
+            wx.stopPullDownRefresh();
+            this.getWendaList(1);
+        }
+        onReachBottom() {
+            this.getWendaList(0);
+        }
+        onLoad(e) {
             this.inputdata = JSON.parse(e.json);
             this.title = this.inputdata.title;
             wx.setNavigationBarTitle({
@@ -156,7 +150,7 @@
 </script>
 
 <style lang="less">
-    .container {
+    .wendalist {
         background: #ffffff;
         .tab-h {
             position: fixed;

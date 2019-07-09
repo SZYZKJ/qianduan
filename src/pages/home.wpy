@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view class="home">
     <swiper class="swiper" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
       <block wx:for="{{lunbotu}}" wx:key="key">
         <swiper-item>
@@ -7,63 +7,87 @@
         </swiper-item>
       </block>
     </swiper>
-    <view class="tubiao">
-      <view class="box" wx:for="{{tubiao}}" wx:key="key" wx:for-item='item' wx:for-index="index">
-        <view bindtap="goTopage({{item.page}})">
-          <image class="image" mode="scaleToFill" src="{{item.image}}" />
-          <view class="title">{{item.title}}</view>
-        </view>
-      </view>
-    </view>
-    <view bindtap="gotosearchpage">
-      <view class="search">
-        <view class="text">
-          {{inputValue}}
-        </view>
-        <image class="image" mode="scaleToFill" src="{{searchicon}}" />
-      </view>
-      <view class="searchmiaoshu">
-        {{miaoshu}}
-      </view>
-      <view class="tuijiankuang">
-        <view class="tuijian" wx:for="{{tuijian}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="fuzhituijian({{item}})">{{item}}</view>
-      </view>
-    </view>
-    <view class="kuai3">
-      <view class="shouhang">
-        <image class="image1" mode="scaleToFill" src="{{kecheng.image}}" />
-        <view class="gengduo" bindtap="goTopage('kechenglist')">
-          {{gengduotext}}
-          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
-        </view>
-      </view>
-      <view class="box" wx:for="{{kecheng.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="tokecheng({{item}},{{index}})">
-        <view>
-          <image class="image" mode="scaleToFill" src="{{item.image}}" />
-        </view>
-        <view class="text">
-          <view class="bigtext">
-            {{item.title}}
-          </view>
-          <view class="minlan">
-            <view class="laiyuan">{{item.count}}人学习</view>
-            <view wx:if="{{item.yigoumai}}" class="yigoumai">去学习</view>
-            <view wx:if="{{item.yigoumai==0&&issystem==1}}" class="yigoumai">¥{{item.jiage}}</view>
+    <view bindtouchstart='touchStart' bindtouchend="touchEnd">
+      <view class="tubiao">
+        <view class="box" wx:for="{{tubiao}}" wx:key="key" wx:for-item='item' wx:for-index="index">
+          <view bindtap="goTopage({{item.page}})">
+            <image class="image" mode="scaleToFill" src="{{item.image}}" />
+            <view class="title">{{item.title}}</view>
           </view>
         </view>
       </view>
-    </view>
-    <view class="kuai4">
-      <view class="shouhang">
-        <image class="image1" mode="scaleToFill" src="{{xingxiangjianshe.image}}" />
-        <view class="gengduo" bindtap="goTopage('xingxiangjianshelist')">
-          {{gengduotext}}
-          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+      <view bindtap="gotosearchpage">
+        <view class="search">
+          <view class="text">
+            {{inputValue}}
+          </view>
+          <image class="image" mode="scaleToFill" src="{{searchicon}}" />
+        </view>
+        <view class="searchmiaoshu">
+          {{miaoshu}}
+        </view>
+        <view class="tuijiankuang">
+          <view class="tuijian" wx:for="{{tuijian}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="fuzhituijian({{item}})">{{item}}</view>
         </view>
       </view>
-      <view class="bigbox">
-        <view class="box" wx:for="{{xingxiangjianshe.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toxingxiang({{item}},{{index}})">
-          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+      <view class="kuai3">
+        <view class="shouhang">
+          <image class="image1" mode="scaleToFill" src="{{kecheng.image}}" />
+          <view class="gengduo" bindtap="goTopage('kechenglist')">
+            {{gengduotext}}
+            <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+          </view>
+        </view>
+        <view class="box" wx:for="{{kecheng.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="tokecheng({{item}},{{index}})">
+          <view>
+            <image class="image" mode="scaleToFill" src="{{item.image}}" />
+          </view>
+          <view class="text">
+            <view class="bigtext">
+              {{item.title}}
+            </view>
+            <view class="minlan">
+              <view class="laiyuan">{{item.count}}人学习</view>
+              <view wx:if="{{item.yigoumai}}" class="yigoumai">去学习</view>
+              <view wx:if="{{item.yigoumai==0&&issystem==1}}" class="yigoumai">¥{{item.jiage}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="kuai4">
+        <view class="shouhang">
+          <image class="image1" mode="scaleToFill" src="{{xingxiangjianshe.image}}" />
+          <view class="gengduo" bindtap="goTopage('xingxiangjianshelist')">
+            {{gengduotext}}
+            <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+          </view>
+        </view>
+        <view class="bigbox">
+          <view class="box" wx:for="{{xingxiangjianshe.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toxingxiang({{item}},{{index}})">
+            <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+            <view class="text">
+              <view class="bigtext">
+                {{item.title}}
+              </view>
+              <view class="mintext">
+                {{item.count}}次阅读
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="kuai3">
+        <view class="shouhang">
+          <image class="image1" mode="scaleToFill" src="{{qingganbaike.image}}" />
+          <view class="gengduo" bindtap="goTopage('qingganbaike')">
+            {{gengduotext}}
+            <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+          </view>
+        </view>
+        <view class="box" wx:for="{{qingganbaike.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toqingganbaike({{item}},{{index}})">
+          <view>
+            <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+          </view>
           <view class="text">
             <view class="bigtext">
               {{item.title}}
@@ -74,90 +98,68 @@
           </view>
         </view>
       </view>
-    </view>
-    <view class="kuai3">
-      <view class="shouhang">
-        <image class="image1" mode="scaleToFill" src="{{qingganbaike.image}}" />
-        <view class="gengduo" bindtap="goTopage('qingganbaike')">
-          {{gengduotext}}
-          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
-        </view>
-      </view>
-      <view class="box" wx:for="{{qingganbaike.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toqingganbaike({{item}},{{index}})">
-        <view>
-          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
-        </view>
-        <view class="text">
-          <view class="bigtext">
-            {{item.title}}
-          </view>
-          <view class="mintext">
-            {{item.count}}次阅读
+      <view class="kuai4">
+        <view class="shouhang">
+          <image class="image1" mode="scaleToFill" src="{{liaomeishizhan.image}}" />
+          <view class="gengduo" bindtap="goTopage('liaomeishizhanlist')">
+            {{gengduotext}}
+            <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
           </view>
         </view>
-      </view>
-    </view>
-    <view class="kuai4">
-      <view class="shouhang">
-        <image class="image1" mode="scaleToFill" src="{{liaomeishizhan.image}}" />
-        <view class="gengduo" bindtap="goTopage('liaomeishizhanlist')">
-          {{gengduotext}}
-          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+        <view class="bigbox">
+          <view class="box" wx:for="{{liaomeishizhan.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toliaomei({{item}},{{index}})">
+            <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+            <view class="text">
+              <view class="bigtext">
+                {{item.title}}
+              </view>
+              <view class="mintext">
+                {{item.count}}次阅读
+              </view>
+            </view>
+          </view>
         </view>
       </view>
-      <view class="bigbox">
-        <view class="box" wx:for="{{liaomeishizhan.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toliaomei({{item}},{{index}})">
-          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+      <view class="kuai3">
+        <view class="shouhang">
+          <image class="image1" mode="scaleToFill" src="{{sijiao.image}}" />
+          <view class="gengduo" bindtap="goTopage('sijiaolist')">
+            {{gengduotext}}
+            <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
+          </view>
+        </view>
+        <view class="box" wx:for="{{sijiao.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="tosijiao({{item}},{{index}})">
+          <view>
+            <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+          </view>
           <view class="text">
             <view class="bigtext">
               {{item.title}}
             </view>
             <view class="mintext">
-              {{item.count}}次阅读
+              {{item.count}}人学习
             </view>
           </view>
         </view>
       </view>
-    </view>
-    <view class="kuai3">
-      <view class="shouhang">
-        <image class="image1" mode="scaleToFill" src="{{sijiao.image}}" />
-        <view class="gengduo" bindtap="goTopage('sijiaolist')">
-          {{gengduotext}}
-          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
-        </view>
-      </view>
-      <view class="box" wx:for="{{sijiao.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="tosijiao({{item}},{{index}})">
-        <view>
-          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
-        </view>
-        <view class="text">
-          <view class="bigtext">
-            {{item.title}}
-          </view>
-          <view class="mintext">
-            {{item.count}}人学习
+      <view class="kuai4">
+        <view class="shouhang">
+          <image class="image1" mode="scaleToFill" src="{{xinliceshi.image}}" />
+          <view class="gengduo" bindtap="goTopage('xinliceshilist')">
+            {{gengduotext}}
+            <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
           </view>
         </view>
-      </view>
-    </view>
-    <view class="kuai4">
-      <view class="shouhang">
-        <image class="image1" mode="scaleToFill" src="{{xinliceshi.image}}" />
-        <view class="gengduo" bindtap="goTopage('xinliceshilist')">
-          {{gengduotext}}
-          <image class="image2" mode="scaleToFill" src="{{gengduoicon}}" />
-        </view>
-      </view>
-      <view class="bigbox">
-        <view class="box" wx:for="{{xinliceshi.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toxinliceshi({{item}},{{index}})">
-          <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
-          <view class="text">
-            <view class="bigtext">
-              {{item.title}}
-            </view>
-            <view class="mintext">
-              {{item.count}}次测试
+        <view class="bigbox">
+          <view class="box" wx:for="{{xinliceshi.data}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="toxinliceshi({{item}},{{index}})">
+            <image class="image" mode="scaleToFill" src="{{item.newimage}}" />
+            <view class="text">
+              <view class="bigtext">
+                {{item.title}}
+              </view>
+              <view class="mintext">
+                {{item.count}}次测试
+              </view>
             </view>
           </view>
         </view>
@@ -169,17 +171,11 @@
 <script>
   import wepy from "wepy";
   import api from "@/api/api";
-  import {
-    SYSTEM_INFO,
-    USER_SPECICAL_INFO,
-    USER_INFO
-  } from '@/utils/constant';
   import tip from "@/utils/tip";
   export default class home extends wepy.page {
     config = {
       navigationBarTitleText: "恋爱联盟",
       enablePullDownRefresh: true,
-      enableReachBottom: true,
     };
     Page = {}
     data = {
@@ -187,7 +183,7 @@
       startY: 0,
       endX: 0,
       endY: 0,
-      issystem: 1,
+      issystem: 0,
       indicatorDots: true,
       autoplay: true,
       interval: 3000,
@@ -210,15 +206,7 @@
       tubiao: [],
     };
     async getShouyekuai() {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
-      let that = this;
-      if (typeof(unionid) == "undefined") {
-        setTimeout(function() {
-          that.getShouyekuai();
-        }, 1000);
-        return false;
-      }
+      let unionid = wepy.getStorageSync('unionid') || '';
       const json = await api.getShouyekuai({
         unionid: unionid,
       });
@@ -230,15 +218,7 @@
       this.$apply();
     }
     async getShouyeman() {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
-      let that = this;
-      if (typeof(unionid) == "undefined") {
-        setTimeout(function() {
-          that.getShouyeman();
-        }, 1000);
-        return false;
-      }
+      let unionid = wepy.getStorageSync('unionid') || '';
       const json = await api.getShouyeman({
         unionid: unionid,
       });
@@ -253,10 +233,9 @@
       this.$apply();
     }
     async checkUnionid() {
-      let userinfo = wepy.getStorageSync(USER_INFO);
-      let system = wepy.getStorageSync(SYSTEM_INFO);
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
+      let userinfo = wepy.getStorageSync('userInfo');
+      let system = wepy.getStorageSync('system');
+      let unionid = wepy.getStorageSync('unionid') || '';
       const json = await api.checkUnionid({
         unionid: unionid,
         userinfo: userinfo,
@@ -266,7 +245,7 @@
         let res = await wepy.login();
         if (res.code) {
           let options = wepy.getStorageSync('options');
-          let rlt = await api.getUnionid({
+          const rlt = await api.getUnionid({
             jsCode: res.code,
             userinfo: userinfo,
             system: system,
@@ -275,7 +254,7 @@
           if (rlt.MSG) {
             let data = rlt.data;
             if (data.unionid) {
-              wepy.setStorageSync(USER_SPECICAL_INFO, data);
+              wepy.setStorageSync('unionid', data.unionid);
             } else {
               wepy.navigateTo({
                 url: '/pages/shouquan'
@@ -290,64 +269,16 @@
       }
     }
     async getIslianmeng() {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
+      let unionid = wepy.getStorageSync('unionid') || '';
       let that = this;
-      if (typeof(unionid) == "undefined") {
-        setTimeout(function() {
-          that.getIslianmeng();
-        }, 1000);
-        return false;
-      }
       const json = await api.getIslianmeng({
         unionid: unionid,
+        system: wepy.getSystemInfoSync().system,
       });
       this.issystem = json.issystem;
       wepy.setStorageSync('issystem', json.issystem);
       wepy.setStorageSync('islianmeng', json.islianmeng);
       this.$apply();
-    }
-    onShareAppMessage() {
-      return {
-        title: '恋爱联盟',
-        path: '/pages/home',
-      };
-    }
-    onPullDownRefresh() {
-      wx.stopPullDownRefresh();
-      wx.switchTab({
-        url: "/pages/searchpage"
-      })
-    }
-    onShow() {
-      let that = this;
-      wx.getClipboardData({
-        success: function(res) {
-          var copyvalue = res.data.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
-          if (copyvalue.length > 0) {
-            that.inputValue = copyvalue;
-          }
-        }
-      });
-      this.getShouyeman();
-      this.$apply();
-    }
-    async onLoad() {
-      let systemInfo = wepy.getSystemInfoSync();
-      wepy.setStorageSync(SYSTEM_INFO, systemInfo.system);
-      let res = await wepy.getSetting();
-      if ((res.authSetting)['scope.userInfo']) {
-        const data = await wepy.getUserInfo();
-        wepy.setStorageSync(USER_INFO, data.userInfo);
-        this.checkUnionid();
-      } else {
-        wepy.navigateTo({
-          url: '/pages/shouquan'
-        })
-      }
-      this.getShouyekuai();
-      this.getShouyeman();
-      this.getIslianmeng();
     }
     changeTab() {
       if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {
@@ -356,7 +287,7 @@
         })
       } else if (this.endX - this.startX < -30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {
         wx.switchTab({
-          url: "./course"
+          url: "./liaomeitaolulist"
         })
       }
     }
@@ -436,20 +367,11 @@
           url: "/pages/searchpage"
         })
       },
-      touchStart0(e) {
+      touchStart(e) {
         this.startX = e.changedTouches[0].clientX;
         this.startY = e.changedTouches[0].clientY;
       },
-      touchEnd0(e) {
-        this.endX = e.changedTouches[0].clientX;
-        this.endY = e.changedTouches[0].clientY;
-        this.changeTab();
-      },
-      touchStart1(e) {
-        this.startX = e.changedTouches[0].clientX;
-        this.startY = e.changedTouches[0].clientY;
-      },
-      touchEnd1(e) {
+      touchEnd(e) {
         this.endX = e.changedTouches[0].clientX;
         this.endY = e.changedTouches[0].clientY;
         this.changeTab();
@@ -475,18 +397,59 @@
           });
         }
       },
-    };
+    }
+    onPullDownRefresh() {
+      wx.stopPullDownRefresh();
+      wx.switchTab({
+        url: "/pages/searchpage"
+      })
+    }
+    onShow() {
+      let that = this;
+      wx.getClipboardData({
+        success: function(res) {
+          var copyvalue = res.data.replace(/^\s\s*/, "").replace(/\s\s*$/, "");
+          if (copyvalue.length > 0) {
+            that.inputValue = copyvalue;
+          }
+        }
+      });
+      this.getShouyeman();
+      this.$apply();
+    }
+    async onLoad() {
+      wepy.setStorageSync('system', wepy.getSystemInfoSync().system);
+      const res = await wepy.getSetting();
+      if ((res.authSetting)['scope.userInfo']) {
+        const data = await wepy.getUserInfo();
+        wepy.setStorageSync('userInfo', data.userInfo);
+        this.checkUnionid();
+      } else {
+        wepy.navigateTo({
+          url: '/pages/shouquan'
+        })
+      }
+      this.getShouyekuai();
+      this.getShouyeman();
+      this.getIslianmeng();
+    }
+    onShareAppMessage() {
+      return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+      };
+    }
   }
 </script>
 
 <style lang="less">
-  .swiper {
-    height: 300rpx;
-  }
-  .container {
+  .home {
     background: #ffffff;
     text-align: center;
     padding-bottom: 30rpx;
+  }
+  .swiper {
+    height: 300rpx;
   }
   .slide-image {
     width: 100%;

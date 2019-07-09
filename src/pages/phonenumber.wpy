@@ -1,5 +1,5 @@
 <template>
-  <view class="authorize-contianer">
+  <view class="phonenumber">
     <image class="authorize-icon" src="../images/authorize.png"></image>
     <view class="auth-item">为更好向您提供服务</view>
     <view class="auth-item">恋爱联盟申请获取以下权限：</view>
@@ -13,11 +13,6 @@
 <script>
   import wepy from 'wepy';
   import api from '@/api/api';
-  import {
-    SYSTEM_INFO,
-    USER_SPECICAL_INFO,
-    USER_INFO
-  } from '@/utils/constant';
   export default class Authorize extends wepy.page {
     config = {
       navigationBarTitleText: '授权获取手机号码',
@@ -25,31 +20,27 @@
     data = {
       loginres: {},
     }
-    onShareAppMessage() {
-      return {
-        title: '恋爱联盟',
-        path: '/pages/home',
-      };
-    }
-    async onLoad() {
-      this.loginres = await wepy.login();
-    }
     async getPhoneNumber(e) {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
+      let unionid = wepy.getStorageSync('unionid') || '';
+      if (unionid == '') {
+        wepy.navigateTo({
+          url: "/pages/shouquan"
+        });
+        return false;
+      }
       if (e.detail.errMsg == 'getPhoneNumber:ok') {
         if (this.loginres.code) {
-          let rlt = await api.getPhoneNumber({
+          const rlt = await api.getPhoneNumber({
             unionid: unionid,
             jsCode: this.loginres.code,
             encryptedData: e.detail.encryptedData,
             iv: e.detail.iv,
           })
-          wepy.setStorageSync(USER_INFO, e.detail.userInfo);
-          if (rlt.data.data.unionid) {
-            let data = rlt.data.data;
+          wepy.setStorageSync('userInfo', e.detail.userInfo);
+          if (rlt.data.unionid) {
+            let data = rlt.data;
             if (data.unionid) {
-              wepy.setStorageSync(USER_SPECICAL_INFO, data);
+              wepy.setStorageSync('unionid', data.unionid);
               wepy.setStorageSync('phoneNumber', 1);
               wx.navigateBack({
                 delta: 1
@@ -69,16 +60,20 @@
         })
       }
     }
-    methods = {}
-    events = {}
+    async onLoad() {
+      this.loginres = await wepy.login();
+    }
+    onShareAppMessage() {
+      return {
+        title: '恋爱联盟',
+        path: '/pages/home',
+      };
+    }
   }
 </script>
 
 <style lang="less">
-  page {
-    height: 100%;
-  }
-  .authorize-contianer {
+  .phonenumber {
     height: 100%;
     background: #fff;
     text-align: center;

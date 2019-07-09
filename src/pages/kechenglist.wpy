@@ -1,5 +1,5 @@
 <template>
-    <view class="container">
+    <view class="kechenglist">
         <view wx:for="{{kechenglist}}" wx:key="key" wx:for-item='item' wx:for-index="index">
             <view class="wenzhang" bindtap="goTohtml({{item}})">
                 <view class="kuai">
@@ -25,15 +25,10 @@
     import wepy from 'wepy';
     import tip from '@/utils/tip';
     import api from '@/api/api';
-    import {
-        SYSTEM_INFO,
-        USER_SPECICAL_INFO
-    } from '@/utils/constant';
     export default class kechenglist extends wepy.page {
         config = {
             navigationBarTitleText: '课程',
             enablePullDownRefresh: true,
-            enableReachBottom: true,
         }
         data = {
             inputdata: {
@@ -46,15 +41,8 @@
         }
         async getKechengList(e) {
             if (this.isend) return;
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof(unionid) == "undefined") {
-                wepy.navigateTo({
-                    url: '/pages/shouquan'
-                })
-                return false;
-            }
-            let json = await api.getKechengList({
+            let unionid = wepy.getStorageSync('unionid') || '';
+            const json = await api.getKechengList({
                 unionid: unionid,
                 scroll: this.scroll,
             })
@@ -63,13 +51,12 @@
             else this.kechenglist = this.kechenglist.concat(json.data);
             this.scroll = json.scroll;
             this.$apply();
-        }
-        onPullDownRefresh() {
-            wx.stopPullDownRefresh();
-            this.getKechengList(1);
-        }
-        onReachBottom() {
-            this.getKechengList(0);
+            if (unionid == '') {
+                wepy.navigateTo({
+                    url: '/pages/shouquan'
+                })
+                return false;
+            }
         }
         methods = {
             goTohtml(item) {
@@ -78,21 +65,36 @@
                 })
             }
         }
-        async onLoad() {
+        onPullDownRefresh() {
+            wx.stopPullDownRefresh();
+            this.getKechengList(1);
+        }
+        onReachBottom() {
+            this.getKechengList(0);
+        }
+        onLoad() {
             this.issystem = wepy.getStorageSync('issystem');
             this.getKechengList(0);
         }
         onShareAppMessage() {
             return {
                 title: '恋爱联盟',
-                path: '/pages/home',
+                path: '/pages/kechenglist',
             };
+        }
+        onUnload() {
+            var pages = getCurrentPages();
+            if (pages.length == 1) {
+                wx.switchTab({
+                    url: "/pages/home"
+                });
+            }
         }
     }
 </script>
 
 <style lang="less">
-    .container {
+    .kechenglist {
         background: #ffffff;
         .wenzhang {
             background: #ffffff;

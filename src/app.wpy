@@ -10,6 +10,7 @@
   export default class extends wepy.app {
     config = {
       pages: [
+        'pages/fenxiao',
         'pages/home',
         'pages/shouquan',
         'pages/adding',
@@ -45,6 +46,7 @@
         'pages/xinliceshilist',
         'pages/xinliceshi',
         'pages/shoucang',
+        // 'pages/fenxiao',
       ],
       window: {
         backgroundTextStyle: 'dark',
@@ -52,7 +54,8 @@
         navigationBarTitleText: '恋爱联盟',
         navigationBarTextStyle: 'black',
         enablePullDownRefresh: true,
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        onReachBottomDistance: 500,
       },
       tabBar: {
         color: "#999999",
@@ -91,7 +94,7 @@
       this.use('promisify');
     }
     async onLaunch(options) {
-      wepy.setStorageSync('options', JSON.stringify(options));
+      wepy.setStorageSync('options', options);
       let systemInfo = wepy.getSystemInfoSync();
       wepy.setStorageSync('systemInfo', systemInfo.system);
     }

@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view class="qingganbaike">
     <view class="tubiao">
       <view class="box" wx:for="{{wenda}}" wx:key="key" wx:for-item='item' wx:for-index="index">
         <view bindtap="goTowendalist({{item}})">
@@ -55,10 +55,6 @@
   import wepy from 'wepy';
   import tip from '@/utils/tip';
   import api from '@/api/api';
-  import {
-    SYSTEM_INFO,
-    USER_SPECICAL_INFO
-  } from '@/utils/constant';
   export default class qingganbaike extends wepy.page {
     config = {
       navigationBarTitleText: '情感百科',
@@ -71,28 +67,21 @@
       jinjiejieduan: '',
     }
     async getQingganbaike() {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
-      if (typeof(unionid) == "undefined") {
-        wepy.navigateTo({
-          url: '/pages/shouquan'
-        })
-        return false;
-      }
-      let json = await api.getQingganbaike({
+      let unionid = wepy.getStorageSync('unionid') || '';
+      const json = await api.getQingganbaike({
         unionid: unionid,
-      })
+      });
       this.wenda = json.wenda;
       this.rumen = json.rumen;
       this.jinjie = json.jinjie;
       this.rumenjieduan = json.rumenjieduan;
       this.jinjiejieduan = json.jinjiejieduan;
       this.$apply();
-    }
-    onShareAppMessage() {
-      return {
-        title: '恋爱联盟',
-        path: '/pages/home',
+      if (unionid == '') {
+        wepy.navigateTo({
+          url: '/pages/shouquan'
+        })
+        return false;
       };
     }
     methods = {
@@ -107,7 +96,7 @@
         })
       }
     }
-    async onLoad() {
+    onLoad() {
       this.getQingganbaike();
     }
     onShareAppMessage() {
@@ -128,7 +117,7 @@
 </script>
 
 <style lang="less">
-  .container {
+  .qingganbaike {
     color: #000000;
     background: #efefef;
   }

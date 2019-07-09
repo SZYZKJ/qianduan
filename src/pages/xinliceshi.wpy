@@ -1,6 +1,6 @@
 <template>
-  <view class="quanbu">
-    <view wx:if="{{isceshi==0}}" class="xinliceshi">
+  <view class="xinliceshi">
+    <view wx:if="{{isceshi==0}}" class="shouxian">
       <view class="title">
         {{xinliceshi.title}}
       </view>
@@ -57,11 +57,6 @@
 <script>
   import api from "@/api/api";
   import tip from '@/utils/tip';
-  import {
-    SYSTEM_INFO,
-    USER_SPECICAL_INFO,
-    USER_INFO
-  } from '@/utils/constant';
   import wepy from "wepy";
   export default class adding extends wepy.page {
     config = {
@@ -81,29 +76,16 @@
       dianzan: 0,
       shoucang: 0,
     }
-    onShareAppMessage() {
-      return {
-        title: this.xinliceshi.title,
-        path: '/pages/xinliceshi?id=' + this.ceshiid,
-      };
-    }
     async getXinliceshi() {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
-      if (typeof unionid == "undefined") {
-        wepy.navigateTo({
-          url: "/pages/shouquan"
-        });
-        return false;
-      }
-      let json = await api.getXinliceshi({
+      let unionid = wepy.getStorageSync('unionid') || '';
+      const json = await api.getXinliceshi({
         unionid: unionid,
         ceshiid: this.ceshiid,
       });
       this.xinliceshi = json.data;
       this.xinliceshi.image = '<img style="max-width:100%;height:auto;" src="' + this.xinliceshi.image + '"/>';
       this.ceshitype = this.xinliceshi.type;
-      let newjson = await api.getDianzanshoucang({
+      const newjson = await api.getDianzanshoucang({
         unionid: unionid,
         doctype: 'xinliceshi',
         docid: this.ceshiid,
@@ -111,11 +93,16 @@
       this.dianzan = newjson.dianzan;
       this.shoucang = newjson.shoucang;
       this.$apply();
+      if (unionid == '') {
+        wepy.navigateTo({
+          url: "/pages/shouquan"
+        });
+        return false;
+      }
     }
     async setDianzanshoucangshu() {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
-      if (typeof unionid == "undefined") {
+      let unionid = wepy.getStorageSync('unionid') || '';
+      if (unionid == '') {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
@@ -132,15 +119,8 @@
       });
     }
     async getCeshidaan() {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
-      if (typeof unionid == "undefined") {
-        wepy.navigateTo({
-          url: "/pages/shouquan"
-        });
-        return false;
-      }
-      let json = await api.getCeshidaan({
+      let unionid = wepy.getStorageSync('unionid') || '';
+      const json = await api.getCeshidaan({
         unionid: unionid,
         ceshiid: this.ceshiid,
         ceshitype: this.ceshitype,
@@ -153,11 +133,12 @@
       });
       this.isceshi = 2;
       this.$apply();
-    }
-    onLoad(e) {
-      this.ceshiid = e.id;
-      // this.ceshiid = "351";
-      this.getXinliceshi();
+      if (unionid == '') {
+        wepy.navigateTo({
+          url: "/pages/shouquan"
+        });
+        return false;
+      }
     }
     deepClone(obj) {
       let _obj = JSON.stringify(obj),
@@ -268,14 +249,32 @@
         }
       }
     }
+    onLoad(e) {
+      this.ceshiid = e.id;
+      this.getXinliceshi();
+    }
+    onShareAppMessage() {
+      return {
+        title: this.xinliceshi.title,
+        path: '/pages/xinliceshi?id=' + this.ceshiid,
+      };
+    }
+    onUnload() {
+      var pages = getCurrentPages();
+      if (pages.length == 1) {
+        wx.switchTab({
+          url: "/pages/home"
+        })
+      }
+    }
   }
 </script>
 
 <style lang="less">
-  .quanbu {
+  .xinliceshi {
     color: #000;
   }
-  .xinliceshi {
+  .shouxian {
     top: 0;
     text-align: center;
     background: #fff;
@@ -287,6 +286,7 @@
     line-height: 100rpx;
     color: #ffffff;
     width: 90%;
+    text-align: center;
     margin-top: 30rpx;
     margin-left: 5%;
     height: 100rpx;

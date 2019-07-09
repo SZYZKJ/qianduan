@@ -1,5 +1,5 @@
 <template>
-    <view scroll-y="true" style="height:{{winheight}}rpx" bindtouchstart='touchStart' bindtouchend="touchEnd" class="words-list">
+    <view class="tuweiqinghua" scroll-y="true" style="height:{{winheight}}rpx" bindtouchstart='touchStart' bindtouchend="touchEnd">
         <view class="words-item person{{item.person}}" wx:for="{{wordsList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
             <view class="words-avatar">
                 <open-data class="words-avatar1" type="userAvatarUrl" wx:if="{{item.person==1}}"></open-data>
@@ -22,16 +22,10 @@
 <script>
     import wepy from "wepy";
     import api from "@/api/api";
-    import {
-        SYSTEM_INFO,
-        USER_SPECICAL_INFO,
-        USER_INFO
-    } from '@/utils/constant';
     import tip from "@/utils/tip";
     export default class tuweiqinghua extends wepy.page {
         config = {
             enablePullDownRefresh: false,
-            enableReachBottom: false,
         }
         data = {
             person2Avatar: "../images/meinv.png",
@@ -54,21 +48,20 @@
             });
         }
         async getTuweiqinghua() {
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof(unionid) == "undefined") {
-                wepy.navigateTo({
-                    url: '/pages/shouquan'
-                })
-                return false;
-            }
-            let json = await api.getTuweiqinghua({
+            let unionid = wepy.getStorageSync('unionid') || '';
+            const json = await api.getTuweiqinghua({
                 unionid: unionid,
             })
             this.cententsList.push(json.data.datalist);
             this.wordsList = json.data.datalist;
             this.nowid++;
             this.$apply();
+            if (unionid == '') {
+                wepy.navigateTo({
+                    url: '/pages/shouquan'
+                })
+                return false;
+            }
         }
         previewImage(t) {
             var e = t.target.dataset.src;
@@ -97,22 +90,6 @@
             }
             this.$apply();
         }
-        onLoad(e) {
-            var Width = wx.getSystemInfoSync().windowWidth;
-            var Height = wx.getSystemInfoSync().windowHeight;
-            this.winheight = Height / Width * 750;
-            this.wordsList = JSON.parse(e.json);
-            this.cententsList = [this.wordsList];
-            var r = [
-                "对方正在期待地搓搓手...",
-                "对方正在害羞...",
-                "对方正在脸红...",
-            ];
-            wx.setNavigationBarTitle({
-                title: r[Math.floor(Math.random() * 3)]
-            });
-            this.$apply();
-        }
         changeTab() {
             if (this.endY - this.startY > 30 && Math.abs(this.endX - this.startX) * 1.5 < Math.abs(this.endY - this.startY)) {
                 this.openChat(0);
@@ -132,6 +109,22 @@
                 this.changeTab();
             },
         }
+        onLoad(e) {
+            var Width = wx.getSystemInfoSync().windowWidth;
+            var Height = wx.getSystemInfoSync().windowHeight;
+            this.winheight = Height / Width * 750;
+            this.wordsList = JSON.parse(e.json);
+            this.cententsList = [this.wordsList];
+            var r = [
+                "对方正在期待地搓搓手...",
+                "对方正在害羞...",
+                "对方正在脸红...",
+            ];
+            wx.setNavigationBarTitle({
+                title: r[Math.floor(Math.random() * 3)]
+            });
+            this.$apply();
+        }
         onShareAppMessage() {
             return {
                 title: '土味情话',
@@ -150,11 +143,8 @@
 </script>
 
 <style lang="less">
-    page {
-        background-color: #ebeaeb;
-    }
-    .words-list {
-        // position: relative;
+    .tuweiqinghua {
+        background-color: #ebeaeb; // position: relative;
         width: 100%;
         padding: 30rpx 20rpx 230rpx;
         box-sizing: border-box;

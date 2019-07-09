@@ -1,5 +1,5 @@
 <template>
-    <view class="container">
+    <view class="tequan">
         <view class="tequan">您当前为</view>
         <view class="tequanming">{{huiyuan[vipdengji]}}</view>
         <view wx:if="{{vipdengji>0}}" class="tequan">您的会员到期时间为</view>
@@ -8,7 +8,7 @@
             <view class="kaitongtext">点击升级，解锁更多会员专属服务，为您提供更多恋爱能力~</view>
             <navigator class="vip" url="/pages/vip">升级会员</navigator>
         </view>
-        <view wx:if="{{vipdengji>0}}" class="tequan">
+        <view wx:if="{{vipdengji>0}}" class="tequankuang">
             您的特权
             <view class="tequanneirong" wx:if="{{vipdengji==1}}">
                 <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#ff7e00;">✔ </text>1、1万+条话术可供搜索</view>
@@ -85,10 +85,6 @@
     import wepy from 'wepy';
     import tip from '@/utils/tip';
     import api from '@/api/api';
-    import {
-        SYSTEM_INFO,
-        USER_SPECICAL_INFO
-    } from '@/utils/constant';
     export default class tequan extends wepy.page {
         config = {
             navigationBarTitleText: '我的特权',
@@ -101,39 +97,37 @@
             issystem: 0,
         }
         async getTequan() {
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof(unionid) == "undefined") {
+            let unionid = wepy.getStorageSync('unionid') || '';
+            if (unionid == '') {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
-            let json = await api.getTequan({
+            const json = await api.getTequan({
                 unionid: unionid,
             })
             this.vipdengji = json.vipdengji;
             this.viptime = json.viptime;
             this.$apply();
         }
-        methods = {}
+        onLoad() {
+            this.islianmeng = wepy.getStorageSync('islianmeng');
+            this.issystem = wepy.getStorageSync('issystem');
+            this.$apply();
+            this.getTequan();
+        }
         onShareAppMessage() {
             return {
                 title: '恋爱联盟',
                 path: '/pages/home',
             };
         }
-        async onLoad() {
-            this.islianmeng = wepy.getStorageSync('islianmeng');
-            this.issystem = wepy.getStorageSync('issystem');
-            this.$apply();
-            this.getTequan();
-        }
     }
 </script>
 
 <style lang="less">
-    .container {
+    .tequan {
         align-items: center;
         text-align: center;
         margin-top: 0rpx;
@@ -155,7 +149,7 @@
         width: 60%;
         margin-left: 20%;
     }
-    .tequan {
+    .tequankuang {
         padding-top: 100rpx;
         color: #000000;
     }

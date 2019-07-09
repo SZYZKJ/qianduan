@@ -12,8 +12,7 @@
                 type: Boolean,
                 default: false
             },
-            message: {
-            }
+            message: {}
         };
     }
 </script>

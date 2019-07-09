@@ -13,22 +13,20 @@
     config = {
       navigationBarTitleText: "敬请期待"
     };
+    onLoad() {}
     onShareAppMessage() {
       return {
         title: "恋爱联盟",
         path: "/pages/home"
       };
     }
-    onLoad() {}
   }
 </script>
 
 <style lang="less">
-  page {
-    background: #fff;
-  }
   .adding {
-    margin-top: 300rpx;
+    background: #fff;
+    padding-top: 300rpx;
     text-align: center;
     font-size: 30rpx;
     color: #000000;

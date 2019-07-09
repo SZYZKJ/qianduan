@@ -1,5 +1,5 @@
 <template>
-  <view class="firstkuai">
+  <view class="liaomeitaolu">
     <view class="lilunList" wx:for="{{LilunList}}" wx:key="key" wx:for-item="item" wx:for-index="index">
       <view class="secondkuai">
         <view class="duihua">
@@ -43,16 +43,10 @@
   import api from "@/api/api";
   import wepy from "wepy";
   import tip from "@/utils/tip";
-  import {
-    SYSTEM_INFO,
-    USER_SPECICAL_INFO,
-    USER_INFO
-  } from "@/utils/constant";
   export default class methodology extends wepy.page {
     config = {
       navigationBarTitleText: "",
       enablePullDownRefresh: true,
-      enableReachBottom: true
     };
     Page = {};
     data = {
@@ -141,9 +135,8 @@
       }
     }
     async getLiaomeitaoluList() {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
-      if (typeof unionid == "undefined") {
+      let unionid = wepy.getStorageSync('unionid') || '';
+      if (unionid == '') {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
@@ -163,28 +156,6 @@
         this.confirm();
       }
     }
-    onPullDownRefresh() {
-      wx.stopPullDownRefresh();
-    }
-    onReachBottom() {
-      if (!this.isend) this.getLiaomeitaoluList();
-    }
-    onShareAppMessage() {
-      return {
-        title: "恋爱联盟",
-        path: "/pages/home"
-      };
-    }
-    onLoad(options) {
-      var json = JSON.parse(options.json);
-      this.cid = json.cid;
-      wepy.setNavigationBarTitle({
-        title: this.title[this.cid]
-      });
-      this.getLiaomeitaoluList();
-      this.issystem = wepy.getStorageSync("issystem");
-      this.$apply();
-    }
     methods = {
       changechakan(index) {
         this.LilunList[index].chakan = !this.LilunList[index].chakan;
@@ -201,12 +172,34 @@
           }
         });
       }
-    };
+    }
+    onPullDownRefresh() {
+      wx.stopPullDownRefresh();
+    }
+    onReachBottom() {
+      if (!this.isend) this.getLiaomeitaoluList();
+    }
+    onLoad(options) {
+      var json = JSON.parse(options.json);
+      this.cid = json.cid;
+      wepy.setNavigationBarTitle({
+        title: this.title[this.cid]
+      });
+      this.getLiaomeitaoluList();
+      this.issystem = wepy.getStorageSync('issystem');
+      this.$apply();
+    }
+    onShareAppMessage() {
+      return {
+        title: "恋爱联盟",
+        path: "/pages/home"
+      };
+    }
   }
 </script>
 
 <style lang="less">
-  .firstkuai {
+  .liaomeitaolu {
     text-align: justify;
     background: rgba(0, 0, 0, 0.1);
     .textend {

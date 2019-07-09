@@ -1,5 +1,5 @@
 <template>
-    <view class="kuang">
+    <view class="baike">
         <rich-text nodes="{{baike.content}}"></rich-text>
         <view class="dikuang">
             <view class="shoucangkuang">
@@ -20,11 +20,6 @@
     import wepy from "wepy";
     import api from "@/api/api";
     import tip from '@/utils/tip';
-    import {
-        SYSTEM_INFO,
-        USER_SPECICAL_INFO,
-        USER_INFO
-    } from "@/utils/constant";
     export default class baike extends wepy.page {
         config = {
             navigationBarTitleText: ""
@@ -37,15 +32,8 @@
             shoucang: 0,
         };
         async getBaike() {
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof unionid == "undefined") {
-                wepy.navigateTo({
-                    url: "/pages/shouquan"
-                });
-                return false;
-            }
-            let json = await api.getBaike({
+            let unionid = wepy.getStorageSync('unionid') || '';
+            const json = await api.getBaike({
                 unionid: unionid,
                 baikeid: this.id
             });
@@ -53,7 +41,7 @@
             wx.setNavigationBarTitle({
                 title: this.baike.title
             });
-            let newjson = await api.getDianzanshoucang({
+            const newjson = await api.getDianzanshoucang({
                 unionid: unionid,
                 doctype: 'baike',
                 docid: this.id,
@@ -61,11 +49,17 @@
             this.dianzan = newjson.dianzan;
             this.shoucang = newjson.shoucang;
             this.$apply();
+            if (unionid == '') {
+                unionid = '';
+                wepy.navigateTo({
+                    url: "/pages/shouquan"
+                });
+                return false;
+            }
         }
         async setDianzanshoucangshu() {
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof unionid == "undefined") {
+            let unionid = wepy.getStorageSync('unionid') || '';
+            if (unionid == '') {
                 wepy.navigateTo({
                     url: "/pages/shouquan"
                 });
@@ -80,12 +74,6 @@
                 dianzan: this.dianzan,
                 shoucang: this.shoucang,
             });
-        }
-        onShareAppMessage() {
-            return {
-                title: "恋爱联盟",
-                path: "/pages/baike?id=" + this.id
-            };
         }
         methods = {
             gaibianshoucang() {
@@ -113,6 +101,12 @@
             this.id = e.id;
             this.getBaike();
         }
+        onShareAppMessage() {
+            return {
+                title: "恋爱联盟",
+                path: "/pages/baike?id=" + this.id
+            };
+        }
         onUnload() {
             var pages = getCurrentPages();
             if (pages.length == 1) {
@@ -125,7 +119,7 @@
 </script>
 
 <style lang="less">
-    .kuang {
+    .baike {
         background: #ffffff;
         padding-left: 30rpx;
         padding-right: 30rpx;

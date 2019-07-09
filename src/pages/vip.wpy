@@ -1,38 +1,38 @@
 <template>
     <view>
         <view wx:if="{{issystem==0}}" class="issystem">
-            由于相关规范，iOS功能暂不可用。如有疑问请咨询客服或恋爱联盟公众号。
+            {{ioswenan}}
         </view>
         <view wx:if="{{issystem==1}}" class="container">
             <view class="vip">
                 <button class="try {{currentTab==1 ? 'active' : ''}}" @tap="swichtab(1)">
-                                <view class="viptext {{currentTab==1 ? 'active' : ''}}">月会员(1个月)</view>
-                                <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥29.00</view>
-                            </button>
+                                        <view class="viptext {{currentTab==1 ? 'active' : ''}}">月会员(1个月)</view>
+                                        <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥29.00</view>
+                                    </button>
                 <button class="month {{currentTab==2 ? 'active' : ''}}" @tap="swichtab(2)">
-                                <view class="viptext {{currentTab==2 ? 'active' : ''}}">年会员(1年)</view>
-                                <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥199.00</view>
-                            </button>
+                                        <view class="viptext {{currentTab==2 ? 'active' : ''}}">年会员(1年)</view>
+                                        <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥199.00</view>
+                                    </button>
             </view>
             <view class="vip">
                 <button class="year {{currentTab==3 ? 'active' : ''}}" @tap="swichtab(3)">
-                                <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送年会员)</view>
-                                <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
-                            </button>
+                                        <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送年会员)</view>
+                                        <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
+                                    </button>
                 <button class="lifelong {{currentTab==4 ? 'active' : ''}}" @tap="swichtab(4)">
-                                <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送年会员)</view>
-                                <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
-                            </button>
+                                        <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送年会员)</view>
+                                        <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
+                                    </button>
             </view>
             <view class="vip">
                 <button class="year {{currentTab==5 ? 'active' : ''}}" @tap="swichtab(5)">
-                                <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
-                                <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
-                            </button>
+                                        <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
+                                        <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
+                                    </button>
                 <button class="lifelong {{currentTab==6 ? 'active' : ''}}" @tap="swichtab(6)">
-                                <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
-                                <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
-                            </button>
+                                        <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
+                                        <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
+                                    </button>
             </view>
             <button class="zhifu" @tap="weixinzhifu">立即支付</button>
             <view class="tequan">
@@ -109,10 +109,6 @@
     import wepy from 'wepy';
     import tip from '@/utils/tip';
     import api from '@/api/api';
-    import {
-        SYSTEM_INFO,
-        USER_SPECICAL_INFO
-    } from '@/utils/constant';
     export default class adding extends wepy.page {
         config = {
             navigationBarTitleText: '开通会员',
@@ -122,6 +118,7 @@
             issystem: 1,
             currentTab: 1,
             paySign_data: {},
+            ioswenan: '',
             detail: ['', '月会员(1个月)', '年会员(1年)', '私教一个月(送年会员)', '私教3个月(送年会员)', '私教一年(送终身会员)', '联盟会员(含私教终身)'],
         }
         tiaoqizhifu() {
@@ -139,6 +136,20 @@
                 },
             })
         }
+        async huoquwenan() {
+            let unionid = wepy.getStorageSync('unionid') || '';
+            if (unionid == '') {
+                wepy.navigateTo({
+                    url: '/pages/shouquan'
+                })
+                return false;
+            }
+            const json = await api.getIoswenan({
+                'unionid': unionid,
+            });
+            this.ioswenan = json.data;
+            this.$apply();
+        }
         async get_prepay_id() {
             var timestamp = Date.parse(new Date());
             if (timestamp - this.nowtime < 3000) {
@@ -146,9 +157,8 @@
             } else {
                 this.nowtime = timestamp;
             }
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof(unionid) == "undefined") {
+            let unionid = wepy.getStorageSync('unionid') || '';
+            if (unionid == '') {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
@@ -178,12 +188,6 @@
                 this.$apply();
             }
         }
-        onShareAppMessage() {
-            return {
-                title: '恋爱联盟',
-                path: '/pages/home',
-            };
-        }
         onShow() {
             var phoneNumber = wepy.getStorageSync('phoneNumber');
             if (phoneNumber == 1) {
@@ -192,8 +196,15 @@
             }
         }
         onLoad() {
+            this.huoquwenan();
             this.issystem = wepy.getStorageSync('issystem');
             this.$apply();
+        }
+        onShareAppMessage() {
+            return {
+                title: '恋爱联盟',
+                path: '/pages/home',
+            };
         }
     }
 </script>

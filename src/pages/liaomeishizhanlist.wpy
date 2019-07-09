@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view class="liaomeishizhanlist">
     <view wx:for="{{liaomeishizhanList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
       <view class="wenzhang" bindtap="goTohtml({{item}},{{index}})">
         <view class="kuai">
@@ -19,32 +19,19 @@
 <script>
   import wepy from "wepy";
   import api from "@/api/api";
-  import {
-    SYSTEM_INFO,
-    USER_SPECICAL_INFO,
-    USER_INFO
-  } from '@/utils/constant';
   export default class liaomeishizhanlist extends wepy.page {
     config = {
       navigationBarTitleText: "撩妹实战",
       enablePullDownRefresh: true,
-      enableReachBottom: true,
     };
     data = {
       liaomeishizhanList: [],
       isend: 0,
       scroll: '',
     };
-    onShareAppMessage() {
-      return {
-        title: "恋爱联盟",
-        path: "/pages/liaomeishizhanlist"
-      };
-    }
     async getLiaomeishizhanList(e) {
       if (this.isend) return;
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
+      let unionid = wepy.getStorageSync('unionid') || '';
       let that = this;
       const json = await api.getLiaomeishizhanList({
         unionid: unionid,
@@ -55,16 +42,12 @@
       else this.liaomeishizhanList = this.liaomeishizhanList.concat(json.data);
       this.scroll = json.scroll;
       this.$apply();
-    }
-    onPullDownRefresh() {
-      wx.stopPullDownRefresh();
-      this.getLiaomeishizhanList(1);
-    }
-    onReachBottom() {
-      this.getLiaomeishizhanList(0);
-    }
-    onLoad() {
-      this.getLiaomeishizhanList(0);
+      if (unionid == '') {
+        wepy.navigateTo({
+          url: "/pages/shouquan"
+        });
+        return false;
+      }
     }
     methods = {
       goTohtml(item, e) {
@@ -77,12 +60,36 @@
           },
         })
       },
-    };
+    }
+    onPullDownRefresh() {
+      wx.stopPullDownRefresh();
+      this.getLiaomeishizhanList(1);
+    }
+    onReachBottom() {
+      this.getLiaomeishizhanList(0);
+    }
+    onLoad() {
+      this.getLiaomeishizhanList(0);
+    }
+    onShareAppMessage() {
+      return {
+        title: "恋爱联盟",
+        path: "/pages/liaomeishizhanlist"
+      };
+    }
+    onUnload() {
+      var pages = getCurrentPages();
+      if (pages.length == 1) {
+        wx.switchTab({
+          url: "/pages/home"
+        })
+      }
+    }
   }
 </script>
 
 <style lang="less">
-  .container {
+  .liaomeishizhanlist {
     background: #ffffff;
     .wenzhang {
       background: #ffffff;

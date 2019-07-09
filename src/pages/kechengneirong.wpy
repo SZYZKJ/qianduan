@@ -1,5 +1,5 @@
 <template>
-    <view class="kuang">
+    <view class="kechengneirong">
         <view class="title">{{kecheng.title}}</view>
         <rich-text nodes="{{kecheng.content}}"></rich-text>
     </view>
@@ -9,11 +9,6 @@
     import wepy from "wepy";
     import api from "@/api/api";
     import tip from '@/utils/tip';
-    import {
-        SYSTEM_INFO,
-        USER_SPECICAL_INFO,
-        USER_INFO
-    } from "@/utils/constant";
     export default class kecheng extends wepy.page {
         config = {
             navigationBarTitleText: ""
@@ -22,42 +17,69 @@
         data = {
             neirongid: '',
             kecheng: {},
+            kechengjson: '',
+            kefenxiang: '0',
         };
         async getKecheng() {
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof unionid == "undefined") {
-                wepy.navigateTo({
-                    url: "/pages/shouquan"
-                });
-                return false;
-            }
-            let json = await api.getKecheng({
+            let unionid = wepy.getStorageSync('unionid') || '';
+            const json = await api.getKecheng({
                 unionid: unionid,
+                kechengid: this.kechengjson.id,
                 neirongid: this.neirongid,
+                kefenxiang: this.kefenxiang,
             });
-            this.kecheng = json.data;
-            wx.setNavigationBarTitle({
-                title: this.kecheng.biaoti
-            });
-            this.$apply();
+            if (json.MSG == 'YES') {
+                this.kecheng = json.data;
+                wx.setNavigationBarTitle({
+                    title: this.kecheng.title
+                });
+                this.$apply();
+                if (unionid == '') {
+                    wepy.navigateTo({
+                        url: "/pages/shouquan"
+                    });
+                    return false;
+                }
+            } else {
+                tip.confirm('尊敬的恋爱联盟用户，当前内容为付费阅读，请先购买~');
+                wepy.setStorageSync('yigoumai', '0');
+                wx.navigateBack({
+                    delta: 1
+                })
+            }
         }
-        onShareAppMessage() {
-            return {
-                title: "恋爱联盟",
-                path: "/pages/home"
-            };
-        }
-        methods = {}
         onLoad(e) {
             this.neirongid = e.neirongid;
+            this.kechengjson = JSON.parse(e.kechengjson);
+            this.kefenxiang = e.kefenxiang;
             this.getKecheng();
+        }
+        onShareAppMessage() {
+            if (this.kefenxiang == '1') {
+                return {
+                    title: "恋爱联盟",
+                    path: '/pages/kechengneirong?neirongid=' + this.neirongid + '&kechengjson=' + JSON.stringify(this.kechengjson) + '&kefenxiang=' + this.kefenxiang,
+                };
+            } else {
+                return {
+                    title: "恋爱联盟",
+                    path: '/pages/kecheng?json=' + JSON.stringify(this.kechengjson),
+                };
+            }
+        }
+        onUnload() {
+            var pages = getCurrentPages();
+            if (pages.length == 1) {
+                wx.switchTab({
+                    url: "/pages/home"
+                });
+            }
         }
     }
 </script>
 
 <style lang="less">
-    .kuang {
+    .kechengneirong {
         background: #ffffff;
         padding-left: 30rpx;
         padding-right: 30rpx;

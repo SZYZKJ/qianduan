@@ -1,5 +1,5 @@
 <template>
-  <view class="container">
+  <view class="weixin">
     <view wx:if="{{vipdengji<1}}" class="tequan">您当前为非正式会员</view>
     <image wx:if="{{vipdengji>0}}" class="image_box" bindtap="imgYu({{images[vipdengji]}})" src="{{images[vipdengji]}}" mode="scaleToFill" />
     <view wx:if="{{vipdengji>0}}" class="tequan1">您的会员特权，扫码添加导师微信，免费让他把您拉进答疑交流群，添加请备注“恋爱联盟”</view>
@@ -16,10 +16,6 @@
   import wepy from "wepy";
   import tip from "@/utils/tip";
   import api from "@/api/api";
-  import {
-    SYSTEM_INFO,
-    USER_SPECICAL_INFO
-  } from "@/utils/constant";
   export default class weixin extends wepy.page {
     config = {
       navigationBarTitleText: "导师微信"
@@ -54,19 +50,21 @@
       });
     }
     async getTequan() {
-      let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-      let unionid = userSpecialInfo.unionid;
-      if (typeof unionid == "undefined") {
+      let unionid = wepy.getStorageSync('unionid') || '';
+      if (unionid == '') {
         wepy.navigateTo({
           url: "/pages/shouquan"
         });
         return false;
       }
-      let json = await api.getTequan({
+      const json = await api.getTequan({
         unionid: unionid
       });
       this.vipdengji = json.vipdengji;
       this.$apply();
+    }
+    onLoad() {
+      this.getTequan();
     }
     onShareAppMessage() {
       return {
@@ -74,14 +72,11 @@
         path: "/pages/home"
       };
     }
-    async onLoad() {
-      this.getTequan();
-    }
   }
 </script>
 
 <style lang="less">
-  .container {
+  .weixin {
     align-items: center;
     text-align: center;
     margin-top: 0rpx;

@@ -96,7 +96,16 @@ const getDianzanshoucangList = (params) => wxRequestPost(params, apiMain + 'getD
 const setDianzanshoucang = (params) => wxRequestPost(params, apiMain + 'setDianzanshoucang');
 //获取课程prepay_id
 const get_kechengprepay_id = (params) => wxRequestPost(params, apiMain + 'get_kechengprepay_id');
+//获取ios文案
+const getIoswenan = (params) => wxRequestPost(params, apiMain + 'getIoswenan');
+//获取分销
+const getFenxiao = (params) => wxRequestPost(params, apiMain + 'getFenxiao');
+//获取我的分销
+const getWodefenxiao = (params) => wxRequestPost(params, apiMain + 'getWodefenxiao');
 export default {
+  getWodefenxiao,
+  getFenxiao,
+  getIoswenan,
   get_kechengprepay_id,
   getKechengList,
   getKecheng,

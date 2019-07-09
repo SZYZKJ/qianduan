@@ -41,12 +41,11 @@
                     wx.navigateTo({
                         url: "/pages/xingxiangjianshe?id=" + item.id
                     })
-                else if (item.doctype == 'liaomeishizhan'){
+                else if (item.doctype == 'liaomeishizhan') {
                     wx.navigateTo({
                         url: "/pages/liaomeishizhan?id=" + item.id
                     })
-                }
-                else if (item.doctype == 'xinliceshi')
+                } else if (item.doctype == 'xinliceshi')
                     wx.navigateTo({
                         url: "/pages/xinliceshi?id=" + item.id
                     })

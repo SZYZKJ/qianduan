@@ -1,5 +1,5 @@
 <template>
-    <view class="container">
+    <view class="xinliceshilist">
         <scroll-view scroll-x="true" class="tab-h">
             <view wx:for="{{titletab}}" wx:key="key" wx:for-item='item' wx:for-index="index" class="tab-item{{currentTab==index?'active':''}}" data-current="{{index}}" bindtap="swichNav">{{item.category}}</view>
         </scroll-view>
@@ -25,15 +25,10 @@
     import wepy from 'wepy';
     import tip from '@/utils/tip';
     import api from '@/api/api';
-    import {
-        SYSTEM_INFO,
-        USER_SPECICAL_INFO
-    } from '@/utils/constant';
     export default class xlcs extends wepy.page {
         config = {
             navigationBarTitleText: '心理测试',
             enablePullDownRefresh: true,
-            enableReachBottom: true,
         }
         data = {
             titletab: [{
@@ -73,15 +68,8 @@
         }
         async getXinliceshiList(e) {
             if (this.isend[this.changeTab]) return;
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof(unionid) == "undefined") {
-                wepy.navigateTo({
-                    url: '/pages/shouquan'
-                })
-                return false;
-            }
-            let json = await api.getXinliceshiList({
+            let unionid = wepy.getStorageSync('unionid') || '';
+            const json = await api.getXinliceshiList({
                 unionid: unionid,
                 category_id: this.titletab[this.currentTab].category_id,
                 scroll: this.scroll[this.currentTab],
@@ -91,6 +79,12 @@
             else this.XinliceshiList[this.currentTab] = this.XinliceshiList[this.currentTab].concat(json.data);
             this.scroll[this.currentTab] = json.scroll;
             this.$apply();
+            if (unionid == '') {
+                wepy.navigateTo({
+                    url: '/pages/shouquan'
+                })
+                return false;
+            }
         }
         changeTab() {
             if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {
@@ -107,13 +101,6 @@
                 }
             }
             this.$apply();
-        }
-        onPullDownRefresh() {
-            wx.stopPullDownRefresh();
-            this.getXinliceshiList(1);
-        }
-        onReachBottom() {
-            this.getXinliceshiList(0);
         }
         methods = {
             touchStart(e) {
@@ -141,7 +128,14 @@
                 }
             },
         }
-        async onLoad() {
+        onPullDownRefresh() {
+            wx.stopPullDownRefresh();
+            this.getXinliceshiList(1);
+        }
+        onReachBottom() {
+            this.getXinliceshiList(0);
+        }
+        onLoad() {
             this.getXinliceshiList(0);
         }
         onShareAppMessage() {
@@ -162,7 +156,7 @@
 </script>
 
 <style lang="less">
-    .container {
+    .xinliceshilist {
         background: #ffffff;
     }
     .tab-h {

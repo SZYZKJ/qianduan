@@ -1,7 +1,7 @@
 <template>
-    <view class="container">
+    <view class="jifen">
         <view class="tequan">您当前的积分为</view>
-        <view class="jifen">{{jifen}}</view>
+        <view class="shuzi">{{jifen}}</view>
         <view wx:if="{{vipdengji<6&&issystem}}">
             <view class="kaitongtext">点击升级，解锁更多会员专属服务，获取更多积分，为您提供更多恋爱能力~</view>
             <navigator class="vip" url="/pages/vip">升级会员</navigator>
@@ -13,10 +13,6 @@
     import wepy from 'wepy';
     import tip from '@/utils/tip';
     import api from '@/api/api';
-    import {
-        SYSTEM_INFO,
-        USER_SPECICAL_INFO
-    } from '@/utils/constant';
     export default class jifen extends wepy.page {
         config = {
             navigationBarTitleText: '我的积分',
@@ -27,15 +23,14 @@
             issystem: 0,
         }
         async getJifen() {
-            let userSpecialInfo = wepy.getStorageSync(USER_SPECICAL_INFO) || {};
-            let unionid = userSpecialInfo.unionid;
-            if (typeof(unionid) == "undefined") {
+            let unionid = wepy.getStorageSync('unionid') || '';
+            if (unionid == '') {
                 wepy.navigateTo({
                     url: '/pages/shouquan'
                 })
                 return false;
             }
-            let json = await api.getJifen({
+            const json = await api.getJifen({
                 unionid: unionid,
                 iszhudong: 1,
             })
@@ -43,23 +38,22 @@
             this.jifen = json.data.jifen;
             this.$apply();
         }
-        methods = {}
+        onLoad() {
+            this.issystem = wepy.getStorageSync('issystem');
+            this.$apply();
+            this.getJifen();
+        }
         onShareAppMessage() {
             return {
                 title: '恋爱联盟',
                 path: '/pages/home',
             };
         }
-        async onLoad() {
-            this.issystem = wepy.getStorageSync('issystem');
-            this.$apply();
-            this.getJifen();
-        }
     }
 </script>
 
 <style lang="less">
-    .container {
+    .jifen {
         align-items: center;
         text-align: center;
         margin-top: 0rpx;
@@ -85,7 +79,7 @@
         padding-top: 20rpx;
         color: #000000;
     }
-    .jifen {
+    .shuzi {
         padding-top: 50rpx;
         color: #ff7e00;
     }

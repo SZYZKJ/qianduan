@@ -15,13 +15,13 @@
           </view>
         </view>
         <view class="imagekuang">
-          <image class="banimage" @tap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
-          <image class="banimage" @tap="toshoucang" src="https://www.lianaizhuli.com/geren/wodeshoucang.png" />
+          <image class="banimage" wx:if="{{issystem||islianmeng}}" bindtap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
+          <image class="banimage" bindtap="toshoucang" src="https://www.lianaizhuli.com/geren/wodeshoucang.png" />
         </view>
       </view>
     </view>
     <view class="info_block">
-      <navigator class="item" url="/pages/vip">
+      <navigator wx:if="{{issystem||islianmeng}}" class="item" url="/pages/vip">
         <view class="item_content">
           <image class="item_img" src="../images/shengjihuiyuan.png" />
           <view class="text">
@@ -30,7 +30,7 @@
           </view>
         </view>
       </navigator>
-      <navigator class="item" url="/pages/fenxiao">
+      <navigator wx:if="{{islianmeng}}" class="item" url="/pages/fenxiao">
         <view class="item_content">
           <image class="item_img" src="../images/fenxiao.png" />
           <view class="text">
@@ -75,7 +75,7 @@
           </view>
         </view>
       </navigator>
-      <navigator class="item" url="/pages/dingdan">
+      <navigator wx:if="{{issystem||islianmeng}}" class="item" url="/pages/dingdan">
         <view class="item_content">
           <image class="item_img" src="../images/quanbudingdan.png" />
           <view class="text">
@@ -109,6 +109,7 @@
       vipdengji: 0,
       jifen: 0,
       issystem: 0,
+      islianmeng:0,
     }
     async getJifen() {
       let unionid = wepy.getStorageSync('unionid') || '';
@@ -178,6 +179,7 @@
       that.avatarUrl = userInfo.avatarUrl;
       that.nickName = userInfo.nickName;
       that.issystem = wepy.getStorageSync('issystem');
+      that.islianmeng = wepy.getStorageSync('islianmeng');
       that.$apply();
     }
     onShareAppMessage() {

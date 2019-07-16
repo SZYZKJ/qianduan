@@ -18,21 +18,21 @@
     }
     async onGotUserInfo(e) {
       if (e.detail.errMsg == 'getUserInfo:ok') {
-        let loginres = await wepy.login();
-        // let userInfores=await wepy.getUserInfo();
-        if (loginres.code) {
+        let userInfores=await wepy.getUserInfo();
+        if (userInfores.errMsg=='getUserInfo:ok') {
           try {
             let system = wepy.getStorageSync('system');
             let options = wepy.getStorageSync('options');
+            const loginres=await wepy.login();
             const rlt = await api.getUnionid({
-              jsCode: loginres.code,
-              userinfo: e.detail.userInfo,
+              js_code:loginres.code,
+              userinfo: userInfores.userInfo,
               system: system,
               options: options,
-              // encryptedData:userInfores.encryptedData,
-              // iv:userInfores.iv,
+              encryptedData:userInfores.encryptedData,
+              jiemiiv:userInfores.iv,
             })
-            wepy.setStorageSync('userInfo', e.detail.userInfo);
+            wepy.setStorageSync('userInfo', userInfores.userInfo);
             if (rlt.data.unionid) {
               let data = rlt.data;
               if (data.unionid) {

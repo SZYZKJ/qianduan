@@ -10,7 +10,6 @@
   export default class extends wepy.app {
     config = {
       pages: [
-        'pages/fenxiao',
         'pages/home',
         'pages/shouquan',
         'pages/adding',
@@ -46,7 +45,7 @@
         'pages/xinliceshilist',
         'pages/xinliceshi',
         'pages/shoucang',
-        // 'pages/fenxiao',
+        'pages/fenxiao',
       ],
       window: {
         backgroundTextStyle: 'dark',

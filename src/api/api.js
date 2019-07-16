@@ -3,8 +3,7 @@ import {
 } from '@/utils/wxRequest';
 
 const apiMain = 'https://www.lianaizhuli.com/xcx/'
-// const apiMain = 'https://www.xingnanzhuli.com/api/'
-const wangzhi = 'https://www.xingnanzhuli.com/'
+// const apiMain = 'https://www.xingnanzhuli.com/xcx/'
 
 //微信的jscode换取sessionKey
 const getUnionid = (params) => wxRequestPost(params, apiMain + 'getUnionid');
@@ -100,10 +99,26 @@ const get_kechengprepay_id = (params) => wxRequestPost(params, apiMain + 'get_ke
 const getIoswenan = (params) => wxRequestPost(params, apiMain + 'getIoswenan');
 //获取分销
 const getFenxiao = (params) => wxRequestPost(params, apiMain + 'getFenxiao');
-//获取我的分销
-const getWodefenxiao = (params) => wxRequestPost(params, apiMain + 'getWodefenxiao');
+//获取分销图片base64
+const getHaibaobase64 = (params) => wxRequestPost(params, apiMain + 'getHaibaobase64');
+//获取分销订单
+const getFenxiaodingdan = (params) => wxRequestPost(params, apiMain + 'getFenxiaodingdan');
+//获取分销下级推广员
+const getYijiyonghu = (params) => wxRequestPost(params, apiMain + 'getYijiyonghu');
+//获取分销用户
+const getFenxiaoyonghu = (params) => wxRequestPost(params, apiMain + 'getFenxiaoyonghu');
+//获取分销提现记录
+const getTixianjilu = (params) => wxRequestPost(params, apiMain + 'getTixianjilu');
+//分销提现
+const tiXian = (params) => wxRequestPost(params, apiMain + 'tiXian');
+
 export default {
-  getWodefenxiao,
+  tiXian,
+  getTixianjilu,
+  getFenxiaoyonghu,
+  getYijiyonghu,
+  getFenxiaodingdan,
+  getHaibaobase64,
   getFenxiao,
   getIoswenan,
   get_kechengprepay_id,
@@ -116,7 +131,6 @@ export default {
   getSijiaoList,
   getXingxiangjianshe,
   getLiaomeishizhan,
-  wangzhi,
   getUnionid,
   checkUnionid,
   getPhoneNumber,

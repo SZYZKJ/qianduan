@@ -30,7 +30,7 @@
           <view class="tuijian" wx:for="{{tuijian}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="fuzhituijian({{item}})">{{item}}</view>
         </view>
       </view>
-      <view class="kuai3">
+      <view wx:if="{{issystem||islianmeng}}" class="kuai3">
         <view class="shouhang">
           <image class="image1" mode="scaleToFill" src="{{kecheng.image}}" />
           <view class="gengduo" bindtap="goTopage('kechenglist')">
@@ -120,7 +120,7 @@
           </view>
         </view>
       </view>
-      <view class="kuai3">
+      <view wx:if="{{issystem||islianmeng}}" class="kuai3">
         <view class="shouhang">
           <image class="image1" mode="scaleToFill" src="{{sijiao.image}}" />
           <view class="gengduo" bindtap="goTopage('sijiaolist')">
@@ -184,6 +184,7 @@
       endX: 0,
       endY: 0,
       issystem: 0,
+      islianmeng: 0,
       indicatorDots: true,
       autoplay: true,
       interval: 3000,
@@ -242,29 +243,29 @@
         system: system,
       });
       if (json.MSG == 'NO') {
-        let res = await wepy.login();
-        if (res.code) {
+        const userInfores = await wepy.getUserInfo();
+        wepy.setStorageSync('userInfo', userInfores.userInfo);
+        if (userInfores.errMsg == 'getUserInfo:ok') {
+          const loginres = await wepy.login();
           let options = wepy.getStorageSync('options');
           const rlt = await api.getUnionid({
-            jsCode: res.code,
-            userinfo: userinfo,
+            js_code: loginres.code,
+            userinfo: userInfores.userInfo,
             system: system,
             options: options,
+            encryptedData: userInfores.encryptedData,
+            jiemiiv: userInfores.iv,
           })
           if (rlt.MSG) {
             let data = rlt.data;
             if (data.unionid) {
               wepy.setStorageSync('unionid', data.unionid);
-            } else {
-              wepy.navigateTo({
-                url: '/pages/shouquan'
-              })
             }
-          } else {
-            wepy.navigateTo({
-              url: '/pages/shouquan'
-            })
           }
+        } else {
+          wepy.navigateTo({
+            url: '/pages/shouquan'
+          })
         }
       }
     }
@@ -276,6 +277,7 @@
         system: wepy.getSystemInfoSync().system,
       });
       this.issystem = json.issystem;
+      this.islianmeng = json.islianmeng;
       wepy.setStorageSync('issystem', json.issystem);
       wepy.setStorageSync('islianmeng', json.islianmeng);
       this.$apply();
@@ -404,7 +406,7 @@
         url: "/pages/searchpage"
       })
     }
-    onShow() {
+    async onShow() {
       let that = this;
       wx.getClipboardData({
         success: function(res) {
@@ -415,22 +417,19 @@
         }
       });
       this.getShouyeman();
-      this.$apply();
-    }
-    async onLoad() {
-      wepy.setStorageSync('system', wepy.getSystemInfoSync().system);
       const res = await wepy.getSetting();
       if ((res.authSetting)['scope.userInfo']) {
-        const data = await wepy.getUserInfo();
-        wepy.setStorageSync('userInfo', data.userInfo);
         this.checkUnionid();
       } else {
         wepy.navigateTo({
           url: '/pages/shouquan'
         })
       }
+      this.$apply();
+    }
+    async onLoad() {
+      wepy.setStorageSync('system', wepy.getSystemInfoSync().system);
       this.getShouyekuai();
-      this.getShouyeman();
       this.getIslianmeng();
     }
     onShareAppMessage() {

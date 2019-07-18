@@ -99,7 +99,7 @@
       </view>
       <view wx:if="{{currentTab0==8}}">
         <view class="tixian">提现提醒：
-          <view class="jinshi">请确保你关注了《恋爱联盟》公众号，若还是无法体现，请到《恋爱联盟》公众号回复任意信息后再重新提现，否则无法提现成功。</view>{{fenxiao.tixiantixing}}</view>
+          <view class="jinshi" bindtap="fuzhilianjie">请确保你关注了《恋爱联盟》公众号，并进入过菜单栏左边《加入会员》，点击进入会员或者课程并授权，或直接进入链接http://www.lianaizhuli.com/kechenglist(点击可复制链接),否则无法提现成功。</view>{{fenxiao.tixiantixing}}</view>
         <view class="tixianjine"><text class="tixianclour">提现金额：</text><input class="jinekuang" value="{{tixianjine}}" bindinput="bindinput" auto-focus/><text class="tixianclour">元</text></view>
         <button class="dianjitixian" type="primary" size="{{primarySize}}" bindtap="tixian"> 提现 </button>
       </view>
@@ -195,7 +195,7 @@
           title: "输入不合法",
           duration: 2000
         });
-      } else if (json.MSG == 'NOFWHID') {
+      } else if (json.MSG == 'NOGZHID') {
         tip.confirm('请确保你关注了《恋爱联盟》公众号，若还是无法体现，请到《恋爱联盟》公众号回复任意信息后再重新提现，否则无法提现成功。');
       } else if (json.MSG == 'SENDNUM_LIMIT') {
         wx.showToast({
@@ -288,6 +288,26 @@
         });
         return false;
       }
+      let that=this;
+      var haibaoming=that.fenxiao.haibaoming||'';
+      var aa = wx.getFileSystemManager();
+      this.haibao = [wx.env.USER_DATA_PATH + '/' + haibaoming + '0.png', wx.env.USER_DATA_PATH + '/' + haibaoming + '1.png', wx.env.USER_DATA_PATH + '/' + haibaoming + '2.png', ]
+      let flag = 1;
+      for (let i = 0; i < 3; ++i) {
+        if (flag == 1) {
+          await aa.getFileInfo({
+            filePath: wx.env.USER_DATA_PATH + '/' + haibaoming + i.toString() + '.png',
+            fail(res) {
+              flag = 0;
+            },
+            complete() {
+              if (i == 2 && flag == 0) {
+                that.gethaibao();
+              }
+            }
+          })
+        }
+      }
     }
     async gethaibao() {
       let unionid = wepy.getStorageSync('unionid') || '';
@@ -300,7 +320,8 @@
           imgname: ii.toString(),
         });
         var aa = wx.getFileSystemManager();
-        var filepath = wx.env.USER_DATA_PATH + '/' + unionid + ii.toString() + '.png';
+        var haibaoming=this.fenxiao.haibaoming||'';
+        var filepath = wx.env.USER_DATA_PATH + '/' + haibaoming + ii.toString() + '.png';
         aa.writeFile({
           filePath: filepath,
           data: json.data,
@@ -311,7 +332,7 @@
               that.loading = 0;
             }
             that.$apply();
-          }
+          },
         })
       }
       this.loading = 0;
@@ -336,6 +357,17 @@
       }
     }
     methods = {
+      fuzhilianjie() {
+        wx.setClipboardData({
+          data: "http://www.lianaizhuli.com/kechenglist",
+          success: function() {
+            wx.showToast({
+              title: "复制成功",
+              duration: 500
+            });
+          }
+        });
+      },
       bindinput(obj) {
         this.tixianjine = obj.detail.value;
       },
@@ -394,26 +426,6 @@
     }
     async onShow() {
       this.getwodefenxiao();
-      var aa = wx.getFileSystemManager();
-      let unionid = wepy.getStorageSync('unionid');
-      this.haibao = [wx.env.USER_DATA_PATH + '/' + unionid + '0.png', wx.env.USER_DATA_PATH + '/' + unionid + '1.png', wx.env.USER_DATA_PATH + '/' + unionid + '2.png', ]
-      let flag = 1;
-      let that = this;
-      for (let i = 0; i < 3; ++i) {
-        if (flag == 1) {
-          await aa.getFileInfo({
-            filePath: wx.env.USER_DATA_PATH + '/' + unionid + i.toString() + '.png',
-            fail(res) {
-              flag = 0;
-            },
-            complete() {
-              if (i == 2 && flag == 0) {
-                that.gethaibao();
-              }
-            }
-          })
-        }
-      }
     }
     onShareAppMessage() {
       return {
@@ -462,6 +474,7 @@
   .dianjitixian {
     width: 60%;
     margin-left: 20%;
+    margin-bottom: 200rpx;
   }
   .dingdankuang {
     margin-top: 20rpx;

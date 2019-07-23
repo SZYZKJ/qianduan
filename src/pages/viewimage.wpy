@@ -1,7 +1,7 @@
 <template>
   <view class="viewimage">
     <text selectable='true' class="title">{{title}}</text>
-    <image class="image" src="{{url}}" mode="widthFix"></image>
+    <image class="image" src="{{url}}" mode="widthFix" />
   </view>
 </template>
 

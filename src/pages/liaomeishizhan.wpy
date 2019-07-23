@@ -4,13 +4,13 @@
         <rich-text nodes="{{liaomeishizhan.content}}"></rich-text>
         <view class="dikuang">
             <view class="shoucangkuang">
-                <image class="shoucang" @tap="gaibiandianzan" wx:if="{{dianzan}}" src="https://www.lianaizhuli.com/yidianzan.png" />
-                <image class="shoucang" @tap="gaibiandianzan" wx:else src="https://www.lianaizhuli.com/weidianzan.png" />
+                <image class="shoucang" bindtap="gaibiandianzan" wx:if="{{dianzan}}" src="https://www.lianaizhuli.com/yidianzan.png" />
+                <image class="shoucang" bindtap="gaibiandianzan" wx:else src="https://www.lianaizhuli.com/weidianzan.png" />
                 <view>{{liaomeishizhan.dianzan}}</view>
             </view>
             <view class="shoucangkuang">
-                <image class="shoucang" @tap="gaibianshoucang" wx:if="{{shoucang}}" src="https://www.lianaizhuli.com/yishoucang.png" />
-                <image class="shoucang" @tap="gaibianshoucang" wx:else src="https://www.lianaizhuli.com/weishoucang.png" />
+                <image class="shoucang" bindtap="gaibianshoucang" wx:if="{{shoucang}}" src="https://www.lianaizhuli.com/yishoucang.png" />
+                <image class="shoucang" bindtap="gaibianshoucang" wx:else src="https://www.lianaizhuli.com/weishoucang.png" />
                 <view>{{liaomeishizhan.shoucang}}</view>
             </view>
         </view>

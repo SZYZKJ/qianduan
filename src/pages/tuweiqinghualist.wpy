@@ -89,14 +89,14 @@
             width: 100%;
         }
         .tuweiqinghua {
-            border-radius: 30rpx;
-            margin-top: 30rpx;
-            margin-left: 30rpx;
-            margin-right: 30rpx;
-            padding-left: 30rpx;
-            padding-right: 30rpx;
-            padding-top: 30rpx;
-            padding-bottom: 30rpx;
+            border-radius: 20rpx;
+            margin-top: 20rpx;
+            margin-left: 20rpx;
+            margin-right: 20rpx;
+            padding-left: 20rpx;
+            padding-right: 20rpx;
+            padding-top: 20rpx;
+            padding-bottom: 20rpx;
             background: #ffffff;
             color: #000;
         }

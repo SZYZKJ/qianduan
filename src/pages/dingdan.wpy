@@ -12,6 +12,8 @@
                 </view>
             </view>
         </view>
+        <view class="textend" wx:if="{{!isend}}">加载中......</view>
+        <view class="textend" wx:if="{{isend}}">恋爱脱单上恋爱联盟</view>
     </view>
 </template>
 
@@ -24,6 +26,7 @@
             navigationBarTitleText: '全部订单',
         }
         data = {
+            isend: 0,
             dingdan: [],
         }
         async getDingdan() {
@@ -38,6 +41,7 @@
                 unionid: unionid,
             })
             this.dingdan = json.data;
+            this.isend = 1;
             this.$apply();
         }
         onLoad() {
@@ -79,6 +83,11 @@
                     padding-left: 50rpx;
                 }
             }
+        }
+        .textend {
+            padding-top: 30rpx;
+            padding-bottom: 30rpx;
+            text-align: center;
         }
     }
 </style>

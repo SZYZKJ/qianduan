@@ -5,36 +5,36 @@
         </view>
         <view wx:if="{{issystem==1}}" class="container">
             <view class="vip">
-                <button class="try {{currentTab==1 ? 'active' : ''}}" @tap="swichtab(1)">
+                <button class="try {{currentTab==1 ? 'active' : ''}}" bindtap="swichtab(1)">
                                             <view class="viptext {{currentTab==1 ? 'active' : ''}}">月会员(1个月)</view>
                                             <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥29.00</view>
                                         </button>
-                <button class="month {{currentTab==2 ? 'active' : ''}}" @tap="swichtab(2)">
+                <button class="month {{currentTab==2 ? 'active' : ''}}" bindtap="swichtab(2)">
                                             <view class="viptext {{currentTab==2 ? 'active' : ''}}">年会员(1年)</view>
                                             <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥199.00</view>
                                         </button>
             </view>
             <view class="vip">
-                <button class="year {{currentTab==3 ? 'active' : ''}}" @tap="swichtab(3)">
+                <button class="year {{currentTab==3 ? 'active' : ''}}" bindtap="swichtab(3)">
                                             <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送年会员)</view>
                                             <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
                                         </button>
-                <button class="lifelong {{currentTab==4 ? 'active' : ''}}" @tap="swichtab(4)">
+                <button class="lifelong {{currentTab==4 ? 'active' : ''}}" bindtap="swichtab(4)">
                                             <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送年会员)</view>
                                             <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
                                         </button>
             </view>
             <view class="vip">
-                <button class="year {{currentTab==5 ? 'active' : ''}}" @tap="swichtab(5)">
+                <button class="year {{currentTab==5 ? 'active' : ''}}" bindtap="swichtab(5)">
                                             <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
                                             <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
                                         </button>
-                <button class="lifelong {{currentTab==6 ? 'active' : ''}}" @tap="swichtab(6)">
+                <button class="lifelong {{currentTab==6 ? 'active' : ''}}" bindtap="swichtab(6)">
                                             <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
                                             <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
                                         </button>
             </view>
-            <button class="zhifu" @tap="weixinzhifu">立即支付</button>
+            <button class="zhifu" bindtap="weixinzhifu">立即支付</button>
             <view class="tequan">
                 会员特权
                 <view class="tequanneirong" wx:if="{{currentTab==1}}">

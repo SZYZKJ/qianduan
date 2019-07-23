@@ -1,7 +1,7 @@
 <template>
   <view class="shoucang">
-    <view class="bianji" wx:if="{{bianji}}" @tap="changbianji">编辑</view>
-    <view class="bianji" wx:else @tap="changbianji">取消</view>
+    <view class="bianji" wx:if="{{bianji}}" bindtap="changbianji">编辑</view>
+    <view class="bianji" wx:else bindtap="changbianji">取消</view>
     <view class="tab-h">
       <view wx:for="{{tabname}}" wx:key="key" wx:for-item='item' wx:for-index="index" class="tab-item{{currentTab==index?'active':''}}" data-current="{{index}}" bindtap="swichNav">{{item.name}}</view>
     </view>

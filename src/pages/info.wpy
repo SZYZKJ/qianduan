@@ -10,8 +10,8 @@
           <open-data class="headercontent0" type="userNickName"></open-data>
           <image class="headercontent3" wx:if="{{vipdengji}}" src="https://www.lianaizhuli.com/geren/VIP.png" />
           <image class="headercontent3" wx:else src="https://www.lianaizhuli.com/geren/feiVIP.png" />
-          <view class="headercontent1" @tap="totequan">{{huiyuan[vipdengji]}}
-            <view class="headercontent2" @tap="tojifen">积分 <text class="jifen">{{jifen}}</text></view>
+          <view class="headercontent1" bindtap="totequan">{{huiyuan[vipdengji]}}
+            <view class="headercontent2" bindtap="tojifen">积分 <text class="jifen">{{jifen}}</text></view>
           </view>
         </view>
         <view class="imagekuang">

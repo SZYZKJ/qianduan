@@ -43,7 +43,7 @@
           <button class="weui-btn" type="default" size="mini" wx:for="{{hisWordsList}}" wx:key="item" bindtap="searchKeyword({{item}})">{{item}}</button>
         </view>
         <view class="if_his" wx:if="{{hisWordsList.length==0}}">暂无搜索记录</view>
-        <button class="btn_box" @tap.stop="clearHis">清除历史记录</button>
+        <button class="btn_box" bindtap="clearHis">清除历史记录</button>
         <view class="minkuai"></view>
       </view>
     </view>
@@ -345,6 +345,7 @@
         this.jilutype = jilutype;
         this.jilucontent = jilucontent;
         this.$apply();
+        this.setJilu();
       },
       nochange() {
         this.ifonShow = false;
@@ -513,12 +514,6 @@
         title: "恋爱联盟",
         path: "/pages/home"
       };
-    }
-    onHide() {
-      this.setJilu();
-    }
-    onUnload() {
-      this.setJilu();
     }
   }
 </script>

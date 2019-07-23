@@ -28,8 +28,8 @@
             </view>
           </view>
           <view class="chakankuai">
-            <view class="chakan" wx:if="{{item.chakan==0}}" @tap="changechakan({{index}})">点击查看详情▼</view>
-            <view class="chakan" wx:if="{{item.chakan}}" @tap="changechakan({{index}})">点击缩方详情▲</view>
+            <view class="chakan" wx:if="{{item.chakan==0}}" bindtap="changechakan({{index}})">点击查看详情▼</view>
+            <view class="chakan" wx:if="{{item.chakan}}" bindtap="changechakan({{index}})">点击缩方详情▲</view>
           </view>
         </view>
       </view>

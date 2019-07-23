@@ -88,14 +88,6 @@
     margin-right: 200rpx;
     color: #000000;
   }
-  .weixin {
-    margin-top: 50rpx;
-    border-radius: 20rpx;
-    background: #ffffff;
-    color: #09bb07;
-    width: 50%;
-    margin-left: 25%;
-  }
   .image_box {
     width: 200rpx;
     height: 336rpx;

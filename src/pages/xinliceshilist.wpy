@@ -167,7 +167,7 @@
         justify-content: space-between;
         height: 80rpx;
         width: 100%;
-        font-size: 28px;
+        font-size: 28rpx;
         .tab-item {
             color: #000;
             margin-left: 20rpx;

@@ -17,7 +17,7 @@ const searchLiaomeihuashu = (params) => wxRequestPost(params, apiMain + 'searchL
 const searchGuanli = (params) => wxRequestPost(params, apiMain + 'searchGuanli');
 //搜索表情
 const searchBiaoqing = (params) => wxRequestPost(params, apiMain + 'searchBiaoqing');
-//搜索表情
+//搜索百科
 const searchBaike = (params) => wxRequestPost(params, apiMain + 'searchBaike');
 //获取撩妹套路
 const getLiaomeitaoluList = (params) => wxRequestPost(params, apiMain + 'getLiaomeitaoluList');

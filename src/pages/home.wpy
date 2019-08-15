@@ -1,6 +1,6 @@
 <template>
   <view class="home">
-    <swiper class="swiper" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
+    <swiper class="swiper" circular="true" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
       <block wx:for="{{lunbotu}}" wx:key="key">
         <swiper-item>
           <image src="{{item.adurl}}" mode="scaleToFill" class="slide-image" bindtap="goToAdvert({{item}})" />
@@ -473,11 +473,12 @@
     }
   }
   .search {
+    background: #efefef;
     margin-left: 10%;
     margin-top: 30rpx;
     width: 80%;
     border-radius: 50rpx;
-    border: 4rpx solid #ff7e00;
+    // border: 4rpx solid #ff7e00;
     height: 80rpx;
     line-height: 100rpx;
     display: flex;

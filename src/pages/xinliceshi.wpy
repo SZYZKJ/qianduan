@@ -16,7 +16,7 @@
     <view wx:if="{{isceshi==1}}" class="timu">
       <view class="timutitle">{{timu.index+1}}、 {{timu.title}}</view>
       <view wx:for="{{timu.options}}" wx:key="key" wx:for-item='item' wx:for-index="index">
-        <view class="zixiang" bindtap="xuanze({{index}})">
+        <view class="zixiang" bindtap="xuanzemethod({{index}})">
           <view class="xuanxiang">{{item.title}}</view>
           <view class="xuanze1" wx:if="{{timu.xuanze==index}}"></view>
           <view class="xuanze0" wx:else></view>
@@ -64,7 +64,6 @@
     };
     data = {
       isceshi: 0,
-      shangyiti: 0,
       tijiao: 0,
       ceshiid: '',
       xinliceshi: {},
@@ -189,7 +188,7 @@
         }
         this.tijiao = 0;
       },
-      xuanze(e) {
+      xuanzemethod(e) {
         if (this.ceshitype == 'score' && this.xuanze.length == this.xinliceshi.questions.length) {
           var shujulen = this.xuanze.length;
           this.score -= this.xuanze[shujulen - 1].options[this.xuanze[shujulen - 1].xuanze].score;

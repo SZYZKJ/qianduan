@@ -32,14 +32,14 @@
       ],
       images: [
         "",
-        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/pangyuming.jpg",
-        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/zhouguangyu.jpg",
-        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/pangyuming.jpg",
-        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/zhouguangyu.jpg",
-        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/pangyuming.jpg",
-        "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/daoshiweixin/zhouguangyu.jpg"
+        "https://www.lianaizhuli.com/daoshiweixin/pangyuming.jpg",
+        "https://www.lianaizhuli.com/daoshiweixin/zhouguangyu.jpg",
+        "https://www.lianaizhuli.com/daoshiweixin/pangyuming.jpg",
+        "https://www.lianaizhuli.com/daoshiweixin/zhouguangyu.jpg",
+        "https://www.lianaizhuli.com/daoshiweixin/pangyuming.jpg",
+        "https://www.lianaizhuli.com/daoshiweixin/zhouguangyu.jpg"
       ],
-      gongzhonghao: "cloud://lianailianmeng-086596.6c69-lianailianmeng-086596/gongzhonghao.png",
+      gongzhonghao: "https://www.lianaizhuli.com/daoshiweixin/gongzhonghao.png",
       vipdengji: 0
     };
     imgYu(e) {

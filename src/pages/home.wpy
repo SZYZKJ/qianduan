@@ -1,6 +1,6 @@
 <template>
   <view class="home">
-    <swiper class="swiper" circular="true" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="true">
+    <swiper class="swiper" circular="true" indicator-active-color="{{indicatorActiveColor}}" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
       <block wx:for="{{lunbotu}}" wx:key="key">
         <swiper-item>
           <image src="{{item.adurl}}" mode="scaleToFill" class="slide-image" bindtap="goToAdvert({{item}})" />
@@ -30,7 +30,7 @@
           <view class="tuijian" wx:for="{{tuijian}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="fuzhituijian({{item}})">{{item}}</view>
         </view>
       </view>
-      <view wx:if="{{issystem||islianmeng}}" class="kuai3">
+      <view wx:if="{{issystem}}" class="kuai3">
         <view class="shouhang">
           <image class="image1" mode="scaleToFill" src="{{kecheng.image}}" />
           <view class="gengduo" bindtap="goTopage('kechenglist')">
@@ -120,7 +120,7 @@
           </view>
         </view>
       </view>
-      <view wx:if="{{issystem||islianmeng}}" class="kuai3">
+      <view wx:if="{{issystem}}" class="kuai3">
         <view class="shouhang">
           <image class="image1" mode="scaleToFill" src="{{sijiao.image}}" />
           <view class="gengduo" bindtap="goTopage('sijiaolist')">
@@ -237,36 +237,40 @@
       let userinfo = wepy.getStorageSync('userInfo');
       let system = wepy.getStorageSync('system');
       let unionid = wepy.getStorageSync('unionid') || '';
-      const json = await api.checkUnionid({
-        unionid: unionid,
-        userinfo: userinfo,
-        system: system,
-      });
-      if (json.MSG == 'NO') {
-        const userInfores = await wepy.getUserInfo();
-        wepy.setStorageSync('userInfo', userInfores.userInfo);
-        if (userInfores.errMsg == 'getUserInfo:ok') {
-          const loginres = await wepy.login();
-          let options = wepy.getStorageSync('options');
-          const rlt = await api.getUnionid({
-            js_code: loginres.code,
-            userinfo: userInfores.userInfo,
-            system: system,
-            options: options,
-            encryptedData: userInfores.encryptedData,
-            jiemiiv: userInfores.iv,
-          })
-          if (rlt.MSG) {
-            let data = rlt.data;
-            if (data.unionid) {
-              wepy.setStorageSync('unionid', data.unionid);
+      try {
+        const json = await api.checkUnionid({
+          unionid: unionid,
+          userinfo: userinfo,
+          system: system,
+        });
+        if (json.MSG == 'NO') {
+          const userInfores = await wepy.getUserInfo();
+          wepy.setStorageSync('userInfo', userInfores.userInfo);
+          if (userInfores.errMsg == 'getUserInfo:ok') {
+            const loginres = await wepy.login();
+            let options = wepy.getStorageSync('options');
+            const rlt = await api.getUnionid({
+              js_code: loginres.code,
+              userinfo: userInfores.userInfo,
+              system: system,
+              options: options,
+              encryptedData: userInfores.encryptedData,
+              jiemiiv: userInfores.iv,
+            })
+            if (rlt.MSG) {
+              let data = rlt.data;
+              if (data.unionid) {
+                wepy.setStorageSync('unionid', data.unionid);
+              }
             }
+          } else {
+            wepy.navigateTo({
+              url: '/pages/shouquan'
+            })
           }
-        } else {
-          wepy.navigateTo({
-            url: '/pages/shouquan'
-          })
         }
+      } catch (error) {
+        tip.confirm('系统升级中，请5分钟后再试，感谢您的谅解和支持！');
       }
     }
     async getIslianmeng() {
@@ -393,10 +397,10 @@
           wx.navigateTo({
             url: "./viewganhuo?url=" + item.url + "&duration=" + item.duration + "&title=" + item.title + "&direction=" + item.direction,
           })
-        } else {
-          wepy.navigateTo({
-            url: 'adding'
-          });
+        } else if(item.type=='path'){
+          wx.navigateTo({
+              url: item.url+"?json=" + JSON.stringify(item.data)
+          })
         }
       },
     }
@@ -421,9 +425,17 @@
       if ((res.authSetting)['scope.userInfo']) {
         this.checkUnionid();
       } else {
-        wepy.navigateTo({
-          url: '/pages/shouquan'
-        })
+        try {
+          let unionid = wepy.getStorageSync('unionid') || '';
+          const json = await api.getShouyekuai({
+            unionid: unionid,
+          });
+          wepy.navigateTo({
+            url: '/pages/shouquan'
+          })
+        } catch (error) {
+          tip.confirm('系统升级中，请5分钟后再试，感谢您的谅解和支持！');
+        }
       }
       this.$apply();
     }
@@ -477,8 +489,7 @@
     margin-left: 10%;
     margin-top: 30rpx;
     width: 80%;
-    border-radius: 50rpx;
-    // border: 4rpx solid #ff7e00;
+    border-radius: 50rpx; // border: 4rpx solid #ff7e00;
     height: 80rpx;
     line-height: 100rpx;
     display: flex;

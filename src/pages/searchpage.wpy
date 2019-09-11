@@ -38,7 +38,7 @@
         </view>
       </view>
       <view class="bigkuai">
-        <view class="hiskuai">
+        <view class="kuai">
           <view class="biaoti">历史记录</view>
           <button class="weui-btn" type="default" size="mini" wx:for="{{hisWordsList}}" wx:key="item" bindtap="searchKeyword({{item}})">{{item}}</button>
         </view>
@@ -580,29 +580,6 @@
       width: 100%;
       border-radius: 20rpx;
       display: inline-block;
-      .biaoti {
-        font-weight: bolder;
-        padding-left: 20rpx;
-        text-align: left;
-        color: #999999;
-        font-size: 30rpx;
-      }
-      .weui-btn {
-        margin-left: 2%;
-        margin-top: 6rpx;
-        margin-bottom: 0rpx;
-        padding: 0rpx;
-        text-align: center;
-        width: 22.5%;
-        height: 62rpx;
-        background: #ffffff;
-        font-size: 28rpx;
-      }
-    }
-    .hiskuai {
-      width: 100%;
-      border-radius: 20rpx;
-      display: inline;
       .biaoti {
         font-weight: bolder;
         padding-left: 20rpx;

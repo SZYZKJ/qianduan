@@ -1,41 +1,46 @@
 <template>
   <view class="liaomeitaolu">
-    <view class="lilunList" wx:for="{{LilunList}}" wx:key="key" wx:for-item="item" wx:for-index="index">
-      <view class="secondkuai">
-        <view class="duihua">
-          <view class="biaoti" bindtap="copycontent({{item.title}})">
-            <text selectable="true">{{item.title}}\n</text>
-          </view>
-          <view wx:for="{{item.datalist}}" wx:key="key" wx:for-item="minitem">
-            <view class="nv" wx:if="{{minitem.person==0}}">
-              <image class="item_img" src="../images/nv.png" />
-              <view class="textkuang" bindtap="copycontent({{minitem.content}})">
-                <text class="text" selectable="true">{{minitem.content}}</text>
+    <swiper class="swiper" bindchange="bindchange" previous-margin="50rpx" next-margin="50rpx" circular="true">
+      <block wx:for="{{LilunList}}" wx:key="key" wx:for-item="item" wx:for-index="index">
+        <swiper-item>
+          <view class="current">{{current}}/{{LilunList.length}}</view>
+          <view class="secondkuai">
+            <view class="duihua">
+              <view class="biaoti" bindtap="copycontent({{item.title}})">
+                <text selectable="true">{{item.title}}\n</text>
+              </view>
+              <view class="fangshi" bindtap="copycontent({{item.fangshi}})"><a style="color:#333;">适合情景：</a><text selectable="true">{{item.fangshi}}\n</text></view>
+              <view class="fangshi" bindtap="copycontent({{item.xiaoguo}})"><a style="color:#333;">使用效果：</a><text selectable="true">{{item.xiaoguo}}\n</text></view>
+              <view class="jiexi">
+                <a style="color:#333;">具体做法：</a>
+              </view>
+              <view wx:for="{{item.datalist}}" wx:key="key" wx:for-item="minitem">
+                <view class="nv" wx:if="{{minitem.person==0}}">
+                  <image class="item_img" src="../images/nv.png" />
+                  <view class="textkuang" bindtap="copycontent({{minitem.content}})">
+                    <text class="text" selectable="true">{{minitem.content}}</text>
+                  </view>
+                </view>
+                <view class="nan" wx:if="{{minitem.person==1}}">
+                  <image class="item_img" src="../images/nan.png" />
+                  <view class="textkuang" bindtap="copycontent({{minitem.content}})">
+                    <text class="text" selectable="true">{{minitem.content}}</text>
+                  </view>
+                </view>
+              </view>
+              <view wx:if="{{item.content.length>0}}">
+                <view class="jiexi">
+                  <a style="color:#333;">解析：</a>
+                </view>
+                <view class="content" bindtap="copycontent({{item.content}})">
+                  <text selectable="true">{{item.content}}</text>
+                </view>
               </view>
             </view>
-            <view class="nan" wx:if="{{minitem.person==1}}">
-              <image class="item_img" src="../images/nan.png" />
-              <view class="textkuang" bindtap="copycontent({{minitem.content}})">
-                <text class="text" selectable="true">{{minitem.content}}</text>
-              </view>
-            </view>
           </view>
-        </view>
-        <view class="thirdkuai" wx:if="{{item.content.length>0}}">
-          <view class="contentkuai">
-            <view class="content" wx:if="{{item.chakan}}" bindtap="copycontent({{item.content}})">
-              <text selectable="true">{{item.content}}</text>
-            </view>
-          </view>
-          <view class="chakankuai">
-            <view class="chakan" wx:if="{{item.chakan==0}}" bindtap="changechakan({{index}})">点击查看详情▼</view>
-            <view class="chakan" wx:if="{{item.chakan}}" bindtap="changechakan({{index}})">点击缩方详情▲</view>
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class="textend" wx:if="{{!isend}}">加载中......</view>
-    <view class="textend" wx:if="{{isend}}">恋爱脱单上恋爱联盟</view>
+        </swiper-item>
+      </block>
+    </swiper>
   </view>
 </template>
 
@@ -50,6 +55,7 @@
     };
     Page = {};
     data = {
+      current: 1,
       cid: 107,
       title: "恋爱联盟",
       LilunList: [],
@@ -157,8 +163,11 @@
       }
     }
     methods = {
-      changechakan(index) {
-        this.LilunList[index].chakan = !this.LilunList[index].chakan;
+      bindchange(e) {
+        this.current = e.detail.current + 1;
+        if (this.current == this.LilunList.length) {
+          this.getLiaomeitaoluList();
+        }
       },
       copycontent(GG) {
         var that = this;
@@ -201,89 +210,93 @@
 <style lang="less">
   .liaomeitaolu {
     text-align: justify;
-    background: rgba(0, 0, 0, 0.1);
+    background-image: url('https://www.lianaizhuli.com/liaomeitaolubackground.png');
+    background-size: 750rpx 1181rpx;
     .textend {
       padding-top: 30rpx;
       padding-bottom: 30rpx;
       text-align: center;
     }
   }
-  .lilunList {
+  .swiper {
+    min-height: 3543rpx;
+  }
+  .current {
+    text-align: center;
+    color: #ff7e00;
+    font-size: 30rpx;
+  }
+  .secondkuai {
+    border-radius: 20rpx;
+    margin-left: 10rpx;
+    margin-right: 10rpx;
+    padding-left: 20rpx;
+    padding-right: 20rpx;
     padding-top: 20rpx;
-    width: 100%;
-    .secondkuai {
-      border-radius: 20rpx;
-      margin-left: 20rpx;
-      margin-right: 20rpx;
-      padding-left: 20rpx;
-      padding-right: 20rpx;
-      padding-top: 20rpx;
-      padding-bottom: 20rpx;
-      background: #ffffff;
-      .duihua {
-        .biaoti {
-          width: 100%;
-          white-space: pre-wrap;
-          margin-bottom: 10rpx;
-          font-weight: bolder;
-          font-size: 30rpx;
-          color: #333;
-        }
-        .nv {
-          line-height: 25px;
-          display: flex;
-          left: 0;
-        }
-        .nan {
-          line-height: 25px;
-          display: flex;
-          left: 0;
-        }
+    padding-bottom: 20rpx;
+    background: #eee3c6;
+    .duihua {
+      .biaoti {
+        text-align: center;
+        white-space: pre-wrap;
+        margin-bottom: 10rpx;
+        font-weight: bolder;
+        font-size: 30rpx;
+        color: #333;
+      }
+      .fangshi {
+        white-space: pre-wrap;
+        margin-bottom: 10rpx;
+        font-weight: bolder;
+        font-size: 30rpx;
+        color: #ff7e00;
+      }
+      .jiexi {
+        white-space: pre-wrap;
+        margin-top: 20rpx;
+        margin-bottom: 10rpx;
+        font-weight: bolder;
+        font-size: 30rpx;
+        color: #333;
+      }
+      .nv {
+        line-height: 25px;
+        display: flex;
+        left: 0;
+      }
+      .nan {
+        line-height: 25px;
+        display: flex;
+        left: 0;
+      }
+      .item_img {
+        padding-top: 10rpx;
+        padding-right: 10rpx;
+        width: 35rpx;
+        height: 35rpx;
+      }
+      .textkuang {
+        width: 100%;
+      }
+      .text {
+        font-size: 28rpx;
+        color: #333;
+      }
+      .vip {
+        margin-top: 20rpx;
+        text-align: center;
         .item_img {
-          padding-top: 10rpx;
-          padding-right: 10rpx;
-          width: 35rpx;
-          height: 35rpx;
-        }
-        .textkuang {
-          width: 100%;
-        }
-        .text {
-          font-size: 28rpx;
-          color: #333;
-        }
-        .vip {
-          margin-top: 20rpx;
-          text-align: center;
-          .item_img {
-            padding: 0rpx;
-            border-radius: 20rpx;
-            width: 368rpx;
-            height: 248rpx;
-          }
+          padding: 0rpx;
+          border-radius: 20rpx;
+          width: 368rpx;
+          height: 248rpx;
         }
       }
-      .thirdkuai {
-        .contentkuai {
-          border-radius: 20rpx;
-          margin-top: 20rpx;
-          .content {
-            width: 100%;
-            padding-top: 20rpx;
-            padding-left: 20rpx;
-            padding-right: 20rpx;
-            padding-bottom: 20rpx;
-            font-size: 28rpx;
-          }
-        }
-        .chakankuai {
-          margin-top: 20rpx;
-          text-align: center;
-          .chakan {
-            font-weight: bolder;
-            font-size: 30rpx;
-          }
-        }
+      .content {
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        padding-bottom: 20rpx;
+        font-size: 28rpx;
       }
     }
   }

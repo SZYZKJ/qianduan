@@ -93,6 +93,7 @@
         'unionid': unionid,
         'kechengid': this.kecheng.id,
         'detail': '课程：' + this.kecheng.title,
+        'apptype': 'xcx',
       });
       this.paySign_data = json.data;
       if (json.MSG == 'nophoneNumber') {

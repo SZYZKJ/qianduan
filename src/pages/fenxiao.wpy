@@ -288,8 +288,8 @@
         });
         return false;
       }
-      let that=this;
-      var haibaoming=that.fenxiao.haibaoming||'';
+      let that = this;
+      var haibaoming = that.fenxiao.haibaoming || '';
       var aa = wx.getFileSystemManager();
       this.haibao = [wx.env.USER_DATA_PATH + '/' + haibaoming + '0.png', wx.env.USER_DATA_PATH + '/' + haibaoming + '1.png', wx.env.USER_DATA_PATH + '/' + haibaoming + '2.png', ]
       let flag = 1;
@@ -311,32 +311,6 @@
     }
     async gethaibao() {
       let unionid = wepy.getStorageSync('unionid') || '';
-      this.haibao = [];
-      this.loading = 1;
-      let that = this;
-      for (let ii = 0; ii < 3; ++ii) {
-        const json = await api.getHaibaobase64({
-          unionid: unionid,
-          imgname: ii.toString(),
-        });
-        var aa = wx.getFileSystemManager();
-        var haibaoming=this.fenxiao.haibaoming||'';
-        var filepath = wx.env.USER_DATA_PATH + '/' + haibaoming + ii.toString() + '.png';
-        aa.writeFile({
-          filePath: filepath,
-          data: json.data,
-          encoding: 'base64',
-          success() {
-            that.haibao.push(filepath);
-            if (ii == 2) {
-              that.loading = 0;
-            }
-            that.$apply();
-          },
-        })
-      }
-      this.loading = 0;
-      this.$apply();
       if (unionid == '') {
         unionid = '';
         wepy.navigateTo({
@@ -344,6 +318,40 @@
         });
         return false;
       }
+      this.haibao = [];
+      this.loading = 1;
+      let that = this;
+      for (let ii = 0; ii < 3; ++ii) {
+        const json = await api.getHaibao({
+          unionid: unionid,
+          imgname: ii.toString(),
+        });
+        var aa = wx.getFileSystemManager();
+        var haibaoming = this.fenxiao.haibaoming || '';
+        wx.downloadFile({
+          url: api.openData + 'fenxiao/' + unionid + ii.toString() + '.png',
+          success(res) {
+            if (res.statusCode === 200) {
+              aa.saveFile({
+                tempFilePath: res.tempFilePath,
+                filePath: wx.env.USER_DATA_PATH + '/' + haibaoming + ii.toString() + '.png',
+                success() {
+                  that.haibao.push(wx.env.USER_DATA_PATH + '/' + haibaoming + ii.toString() + '.png');
+                  api.deleteHaibao({
+                    unionid: unionid,
+                    imgname: ii.toString(),
+                  });
+                  if (ii == 2) {
+                    that.loading = 0;
+                  }
+                  that.$apply();
+                },
+              })
+            }
+          }
+        })
+      }
+      this.$apply();
     }
     changeTab() {
       if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {

@@ -10,18 +10,18 @@
           <open-data class="headercontent0" type="userNickName"></open-data>
           <image class="headercontent3" wx:if="{{vipdengji}}" src="https://www.lianaizhuli.com/geren/VIP.png" />
           <image class="headercontent3" wx:else src="https://www.lianaizhuli.com/geren/feiVIP.png" />
-          <view class="headercontent1" bindtap="totequan">{{huiyuan[vipdengji]}}
+          <view class="headercontent1" bindtap="totequan">{{detail[vipdengji]}}
             <view class="headercontent2" bindtap="tojifen">积分 <text class="jifen">{{jifen}}</text></view>
           </view>
         </view>
         <view class="imagekuang">
-          <image class="banimage" wx:if="{{issystem||islianmeng}}" bindtap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
+          <image class="banimage" wx:if="{{issystem}}" bindtap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
           <image class="banimage" bindtap="toshoucang" src="https://www.lianaizhuli.com/geren/wodeshoucang.png" />
         </view>
       </view>
     </view>
     <view class="info_block">
-      <navigator wx:if="{{issystem||islianmeng}}" class="item" url="/pages/vip">
+      <navigator wx:if="{{issystem}}" class="item" url="/pages/vip">
         <view class="item_content">
           <image class="item_img" src="../images/shengjihuiyuan.png" />
           <view class="text">
@@ -75,7 +75,7 @@
           </view>
         </view>
       </navigator>
-      <navigator wx:if="{{issystem||islianmeng}}" class="item" url="/pages/dingdan">
+      <navigator wx:if="{{issystem}}" class="item" url="/pages/dingdan">
         <view class="item_content">
           <image class="item_img" src="../images/quanbudingdan.png" />
           <view class="text">
@@ -105,7 +105,7 @@
       wenhouyu: "HI，欢迎您~",
       avatarUrl: "",
       nickName: "",
-      huiyuan: ['非会员', '月会员(1个月)', '年会员(1年)', '私教一个月(送年会员)', '私教3个月(送年会员)', '私教一年(送终身会员)', '联盟会员(含私教终身)'],
+      detail: ['非会员', '终身会员', '分手挽回(送终身会员)', '私教1个月(送终身会员)', '私教3个月(送终身会员)', '私教1年(送终身会员)', '联盟会员(含私教终身)'],
       vipdengji: 0,
       jifen: 0,
       issystem: 0,

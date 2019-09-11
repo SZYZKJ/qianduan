@@ -2,8 +2,8 @@ import {
   wxRequestPost
 } from '@/utils/wxRequest';
 
-const apiMain = 'https://www.lianaizhuli.com/xcx/'
-// const apiMain = 'https://www.xingnanzhuli.com/xcx/'
+const openData = 'https://www.lianaizhuli.com/'
+const apiMain = openData+'xcx/'
 
 //微信的jscode换取sessionKey
 const getUnionid = (params) => wxRequestPost(params, apiMain + 'getUnionid');
@@ -101,6 +101,10 @@ const getIoswenan = (params) => wxRequestPost(params, apiMain + 'getIoswenan');
 const getFenxiao = (params) => wxRequestPost(params, apiMain + 'getFenxiao');
 //获取分销图片base64
 const getHaibaobase64 = (params) => wxRequestPost(params, apiMain + 'getHaibaobase64');
+//获取分销图片
+const getHaibao = (params) => wxRequestPost(params, apiMain + 'getHaibao');
+//删除分销图片
+const deleteHaibao = (params) => wxRequestPost(params, apiMain + 'deleteHaibao');
 //获取分销订单
 const getFenxiaodingdan = (params) => wxRequestPost(params, apiMain + 'getFenxiaodingdan');
 //获取分销下级推广员
@@ -113,6 +117,8 @@ const getTixianjilu = (params) => wxRequestPost(params, apiMain + 'getTixianjilu
 const tiXian = (params) => wxRequestPost(params, apiMain + 'tiXian');
 
 export default {
+  deleteHaibao,
+  getHaibao,
   tiXian,
   getTixianjilu,
   getFenxiaoyonghu,
@@ -166,4 +172,5 @@ export default {
   getXinliceshiList,
   getXinliceshi,
   getCeshidaan,
+  openData,
 }

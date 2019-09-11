@@ -397,9 +397,9 @@
           wx.navigateTo({
             url: "./viewganhuo?url=" + item.url + "&duration=" + item.duration + "&title=" + item.title + "&direction=" + item.direction,
           })
-        } else if(item.type=='path'){
+        } else if (item.type == 'path') {
           wx.navigateTo({
-              url: item.url+"?json=" + JSON.stringify(item.data)
+            url: item.url + "?json=" + JSON.stringify(item.data)
           })
         }
       },

@@ -26,7 +26,6 @@
   export default class huashu extends wepy.component {
     data = {
       huashuList: [],
-      issystem: 0
     };
     methods = {
       copycontent(GG) {
@@ -43,7 +42,6 @@
       }
     };
     onLoad() {
-      this.issystem = wepy.getStorageSync("issystem");
       this.$apply();
     }
   }

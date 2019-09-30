@@ -5,7 +5,11 @@
                 <view class="kuai">
                     <view class="textkuang">
                         <text selectable='true' class="title">{{item.title}}</text>
-                        <view class="laiyuan">{{item.count}}次学习</view>
+                        <view class="minlan">
+                            <view class="laiyuan">{{item.count}}次学习</view>
+                            <view class="yigoumai" wx:if="{{iosshenhe}}">¥{{item.jiage}}</view>
+                            <view class="yigoumai" wx:else>去学习</view>
+                        </view>
                     </view>
                     <image class="image" src="{{item.image}}" mode="scaleToFill" lazy-load="false" />
                 </view>
@@ -30,6 +34,7 @@
             sijiaoList: [],
             scroll: '',
             isend: false,
+            iosshenhe: wepy.getStorageSync('iosshenhe'),
         }
         async getSijiaoList(e) {
             if (this.isend) return;
@@ -100,8 +105,27 @@
                         font-size: 28rpx;
                         width: 420rpx;
                     }
-                    .laiyuan {
-                        font-size: 20rpx;
+                    .minlan {
+                        display: flex;
+                        justify-content: space-between;
+                        text-align: center;
+                        .laiyuan {
+                            font-size: 20rpx;
+                        }
+                        .yigoumai {
+                            width: 100rpx;
+                            color: #fff;
+                            background: #ff7e00;
+                            border-radius: 20rpx;
+                            font-size: 20rpx;
+                        }
+                        .weigoumai {
+                            width: 100rpx;
+                            color: #fff;
+                            background: #09BB07;
+                            border-radius: 20rpx;
+                            font-size: 20rpx;
+                        }
                     }
                 }
                 .image {

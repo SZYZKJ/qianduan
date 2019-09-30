@@ -30,7 +30,7 @@
           <view class="tuijian" wx:for="{{tuijian}}" wx:key="key" wx:for-item='item' wx:for-index="index" bindtap="fuzhituijian({{item}})">{{item}}</view>
         </view>
       </view>
-      <view wx:if="{{issystem}}" class="kuai3">
+      <view class="kuai3">
         <view class="shouhang">
           <image class="image1" mode="scaleToFill" src="{{kecheng.image}}" />
           <view class="gengduo" bindtap="goTopage('kechenglist')">
@@ -48,8 +48,8 @@
             </view>
             <view class="minlan">
               <view class="laiyuan">{{item.count}}人学习</view>
-              <view wx:if="{{item.yigoumai}}" class="yigoumai">去学习</view>
-              <view wx:if="{{item.yigoumai==0&&issystem==1}}" class="yigoumai">¥{{item.jiage}}</view>
+              <view wx:if="{{item.yigoumai||iosshenhe==0}}" class="yigoumai">去学习</view>
+              <view wx:else class="yigoumai">¥{{item.jiage}}</view>
             </view>
           </view>
         </view>
@@ -120,7 +120,7 @@
           </view>
         </view>
       </view>
-      <view wx:if="{{issystem}}" class="kuai3">
+      <view class="kuai3">
         <view class="shouhang">
           <image class="image1" mode="scaleToFill" src="{{sijiao.image}}" />
           <view class="gengduo" bindtap="goTopage('sijiaolist')">
@@ -136,8 +136,10 @@
             <view class="bigtext">
               {{item.title}}
             </view>
-            <view class="mintext">
-              {{item.count}}人学习
+            <view class="minlan">
+              <view class="laiyuan">{{item.count}}人学习</view>
+              <view wx:if="{{iosshenhe==0}}" class="yigoumai">去学习</view>
+              <view wx:else class="yigoumai">¥{{item.jiage}}</view>
             </view>
           </view>
         </view>
@@ -183,8 +185,7 @@
       startY: 0,
       endX: 0,
       endY: 0,
-      issystem: 0,
-      islianmeng: 0,
+      iosshenhe: 1,
       indicatorDots: true,
       autoplay: true,
       interval: 3000,
@@ -280,10 +281,9 @@
         unionid: unionid,
         system: wepy.getSystemInfoSync().system,
       });
-      this.issystem = json.issystem;
-      this.islianmeng = json.islianmeng;
-      wepy.setStorageSync('issystem', json.issystem);
-      wepy.setStorageSync('islianmeng', json.islianmeng);
+      this.iosshenhe = json.iosshenhe;
+      wepy.setStorageSync('iosshenhe', json.iosshenhe);
+      wepy.setStorageSync('istuiguang', json.istuiguang);
       this.$apply();
     }
     changeTab() {

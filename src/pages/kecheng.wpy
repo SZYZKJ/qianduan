@@ -18,8 +18,11 @@
         </view>
       </view>
     </view>
-    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&issystem==1}}">
+    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&iosshenhe}}">
       <view class="text" bindtap="zhifukecheng">特价 {{kecheng.jiage}}</view>
+    </view>
+    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&iosshenhe==0}}">
+      <view class="text" bindtap="zhifukecheng">立即学习</view>
     </view>
   </view>
 </template>
@@ -35,7 +38,7 @@
     Page = {};
     data = {
       kecheng: {},
-      issystem: 1,
+      iosshenhe: wepy.getStorageSync('iosshenhe'),
       currentTab: 0,
       paySign_data: {},
       isowenan: '',
@@ -72,7 +75,7 @@
       this.$apply();
     }
     async zhifukecheng() {
-      if (this.issystem == 0) {
+      if (this.iosshenhe == 0) {
         tip.confirm(this.ioswenan);
         return;
       }
@@ -136,8 +139,8 @@
             url: './kechengneirong?neirongid=' + item.id + '&kechengjson=' + JSON.stringify(this.kecheng) + '&kefenxiang=' + kefenxiang,
           })
         } else {
-          if (this.issystem == 0) {
-            tip.confirm('由于相关规范，iOS功能暂不可用。');
+          if (this.iosshenhe == 0) {
+            tip.confirm(this.ioswenan);
             return;
           }
           tip.confirm('尊敬的恋爱联盟用户，当前内容为付费阅读，请先购买~');
@@ -166,7 +169,6 @@
     }
     onLoad(options) {
       this.kecheng = JSON.parse(options.json);
-      this.issystem = wepy.getStorageSync('issystem');
       this.huoquwenan();
     }
     onShareAppMessage() {

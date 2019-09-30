@@ -1,38 +1,38 @@
 <template>
     <view>
-        <view wx:if="{{issystem==0}}" class="issystem">
+        <view wx:if="{{iosshenhe==0}}" class="iosshenhe">
             {{ioswenan}}
         </view>
-        <view wx:if="{{issystem==1}}" class="container">
+        <view wx:if="{{iosshenhe==1}}" class="container">
             <view class="vip">
                 <button class="try {{currentTab==1 ? 'active' : ''}}" bindtap="swichtab(1)">
-                                                                    <view class="viptext {{currentTab==1 ? 'active' : ''}}">终身会员</view>
-                                                                    <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥199.00</view>
-                                                                </button>
+                                                                        <view class="viptext {{currentTab==1 ? 'active' : ''}}">终身会员</view>
+                                                                        <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥199.00</view>
+                                                                    </button>
                 <button class="month {{currentTab==2 ? 'active' : ''}}" bindtap="swichtab(2)">
-                                                                    <view class="viptext {{currentTab==2 ? 'active' : ''}}">分手挽回(送终身会员)</view>
-                                                                    <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥1999.00</view>
-                                                                </button>
+                                                                        <view class="viptext {{currentTab==2 ? 'active' : ''}}">分手挽回(送终身会员)</view>
+                                                                        <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥1999.00</view>
+                                                                    </button>
             </view>
             <view class="vip">
                 <button class="year {{currentTab==3 ? 'active' : ''}}" bindtap="swichtab(3)">
-                                                                    <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送终身会员)</view>
-                                                                    <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
-                                                                </button>
+                                                                        <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送终身会员)</view>
+                                                                        <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
+                                                                    </button>
                 <button class="lifelong {{currentTab==4 ? 'active' : ''}}" bindtap="swichtab(4)">
-                                                                    <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送终身会员)</view>
-                                                                    <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
-                                                                </button>
+                                                                        <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送终身会员)</view>
+                                                                        <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
+                                                                    </button>
             </view>
             <view class="vip">
                 <button class="year {{currentTab==5 ? 'active' : ''}}" bindtap="swichtab(5)">
-                                                                    <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
-                                                                    <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
-                                                                </button>
+                                                                        <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
+                                                                        <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
+                                                                    </button>
                 <button class="lifelong {{currentTab==6 ? 'active' : ''}}" bindtap="swichtab(6)">
-                                                                    <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
-                                                                    <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
-                                                                </button>
+                                                                        <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
+                                                                        <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
+                                                                    </button>
             </view>
             <button class="zhifu" bindtap="weixinzhifu">立即支付</button>
             <view class="tequan">
@@ -100,7 +100,7 @@
         }
         data = {
             nowtime: 0,
-            issystem: 1,
+            iosshenhe: wepy.getStorageSync('iosshenhe'),
             currentTab: 1,
             paySign_data: {},
             ioswenan: '',
@@ -183,7 +183,6 @@
         }
         onLoad() {
             this.huoquwenan();
-            this.issystem = wepy.getStorageSync('issystem');
             this.$apply();
         }
         onShareAppMessage() {
@@ -196,7 +195,7 @@
 </script>
 
 <style lang="less">
-    .issystem {
+    .iosshenhe {
         padding-left: 20rpx;
         padding-top: 20rpx;
         padding-right: 20rpx;

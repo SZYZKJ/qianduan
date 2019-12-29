@@ -574,7 +574,6 @@
     position: fixed;
     z-index: 99;
     background: #ffffff;
-    border-bottom: 2rpx solid rgba(0, 0, 0, 0.1);
     .searchkuang {
       display: flex;
       width: 100%;
@@ -618,7 +617,7 @@
     }
   }
   .showdata {
-    padding-top: 150rpx;
+    padding-top: 148rpx;
     background: rgba(0, 0, 0, 0.1);
     .textend {
       padding-top: 30rpx;

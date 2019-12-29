@@ -4,7 +4,7 @@
         <view class="tequanming">{{detail[vipdengji]}}</view>
         <view wx:if="{{vipdengji>0}}" class="tequan">您的会员到期时间为</view>
         <view wx:if="{{vipdengji>0}}" class="tequanming">{{viptime}}</view>
-        <view wx:if="{{vipdengji<6&&iosshenhe}}">
+        <view wx:if="{{vipdengji<6&&weixinshenhe}}">
             <view class="kaitongtext">点击升级，解锁更多会员专属服务，为您提供更多恋爱能力~</view>
             <navigator class="vip" url="/pages/vip">升级会员</navigator>
         </view>
@@ -74,7 +74,7 @@
             detail: ['', '终身会员', '分手挽回(送终身会员)', '私教1个月(送终身会员)', '私教3个月(送终身会员)', '私教1年(送终身会员)', '联盟会员(含私教终身)'],
             vipdengji: 0,
             viptime: '',
-            iosshenhe: wepy.getStorageSync('iosshenhe'),
+            weixinshenhe: wepy.getStorageSync('weixinshenhe'),
         }
         async getTequan() {
             let unionid = wepy.getStorageSync('unionid') || '';

@@ -1,14 +1,17 @@
 <template>
   <view class="searchpage">
     <view class="search">
-      <view class="serch_content">
-        <icon type="search" size="20"></icon>
-        <input type="text" class="search_input" value="{{inputValue}}" focus="{{focus}}" bindinput="bindinput" bindconfirm="bindconfirm" bindfocus="bindfocus" confirm-type="search" placeholder="复制妹子聊天的话" maxlength="20" />
-        <view class="cha" wx:if="{{inputValue!=''}}" bindtap="delText">
-          <view class="chaclearn">
-            <icon type="clear" size="20"></icon>
+      <view class="searchkuang">
+        <view class="serch_content">
+          <view class="searchicon">
+            <icon type="search" size="24"></icon>
+          </view>
+          <input type="text" class="search_input" value="{{inputValue}}" focus="{{focus}}" bindinput="bindinput" bindconfirm="bindconfirm('')" bindfocus="bindfocus" confirm-type="search" placeholder="复制妹子聊天的话" maxlength="20" />
+          <view class="clearicon" wx:if="{{inputValue!=''}}" bindtap="delText">
+            <icon type="clear" size="24"></icon>
           </view>
         </view>
+        <view class="searchanniu" bindtap="bindconfirm('')">搜索</view>
       </view>
       <view wx:if="{{showRecommend==0}}">
         <tab class="tab" @currentTab.user="getCurrentTab" :currentTab.sync="currentTab" :tabList.sync="tabList"></tab>
@@ -30,21 +33,30 @@
       <view class="textend" wx:if="{{(currentTab==0&&!isend0&&oldhuashu)||(currentTab==1&&!isend1&&oldbiaoqing)||(currentTab==2&&!isend2&&oldbaike)}}">加载中......</view>
       <view class="textend" wx:else>恋爱脱单上恋爱联盟</view>
     </view>
-    <view class="recommend" wx:if="{{showRecommend}}">
-      <view class="bigkuai">
-        <view class="kuai">
-          <view class="biaoti">热门推荐</view>
-          <button class="weui-btn" type="default" size="mini" wx:for="{{hotWordsList}}" wx:key="item" bindtap="searchKeyword({{item}})">{{item}}</button>
+    <view class="recommend" wx:else>
+      <view wx:if="{{showhlepkeyword}}">
+        <view class="helpkeywords" wx:for="{{helpKeywords}}" wx:key="key" wx:for-item="item" wx:for-index="index">
+          <view class="keyword" bindtap="bindconfirm({{item}})">
+            {{item}}
+          </view>
         </view>
       </view>
-      <view class="bigkuai">
-        <view class="kuai">
-          <view class="biaoti">历史记录</view>
-          <button class="weui-btn" type="default" size="mini" wx:for="{{hisWordsList}}" wx:key="item" bindtap="searchKeyword({{item}})">{{item}}</button>
+      <view wx:else>
+        <view class="rementuijian">
+          <view class="kuai">
+            <view class="biaoti">热门推荐</view>
+            <button class="weui-btn" type="default" size="mini" wx:for="{{hotWordsList}}" wx:key="item" bindtap="searchKeyword({{item}})">{{item}}</button>
+          </view>
         </view>
-        <view class="if_his" wx:if="{{hisWordsList.length==0}}">暂无搜索记录</view>
-        <button class="btn_box" bindtap="clearHis">清除历史记录</button>
-        <view class="minkuai"></view>
+        <view class="lishijilu">
+          <view class="kuai">
+            <view class="biaoti">历史记录</view>
+            <button class="weui-btn" type="default" size="mini" wx:for="{{hisWordsList}}" wx:key="item" bindtap="searchKeyword({{item}})">{{item}}</button>
+          </view>
+          <view class="if_his" wx:if="{{hisWordsList.length==0}}">暂无搜索记录</view>
+          <button class="btn_box" bindtap="clearHis">清除历史记录</button>
+          <view class="minkuai"></view>
+        </view>
       </view>
     </view>
   </view>
@@ -95,12 +107,32 @@
       tabList: ["话术", "表情", '百科'],
       hisWordsList: [],
       hotWordsList: [],
+      helpKeywords: [],
       showRecommend: 0,
+      showhlepkeyword: 0,
       jilutype: "huashu",
       jilucontent: "",
       copyinput: "",
-      iosshenhe: wepy.getStorageSync('iosshenhe'),
+      weixinshenhe: wepy.getStorageSync('weixinshenhe'),
     };
+    async getHelpkeywords() {
+      let unionid = wepy.getStorageSync('unionid') || '';
+      if (unionid == '') {
+        wepy.navigateTo({
+          url: "/pages/shouquan"
+        });
+        return false;
+      }
+      const json = await api.getHelpkeywords({
+        query: this.inputValue,
+        unionid: unionid,
+        nowtab: this.currentTab,
+      });
+      this.helpKeywords = json.data;
+      this.showhlepkeyword = true;
+      this.showRecommend = true;
+      this.$apply();
+    }
     async getRecommend() {
       let unionid = wepy.getStorageSync('unionid') || '';
       if (unionid == '') {
@@ -131,7 +163,7 @@
     }
     computed = {};
     confirm() {
-      if (this.iosshenhe == 1) {
+      if (this.weixinshenhe == 1) {
         wx.showModal({
           title: "开通会员",
           content: "您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~",
@@ -362,12 +394,25 @@
       },
       bindinput(obj) {
         this.inputValue = obj.detail.value;
+        this.showRecommend = true;
+        if (this.inputValue == '') {
+          this.showhlepkeyword = false;
+        } else {
+          this.getHelpkeywords();
+        }
       },
-      bindconfirm() {
+      bindconfirm(newword) {
         this.showRecommend = false;
+        this.showhlepkeyword = false;
+        if(newword!=''){
+          this.inputValue=newword;
+        }
         this.inputValue = this.inputValue
           .replace(/^\s\s*/, "")
           .replace(/\s\s*$/, "");
+        if (this.inputValue == '') {
+          return;
+        }
         if (this.currentTab == 0 && this.inputValue != this.oldhuashu) {
           this.huashuList = [];
           this.scroll0 = "";
@@ -389,9 +434,11 @@
       },
       bindfocus() {
         this.showRecommend = true;
+        this.getHiswordList();
       },
       delText() {
         this.inputValue = "";
+        this.showhlepkeyword = false;
       },
       getCurrentTab(cur, evt) {
         this.currentTab = cur;
@@ -527,27 +574,41 @@
     position: fixed;
     z-index: 99;
     background: #ffffff;
-    .serch_content {
-      margin-left: 5%;
-      margin-right: 5%;
+    .searchkuang {
       display: flex;
-      align-items: center;
-      border-radius: 300rpx;
-      color: #333;
-      background: rgba(0, 0, 0, 0.1);
-      padding: 6rpx 20rpx;
-      height: 58rpx;
-      .search_input {
-        line-height: 58rpx;
-        font-size: 28rpx;
-        width: 100%;
-      }
-      .cha {
-        width: 58rpx;
-        height: 58rpx;
-        .chaclearn {
-          margin-top: 10rpx;
+      width: 100%;
+      padding-left: 2%;
+      .serch_content {
+        width: 84%;
+        display: flex;
+        align-items: center;
+        border-radius: 300rpx;
+        color: #333;
+        background: rgba(0, 0, 0, 0.1);
+        height: 60rpx;
+        .search_input {
+          line-height: 60rpx;
+          font-size: 28rpx;
+          width: 100%;
         }
+        .searchicon {
+          padding-left: 10rpx;
+          padding-top: 10rpx;
+        }
+        .clearicon {
+          padding-left: 10rpx;
+          padding-right: 10rpx;
+          padding-top: 10rpx;
+        }
+      }
+      .searchanniu {
+        margin-left: 2%;
+        text-align: center;
+        border-radius: 20rpx;
+        line-height: 60rpx;
+        width: 10%;
+        color: #fff;
+        background: #ff4500;
       }
     }
     .tab {
@@ -566,36 +627,77 @@
   }
   .recommend {
     padding-top: 88rpx;
-    .bigkuai {
+    .helpkeywords{
+      .keyword{
+        padding-top: 20rpx;
+        padding-bottom: 20rpx;
+        color: #333;
+        width: 100%;
+        text-align: center;
+      }
+    }
+    .rementuijian {
       border-radius: 20rpx;
       margin-left: 20rpx;
       margin-right: 20rpx;
       margin-bottom: 20rpx;
       padding-top: 20rpx;
       background: rgba(0, 0, 0, 0.1);
-    }
-    .kuai {
-      background: rgba(0, 0, 0, 0);
-      width: 100%;
-      border-radius: 20rpx;
-      display: inline-block;
-      .biaoti {
-        font-weight: bolder;
-        padding-left: 20rpx;
-        text-align: left;
-        color: #999999;
-        font-size: 30rpx;
+      .kuai {
+        background: rgba(0, 0, 0, 0);
+        width: 100%;
+        border-radius: 20rpx;
+        display: inline-block;
+        .biaoti {
+          font-weight: bolder;
+          padding-left: 20rpx;
+          text-align: left;
+          color: #999999;
+          font-size: 30rpx;
+        }
+        .weui-btn {
+          margin-left: 2%;
+          margin-top: 6rpx;
+          margin-bottom: 0rpx;
+          padding: 0rpx;
+          text-align: center;
+          width: 22.5%;
+          height: 62rpx;
+          background: #ffffff;
+          font-size: 28rpx;
+        }
       }
-      .weui-btn {
-        margin-left: 2%;
-        margin-top: 6rpx;
-        margin-bottom: 0rpx;
-        padding: 0rpx;
-        text-align: center;
-        width: 22.5%;
-        height: 62rpx;
-        background: #ffffff;
-        font-size: 28rpx;
+    }
+    .lishijilu {
+      border-radius: 20rpx;
+      margin-left: 20rpx;
+      margin-right: 20rpx;
+      margin-bottom: 20rpx;
+      padding-top: 20rpx;
+      background: rgba(0, 0, 0, 0.1);
+      .kuai {
+        background: rgba(0, 0, 0, 0);
+        width: 100%;
+        border-radius: 20rpx;
+        display: inline-block;
+        .biaoti {
+          font-weight: bolder;
+          padding-left: 20rpx;
+          text-align: left;
+          color: #999999;
+          font-size: 30rpx;
+        }
+        .weui-btn {
+          margin-left: 2%;
+          margin-top: 6rpx;
+          margin-bottom: 0rpx;
+          padding: 0rpx;
+          text-align: center;
+          width: 30.5%;
+          height: 62rpx;
+          background: #ffffff;
+          font-size: 28rpx;
+        }
       }
     }
     .if_his {

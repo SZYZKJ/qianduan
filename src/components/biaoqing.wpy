@@ -1,5 +1,5 @@
 <template>
-  <view class="biaoqingkuai">
+  <view class="biaoqingbiaoqing">
     <view class="biaoqingList" wx:for="{{biaoqingList}}" wx:key="key" wx:for-item="item" wx:for-index="index">
       <view class="box">
         <image class="image_box" bindtap="imgYu({{item}})" src="{{item}}" mode="scaleToFill" />
@@ -31,7 +31,7 @@
 </script>
 
 <style lang="less">
-  .biaoqingkuai {
+  .biaoqingbiaoqing {
     padding-top: 10rpx;
   }
   .biaoqingList {

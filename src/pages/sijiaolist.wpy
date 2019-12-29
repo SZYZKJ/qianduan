@@ -7,7 +7,7 @@
                         <text selectable='true' class="title">{{item.title}}</text>
                         <view class="minlan">
                             <view class="laiyuan">{{item.count}}次学习</view>
-                            <view class="yigoumai" wx:if="{{iosshenhe}}">¥{{item.jiage}}</view>
+                            <view class="yigoumai" wx:if="{{weixinshenhe}}">¥{{item.jiage}}</view>
                             <view class="yigoumai" wx:else>去学习</view>
                         </view>
                     </view>
@@ -34,7 +34,7 @@
             sijiaoList: [],
             scroll: '',
             isend: false,
-            iosshenhe: wepy.getStorageSync('iosshenhe'),
+            weixinshenhe: wepy.getStorageSync('weixinshenhe'),
         }
         async getSijiaoList(e) {
             if (this.isend) return;

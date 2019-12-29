@@ -1,38 +1,38 @@
 <template>
     <view>
-        <view wx:if="{{iosshenhe==0}}" class="iosshenhe">
+        <view wx:if="{{weixinshenhe==0||weixinshenhe==2}}" class="weixinshenhe">
             {{ioswenan}}
         </view>
-        <view wx:if="{{iosshenhe==1}}" class="container">
+        <view wx:if="{{weixinshenhe==1}}" class="container">
             <view class="vip">
                 <button class="try {{currentTab==1 ? 'active' : ''}}" bindtap="swichtab(1)">
-                                                                        <view class="viptext {{currentTab==1 ? 'active' : ''}}">终身会员</view>
-                                                                        <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥199.00</view>
-                                                                    </button>
+                                                                                <view class="viptext {{currentTab==1 ? 'active' : ''}}">终身会员</view>
+                                                                                <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥199.00</view>
+                                                                            </button>
                 <button class="month {{currentTab==2 ? 'active' : ''}}" bindtap="swichtab(2)">
-                                                                        <view class="viptext {{currentTab==2 ? 'active' : ''}}">分手挽回(送终身会员)</view>
-                                                                        <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥1999.00</view>
-                                                                    </button>
+                                                                                <view class="viptext {{currentTab==2 ? 'active' : ''}}">分手挽回(送终身会员)</view>
+                                                                                <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥1999.00</view>
+                                                                            </button>
             </view>
             <view class="vip">
                 <button class="year {{currentTab==3 ? 'active' : ''}}" bindtap="swichtab(3)">
-                                                                        <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送终身会员)</view>
-                                                                        <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
-                                                                    </button>
+                                                                                <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送终身会员)</view>
+                                                                                <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
+                                                                            </button>
                 <button class="lifelong {{currentTab==4 ? 'active' : ''}}" bindtap="swichtab(4)">
-                                                                        <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送终身会员)</view>
-                                                                        <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
-                                                                    </button>
+                                                                                <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送终身会员)</view>
+                                                                                <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
+                                                                            </button>
             </view>
             <view class="vip">
                 <button class="year {{currentTab==5 ? 'active' : ''}}" bindtap="swichtab(5)">
-                                                                        <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
-                                                                        <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
-                                                                    </button>
+                                                                                <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
+                                                                                <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
+                                                                            </button>
                 <button class="lifelong {{currentTab==6 ? 'active' : ''}}" bindtap="swichtab(6)">
-                                                                        <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
-                                                                        <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
-                                                                    </button>
+                                                                                <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
+                                                                                <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
+                                                                            </button>
             </view>
             <button class="zhifu" bindtap="weixinzhifu">立即支付</button>
             <view class="tequan">
@@ -100,7 +100,7 @@
         }
         data = {
             nowtime: 0,
-            iosshenhe: wepy.getStorageSync('iosshenhe'),
+            weixinshenhe: wepy.getStorageSync('weixinshenhe'),
             currentTab: 1,
             paySign_data: {},
             ioswenan: '',
@@ -153,7 +153,6 @@
                 'unionid': unionid,
                 'zhifutype': this.currentTab,
                 'detail': this.detail[this.currentTab],
-                'apptype': 'xcx',
             });
             this.paySign_data = json.data;
             if (json.MSG == 'nophoneNumber') {
@@ -166,7 +165,21 @@
             this.$apply();
         }
         weixinzhifu() {
-            this.get_prepay_id();
+            if (this.weixinshenhe == 1) {
+                this.get_prepay_id();
+            } else {
+                wx.showModal({
+                    title: "温馨提示",
+                    content: this.ioswenan,
+                    showCancel: false,
+                    confirmText: "确定",
+                    success: function(res) {
+                        if (res.cancel) {} else {}
+                    },
+                    fail: function(res) {}, //接口调用失败的回调函数
+                    complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+                });
+            }
         }
         methods = {
             swichtab(e) {
@@ -195,7 +208,7 @@
 </script>
 
 <style lang="less">
-    .iosshenhe {
+    .weixinshenhe {
         padding-left: 20rpx;
         padding-top: 20rpx;
         padding-right: 20rpx;

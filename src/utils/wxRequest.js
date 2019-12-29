@@ -14,17 +14,18 @@ function Decrypt(word) {
     var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
     return decryptedStr.toString();
 }
-const wxRequestPost = async(params = {}, url) => {
+const wxRequestPost = async (params = {}, url) => {
     let data = params || {};
-    var newdata=JSON.stringify(data);
-    newdata=Encrypt(newdata);
+    data.apptype = 'weixin';
+    var newdata = JSON.stringify(data);
+    newdata = Encrypt(newdata);
     let res = await wepy.request({
         url: url,
         method: 'POST',
         data: newdata,
         header: { 'Content-Type': 'application/json' },
     });
-    res=JSON.parse(Decrypt(res.data));
+    res = JSON.parse(Decrypt(res.data));
     return res;
 };
 

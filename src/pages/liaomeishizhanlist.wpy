@@ -21,7 +21,7 @@
   import api from "@/api/api";
   export default class liaomeishizhanlist extends wepy.page {
     config = {
-      navigationBarTitleText: "撩妹实战",
+      navigationBarTitleText: "聊天实战",
       enablePullDownRefresh: true,
     };
     data = {

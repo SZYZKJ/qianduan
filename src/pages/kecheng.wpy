@@ -18,10 +18,10 @@
         </view>
       </view>
     </view>
-    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&iosshenhe}}">
+    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&weixinshenhe}}">
       <view class="text" bindtap="zhifukecheng">特价 {{kecheng.jiage}}</view>
     </view>
-    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&iosshenhe==0}}">
+    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&weixinshenhe==0}}">
       <view class="text" bindtap="zhifukecheng">立即学习</view>
     </view>
   </view>
@@ -38,7 +38,7 @@
     Page = {};
     data = {
       kecheng: {},
-      iosshenhe: wepy.getStorageSync('iosshenhe'),
+      weixinshenhe: wepy.getStorageSync('weixinshenhe'),
       currentTab: 0,
       paySign_data: {},
       isowenan: '',
@@ -75,7 +75,7 @@
       this.$apply();
     }
     async zhifukecheng() {
-      if (this.iosshenhe == 0) {
+      if (this.weixinshenhe == 0) {
         tip.confirm(this.ioswenan);
         return;
       }
@@ -96,7 +96,6 @@
         'unionid': unionid,
         'kechengid': this.kecheng.id,
         'detail': '课程：' + this.kecheng.title,
-        'apptype': 'xcx',
       });
       this.paySign_data = json.data;
       if (json.MSG == 'nophoneNumber') {
@@ -139,7 +138,7 @@
             url: './kechengneirong?neirongid=' + item.id + '&kechengjson=' + JSON.stringify(this.kecheng) + '&kefenxiang=' + kefenxiang,
           })
         } else {
-          if (this.iosshenhe == 0) {
+          if (this.weixinshenhe == 0) {
             tip.confirm(this.ioswenan);
             return;
           }

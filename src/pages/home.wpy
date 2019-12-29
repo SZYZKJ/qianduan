@@ -48,7 +48,7 @@
             </view>
             <view class="minlan">
               <view class="laiyuan">{{item.count}}人学习</view>
-              <view wx:if="{{item.yigoumai||iosshenhe==0}}" class="yigoumai">去学习</view>
+              <view wx:if="{{item.yigoumai||weixinshenhe==0}}" class="yigoumai">去学习</view>
               <view wx:else class="yigoumai">¥{{item.jiage}}</view>
             </view>
           </view>
@@ -138,7 +138,7 @@
             </view>
             <view class="minlan">
               <view class="laiyuan">{{item.count}}人学习</view>
-              <view wx:if="{{iosshenhe==0}}" class="yigoumai">去学习</view>
+              <view wx:if="{{weixinshenhe==0}}" class="yigoumai">去学习</view>
               <view wx:else class="yigoumai">¥{{item.jiage}}</view>
             </view>
           </view>
@@ -185,7 +185,7 @@
       startY: 0,
       endX: 0,
       endY: 0,
-      iosshenhe: 1,
+      weixinshenhe: 1,
       indicatorDots: true,
       autoplay: true,
       interval: 3000,
@@ -281,8 +281,8 @@
         unionid: unionid,
         system: wepy.getSystemInfoSync().system,
       });
-      this.iosshenhe = json.iosshenhe;
-      wepy.setStorageSync('iosshenhe', json.iosshenhe);
+      this.weixinshenhe = json.weixinshenhe;
+      wepy.setStorageSync('weixinshenhe', json.weixinshenhe);
       wepy.setStorageSync('istuiguang', json.istuiguang);
       this.$apply();
     }

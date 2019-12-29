@@ -27,6 +27,8 @@ const getHiswordList = (params) => wxRequestPost(params, apiMain + 'getHiswordLi
 const clearHiswords = (params) => wxRequestPost(params, apiMain + 'clearHiswords');
 //获取热搜
 const getRecommend = (params) => wxRequestPost(params, apiMain + 'getRecommend');
+//获取帮助词
+const getHelpkeywords = (params) => wxRequestPost(params, apiMain + 'getHelpkeywords');
 //获取文章列表
 const getWenzhangList = (params) => wxRequestPost(params, apiMain + 'getWenzhangList');
 //获取视频列表
@@ -152,6 +154,7 @@ export default {
   getHiswordList,
   clearHiswords,
   getRecommend,
+  getHelpkeywords,
   searchWenzhangList,
   searchGanhuoList,
   get_prepay_id,

@@ -1,18 +1,18 @@
 <template>
-  <view class="kuai">
+  <view class="huashuhuashu">
     <view class="huashuList" wx:for="{{huashuList}}" wx:key="key" wx:for-item="item" wx:for-index="index">
       <view class="duihua">
         <view wx:for="{{item.chat_content}}" wx:key="minitem" wx:for-item="huashu" wx:for-index="index">
           <view wx:if="{{huashu.ans_sex==2}}" class="nv">
             <image class="item_img" src="../images/nv.png" />
             <view class="textkuang" bindtap="copycontent({{huashu.content}})">
-              <text class="text" selectable="true">{{huashu.content}}</text>
+              <text class="nvtext" selectable="true">{{huashu.content}}</text>
             </view>
           </view>
           <view wx:else class="nan">
             <image class="item_img" src="../images/nan.png" />
             <view class="textkuang" bindtap="copycontent({{huashu.content}})">
-              <text class="text" selectable="true">{{huashu.content}}</text>
+              <text class="nantext" selectable="true">{{huashu.content}}</text>
             </view>
           </view>
         </view>
@@ -48,7 +48,7 @@
 </script>
 
 <style lang="less">
-  .kuai {}
+  .huashuhuashu {}
   .huashuList {
     .duihua {
       margin-top: 20rpx;
@@ -80,7 +80,12 @@
     .textkuang {
       width: 100%;
     }
-    .text {
+    .nvtext {
+      font-size: 28rpx;
+      color: #333;
+      font-weight: 600;
+    }
+    .nantext {
       font-size: 28rpx;
       color: #333;
     }

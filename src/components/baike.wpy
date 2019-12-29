@@ -1,5 +1,5 @@
 <template>
-    <view class="container">
+    <view class="baikebaike">
         <view wx:for="{{baikeList}}" wx:key="key" wx:for-item='item' wx:for-index="index">
             <view class="wenzhang" bindtap="goTohtml({{item}})">
                 <view class="kuai">
@@ -56,7 +56,7 @@
 </script>
 
 <style lang="less">
-    .container {
+    .baikebaike {
         background: #ffffff;
         .wenzhang {
             background: #ffffff;

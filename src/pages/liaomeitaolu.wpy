@@ -61,7 +61,7 @@
       LilunList: [],
       scroll: "",
       isend: false,
-      iosshenhe: wepy.getStorageSync('iosshenhe'),
+      weixinshenhe: wepy.getStorageSync('weixinshenhe'),
       title: {
         "555354659295006577": "直接开场白",
         "321772450499124142": "间接开场白",
@@ -109,7 +109,7 @@
       }
     };
     confirm() {
-      if (this.iosshenhe == 1) {
+      if (this.weixinshenhe == 1) {
         wx.showModal({
           title: "开通会员",
           content: "您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~",

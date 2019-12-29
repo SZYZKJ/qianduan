@@ -15,13 +15,13 @@
           </view>
         </view>
         <view class="imagekuang">
-          <image class="banimage" wx:if="{{iosshenhe}}" bindtap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
+          <image class="banimage" wx:if="{{weixinshenhe}}" bindtap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
           <image class="banimage" bindtap="toshoucang" src="https://www.lianaizhuli.com/geren/wodeshoucang.png" />
         </view>
       </view>
     </view>
     <view class="info_block">
-      <navigator wx:if="{{iosshenhe}}" class="item" url="/pages/vip">
+      <navigator wx:if="{{weixinshenhe}}" class="item" url="/pages/vip">
         <view class="item_content">
           <image class="item_img" src="../images/shengjihuiyuan.png" />
           <view class="text">
@@ -75,7 +75,7 @@
           </view>
         </view>
       </navigator>
-      <navigator wx:if="{{iosshenhe}}" class="item" url="/pages/dingdan">
+      <navigator wx:if="{{weixinshenhe}}" class="item" url="/pages/dingdan">
         <view class="item_content">
           <image class="item_img" src="../images/quanbudingdan.png" />
           <view class="text">
@@ -108,7 +108,7 @@
       detail: ['非会员', '终身会员', '分手挽回(送终身会员)', '私教1个月(送终身会员)', '私教3个月(送终身会员)', '私教1年(送终身会员)', '联盟会员(含私教终身)'],
       vipdengji: 0,
       jifen: 0,
-      iosshenhe: wepy.getStorageSync('iosshenhe'),
+      weixinshenhe: wepy.getStorageSync('weixinshenhe'),
       istuiguang: wepy.getStorageSync('istuiguang'),
     }
     async getJifen() {

@@ -127,7 +127,7 @@
                         .yigoumai {
                             width: 100rpx;
                             color: #fff;
-                            background: #ff7e00;
+                            background: #ff4500;
                             border-radius: 20rpx;
                             font-size: 20rpx;
                         }

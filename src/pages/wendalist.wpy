@@ -168,12 +168,12 @@
                 display: inline;
             }
             .tab-itemactive {
-                color: #ff7e00;
+                color: #ff4500;
                 margin-left: 15rpx;
                 margin-right: 15rpx;
                 display: inline;
                 padding-bottom: 6rpx;
-                border-bottom: 6rpx solid #ff7e00;
+                border-bottom: 6rpx solid #ff4500;
             }
         }
         .jiange {

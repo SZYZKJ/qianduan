@@ -281,7 +281,7 @@
   }
   .kaishiceshi {
     border-radius: 50rpx;
-    background: #ff7e00;
+    background: #ff4500;
     line-height: 100rpx;
     color: #ffffff;
     width: 90%;
@@ -327,10 +327,10 @@
       width: 25rpx;
       height: 25rpx;
       border-radius: 50rpx;
-      border: 5rpx solid #ff7e00;
+      border: 5rpx solid #ff4500;
     }
     .xuanze1 {
-      background: #ff7e00;
+      background: #ff4500;
       width: 30rpx;
       height: 30rpx;
       border-radius: 50rpx;
@@ -375,7 +375,7 @@
     height: 100rpx;
     line-height: 100rpx;
     color: #ffffff;
-    background: #ff7e00;
+    background: #ff4500;
     text-align: center;
   }
   .tijiao {
@@ -386,7 +386,7 @@
     height: 100rpx;
     line-height: 100rpx;
     color: #ffffff;
-    background: #ff7e00;
+    background: #ff4500;
     text-align: center;
   }
   .dikuang {

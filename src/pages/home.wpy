@@ -489,7 +489,7 @@
     margin-left: 10%;
     margin-top: 30rpx;
     width: 80%;
-    border-radius: 50rpx; // border: 4rpx solid #ff7e00;
+    border-radius: 50rpx; // border: 4rpx solid #ff4500;
     height: 80rpx;
     line-height: 100rpx;
     display: flex;
@@ -508,7 +508,7 @@
   .searchmiaoshu {
     margin-top: 10rpx;
     font-size: 20rpx;
-    color: #ff7e00;
+    color: #ff4500;
   }
   .tuijiankuang {
     margin-top: 10rpx;
@@ -541,7 +541,7 @@
         height: 20rpx;
       }
       .gengduo {
-        color: #ff7e00;
+        color: #ff4500;
         font-size: 26rpx;
         line-height: 40rpx;
         margin-right: 30rpx;
@@ -584,7 +584,7 @@
           .yigoumai {
             width: 100rpx;
             color: #fff;
-            background: #ff7e00;
+            background: #ff4500;
             border-radius: 20rpx;
             font-size: 20rpx;
           }
@@ -613,7 +613,7 @@
         height: 20rpx;
       }
       .gengduo {
-        color: #ff7e00;
+        color: #ff4500;
         font-size: 26rpx;
         line-height: 40rpx;
         margin-right: 30rpx;

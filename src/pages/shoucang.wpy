@@ -265,12 +265,12 @@
         display: inline;
       }
       .tab-itemactive {
-        color: #ff7e00;
+        color: #ff4500;
         margin-left: 15rpx;
         margin-right: 15rpx;
         display: inline;
         padding-bottom: 6rpx;
-        border-bottom: 6rpx solid #ff7e00;
+        border-bottom: 6rpx solid #ff4500;
       }
     }
     .jiange {
@@ -304,7 +304,7 @@
             width: 100rpx;
             font-size: 20rpx;
             color: #fff;
-            background: #ff7e00;
+            background: #ff4500;
             border-radius: 20rpx;
           }
         }
@@ -321,13 +321,13 @@
         width: 80rpx;
         height: 80rpx;
         border-radius: 50rpx;
-        border: 5rpx solid #ff7e00;
+        border: 5rpx solid #ff4500;
       }
       .xuanze1 {
         position: relative;
         top: -100rpx;
         left: 300rpx;
-        background: #ff7e00;
+        background: #ff4500;
         width: 88rpx;
         height: 88rpx;
         border-radius: 50rpx;

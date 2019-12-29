@@ -48,55 +48,55 @@
 </script>
 
 <style lang="less">
-  .huashuhuashu {}
-  .huashuList {
-    .duihua {
-      margin-top: 20rpx;
-      border-radius: 20rpx;
-      margin-left: 20rpx;
-      margin-right: 20rpx;
-      padding-left: 20rpx;
-      padding-right: 20rpx;
-      padding-top: 20rpx;
-      padding-bottom: 20rpx;
-      background: #ffffff;
-    }
-    .nv {
-      line-height: 25px;
-      display: flex;
-      left: 0;
-    }
-    .nan {
-      line-height: 25px;
-      display: flex;
-      left: 0;
-    }
-    .item_img {
-      padding-top: 10rpx;
-      padding-right: 10rpx;
-      width: 35rpx;
-      height: 35rpx;
-    }
-    .textkuang {
-      width: 100%;
-    }
-    .nvtext {
-      font-size: 28rpx;
-      color: #333;
-      font-weight: 600;
-    }
-    .nantext {
-      font-size: 28rpx;
-      color: #333;
-    }
-    .vip {
-      margin-top: 20rpx;
-      text-align: center;
-      .item_img {
-        padding: 0rpx;
+  .huashuhuashu {
+    .huashuList {
+      .duihua {
+        margin-top: 20rpx;
         border-radius: 20rpx;
-        width: 368rpx;
-        height: 248rpx;
+        margin-left: 20rpx;
+        margin-right: 20rpx;
+        padding-left: 20rpx;
+        padding-right: 20rpx;
+        padding-top: 20rpx;
+        padding-bottom: 20rpx;
+        background: #ffffff;
+      }
+      .nv {
+        line-height: 25px;
+        display: flex;
+        left: 0;
+      }
+      .nan {
+        line-height: 25px;
+        display: flex;
+        left: 0;
+      }
+      .item_img {
+        padding-top: 10rpx;
+        padding-right: 10rpx;
+        width: 35rpx;
+        height: 35rpx;
+      }
+      .textkuang {
+        width: 100%;
+      }
+      .nvtext {
+        font-size: 28rpx;
+        color: #ff4500;
+      }
+      .nantext {
+        font-size: 28rpx;
+        color: #333;
+      }
+      .vip {
+        margin-top: 20rpx;
+        text-align: center;
+        .item_img {
+          padding: 0rpx;
+          border-radius: 20rpx;
+          width: 368rpx;
+          height: 248rpx;
+        }
       }
     }
   }

@@ -631,7 +631,7 @@
       .keyword {
         padding-top: 20rpx;
         padding-bottom: 20rpx;
-        color: #333;
+        color: #ff4500;
         width: 100%;
         text-align: center;
       }

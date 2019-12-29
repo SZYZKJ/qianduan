@@ -236,12 +236,12 @@
       margin-top: 20rpx;
       font-size: 26rpx;
       display: flex;
-      color: #ff7e00;
+      color: #ff4500;
       .headercontent2 {
         margin-left: 50rpx;
         color: #000000;
         .jifen {
-          color: #ff7e00;
+          color: #ff4500;
         }
       }
     }

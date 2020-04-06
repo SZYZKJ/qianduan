@@ -122,8 +122,6 @@
       endX: 0,
       endY: 0,
       wenhouyu: "HI，欢迎您~",
-      avatarUrl: "",
-      nickName: "",
       detail: ['非会员', '终身会员', '分手挽回(送终身会员)', '私教1个月(送终身会员)', '私教3个月(送终身会员)', '私教1年(送终身会员)', '联盟会员(含私教终身)'],
       vipdengji: 0,
       tiyancishu: 0,
@@ -206,9 +204,6 @@
       this.getTiyancishu();
     }
     onLoad() {
-      let userInfo = wepy.getStorageSync('userInfo');
-      this.avatarUrl = userInfo.avatarUrl;
-      this.nickName = userInfo.nickName;
       if (wx.createRewardedVideoAd) {
         rewardedVideoAd = wx.createRewardedVideoAd({
           adUnitId: 'adunit-15aa27b1f372ea65'

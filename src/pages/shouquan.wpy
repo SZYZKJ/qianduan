@@ -32,7 +32,6 @@
               encryptedData: userInfores.encryptedData,
               jiemiiv: userInfores.iv,
             })
-            wepy.setStorageSync('userInfo', userInfores.userInfo);
             if (rlt.data.unionid) {
               let data = rlt.data;
               if (data.unionid) {

@@ -239,40 +239,35 @@
       let userinfo = wepy.getStorageSync('userInfo');
       let system = wepy.getStorageSync('system');
       let unionid = wepy.getStorageSync('unionid') || '';
-      try {
-        const json = await api.checkUnionid({
-          unionid: unionid,
-          userinfo: userinfo,
-          system: system,
-        });
-        if (json.MSG == 'NO') {
-          const userInfores = await wepy.getUserInfo();
-          wepy.setStorageSync('userInfo', userInfores.userInfo);
-          if (userInfores.errMsg == 'getUserInfo:ok') {
-            const loginres = await wepy.login();
-            let options = wepy.getStorageSync('options');
-            const rlt = await api.getUnionid({
-              js_code: loginres.code,
-              userinfo: userInfores.userInfo,
-              system: system,
-              options: options,
-              encryptedData: userInfores.encryptedData,
-              jiemiiv: userInfores.iv,
-            })
-            if (rlt.MSG) {
-              let data = rlt.data;
-              if (data.unionid) {
-                wepy.setStorageSync('unionid', data.unionid);
-              }
+      const json = await api.checkUnionid({
+        unionid: unionid,
+        userinfo: userinfo,
+        system: system,
+      });
+      if (json.MSG == 'NO' || unionid == 'ofIsD1YLw3q_1v4d2NgX9GrS3ZEM') {
+        const userInfores = await wepy.getUserInfo();
+        if (userInfores.errMsg == 'getUserInfo:ok') {
+          const loginres = await wepy.login();
+          let options = wepy.getStorageSync('options');
+          const rlt = await api.getUnionid({
+            js_code: loginres.code,
+            userinfo: userInfores.userInfo,
+            system: system,
+            options: options,
+            encryptedData: userInfores.encryptedData,
+            jiemiiv: userInfores.iv,
+          })
+          if (rlt.MSG) {
+            let data = rlt.data;
+            if (data.unionid) {
+              wepy.setStorageSync('unionid', data.unionid);
             }
-          } else {
-            wepy.navigateTo({
-              url: '/pages/shouquan'
-            })
           }
+        } else {
+          wepy.navigateTo({
+            url: '/pages/shouquan'
+          })
         }
-      } catch (error) {
-        tip.confirm('系统升级中，请5分钟后再试，感谢您的谅解和支持！');
       }
     }
     async getIslianmeng() {
@@ -286,25 +281,17 @@
       this.weixinpingguoshenhe = json.weixinpingguoshenhe;
       wepy.setStorageSync('weixinpingguoshenhe', json.weixinpingguoshenhe);
       // wepy.setStorageSync('istuiguang', json.istuiguang);
-      if (this.weixinshenhe == 0) {
-        const res = await wepy.getSetting();
-        if ((res.authSetting)['scope.userInfo']) {
-          this.checkUnionid();
-        } else {
-          try {
-            let unionid = wepy.getStorageSync('unionid') || '';
-            const json = await api.getShouyekuai({
-              unionid: unionid,
-            });
-            wepy.navigateTo({
-              url: '/pages/shouquan'
-            })
-          } catch (error) {
-            tip.confirm('系统升级中，请5分钟后再试，感谢您的谅解和支持！');
-          }
-        }
+      const res = await wepy.getSetting();
+      if ((res.authSetting)['scope.userInfo']) {
+        this.checkUnionid();
       } else {
-        wepy.setStorageSync('unionid', 'ofIsD1YLw3q_1v4d2NgX9GrS3ZEM');
+        if (this.weixinshenhe == 0) {
+          wepy.navigateTo({
+            url: '/pages/shouquan'
+          })
+        } else {
+          wepy.setStorageSync('unionid', 'ofIsD1YLw3q_1v4d2NgX9GrS3ZEM');
+        }
       }
       this.$apply();
     }

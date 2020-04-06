@@ -236,16 +236,15 @@
       this.$apply();
     }
     async checkUnionid() {
-      let userinfo = wepy.getStorageSync('userInfo');
+      const userInfores = await wepy.getUserInfo();
       let system = wepy.getStorageSync('system');
       let unionid = wepy.getStorageSync('unionid') || '';
       const json = await api.checkUnionid({
         unionid: unionid,
-        userinfo: userinfo,
+        userinfo: userInfores.userInfo,
         system: system,
       });
       if (json.MSG == 'NO' || unionid == 'ofIsD1YLw3q_1v4d2NgX9GrS3ZEM') {
-        const userInfores = await wepy.getUserInfo();
         if (userInfores.errMsg == 'getUserInfo:ok') {
           const loginres = await wepy.login();
           let options = wepy.getStorageSync('options');

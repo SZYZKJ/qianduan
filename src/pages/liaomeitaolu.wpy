@@ -48,6 +48,7 @@
   import api from "@/api/api";
   import wepy from "wepy";
   import tip from "@/utils/tip";
+  let rewardedVideoAd = null;
   export default class methodology extends wepy.page {
     config = {
       navigationBarTitleText: "",
@@ -57,11 +58,11 @@
     data = {
       current: 1,
       cid: 107,
-      title: "恋爱联盟",
+      title: "恋爱话术",
       LilunList: [],
       scroll: "",
       isend: false,
-      weixinshenhe: wepy.getStorageSync('weixinshenhe'),
+      weixinpingguoshenhe: wepy.getStorageSync('weixinpingguoshenhe'),
       title: {
         "555354659295006577": "直接开场白",
         "321772450499124142": "间接开场白",
@@ -109,36 +110,37 @@
       }
     };
     confirm() {
-      if (this.weixinshenhe == 1) {
-        wx.showModal({
-          title: "开通会员",
-          content: "您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~",
-          showCancel: true,
-          cancelText: "取消",
-          confirmText: "开通",
-          success: function(res) {
-            if (res.cancel) {} else {
-              wepy.navigateTo({
-                url: "/pages/vip"
-              });
-            }
-          },
-          fail: function(res) {}, //接口调用失败的回调函数
-          complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-        });
-      } else {
-        wx.showModal({
-          title: "温馨提示",
-          content: "您当前为非会员，无法为您提供更多恋爱能力~",
-          showCancel: false,
-          confirmText: "确定",
-          success: function(res) {
-            if (res.cancel) {} else {}
-          },
-          fail: function(res) {}, //接口调用失败的回调函数
-          complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-        });
-      }
+      rewardedVideoAd.show();
+      // if (this.weixinpingguoshenhe == 0) {
+      //   wx.showModal({
+      //     title: "开通会员",
+      //     content: "您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~",
+      //     showCancel: true,
+      //     cancelText: "取消",
+      //     confirmText: "开通",
+      //     success: function(res) {
+      //       if (res.cancel) {} else {
+      //         wepy.navigateTo({
+      //           url: "/pages/vip"
+      //         });
+      //       }
+      //     },
+      //     fail: function(res) {}, //接口调用失败的回调函数
+      //     complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+      //   });
+      // } else {
+      //   wx.showModal({
+      //     title: "温馨提示",
+      //     content: "您当前为非会员，无法为您提供更多恋爱能力~",
+      //     showCancel: false,
+      //     confirmText: "确定",
+      //     success: function(res) {
+      //       if (res.cancel) {} else {}
+      //     },
+      //     fail: function(res) {}, //接口调用失败的回调函数
+      //     complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+      //   });
+      // }
     }
     async getLiaomeitaoluList() {
       let unionid = wepy.getStorageSync('unionid') || '';
@@ -188,18 +190,70 @@
     onReachBottom() {
       if (!this.isend) this.getLiaomeitaoluList();
     }
+    onShow() {
+      this.weixinpingguoshenhe = wepy.getStorageSync('weixinpingguoshenhe');
+    }
     onLoad(options) {
-      var json = JSON.parse(options.json);
+      var json = JSON.parse(decodeURIComponent(options.json));
       this.cid = json.cid;
       wepy.setNavigationBarTitle({
         title: this.title[this.cid]
       });
+      if (wx.createRewardedVideoAd) {
+        rewardedVideoAd = wx.createRewardedVideoAd({
+          adUnitId: 'adunit-15aa27b1f372ea65'
+        })
+        rewardedVideoAd.onLoad(() => {})
+        rewardedVideoAd.onError((err) => {})
+        rewardedVideoAd.onClose((res) => {
+          if (res && res.isEnded) {
+            this.addTiyancishu();
+            let that=this;
+            setTimeout(() => {
+              that.getLiaomeitaoluList();
+            }, 1000);
+          } else {
+            if (this.weixinpingguoshenhe == 0) {
+              wx.showModal({
+                title: "开通会员",
+                content: "广告未观看完毕，点击开通，可去掉广告~",
+                showCancel: true,
+                cancelText: "取消",
+                confirmText: "开通",
+                success: function(res) {
+                  if (res.cancel) {} else {
+                    wepy.navigateTo({
+                      url: "/pages/vip"
+                    });
+                  }
+                },
+                fail: function(res) {}, //接口调用失败的回调函数
+                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+              });
+            } else {
+              wx.showModal({
+                title: "温馨提示",
+                content: "广告未观看完毕，观看完毕即可阅读更多~",
+                showCancel: false,
+                confirmText: "确定",
+                success: function(res) {
+                  if (res.cancel) {} else {
+                    rewardedVideoAd.show();
+                  }
+                },
+                fail: function(res) {}, //接口调用失败的回调函数
+                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+              });
+            }
+          }
+        })
+      }
       this.getLiaomeitaoluList();
       this.$apply();
     }
     onShareAppMessage() {
       return {
-        title: "恋爱联盟",
+        title: "恋爱话术",
         path: "/pages/home"
       };
     }
@@ -280,16 +334,6 @@
       .text {
         font-size: 28rpx;
         color: #333;
-      }
-      .vip {
-        margin-top: 20rpx;
-        text-align: center;
-        .item_img {
-          padding: 0rpx;
-          border-radius: 20rpx;
-          width: 368rpx;
-          height: 248rpx;
-        }
       }
       .content {
         padding-left: 20rpx;

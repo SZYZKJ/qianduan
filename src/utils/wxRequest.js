@@ -14,9 +14,12 @@ function Decrypt(word) {
     var decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
     return decryptedStr.toString();
 }
+const apptype='weixin'
+const nametype='lianaihuashuai'
 const wxRequestPost = async (params = {}, url) => {
     let data = params || {};
-    data.apptype = 'weixin';
+    data.apptype = apptype;
+    data.nametype = nametype;
     var newdata = JSON.stringify(data);
     newdata = Encrypt(newdata);
     let res = await wepy.request({
@@ -30,5 +33,5 @@ const wxRequestPost = async (params = {}, url) => {
 };
 
 module.exports = {
-    wxRequestPost
+    wxRequestPost,
 }

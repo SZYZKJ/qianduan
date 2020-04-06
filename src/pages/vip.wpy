@@ -1,57 +1,58 @@
 <template>
     <view>
-        <view wx:if="{{weixinshenhe==0||weixinshenhe==2}}" class="weixinshenhe">
+        <view wx:if="{{weixinpingguoshenhe==1}}" class="weixinpingguoshenhe">
             {{ioswenan}}
         </view>
-        <view wx:if="{{weixinshenhe==1}}" class="container">
+        <view wx:if="{{weixinpingguoshenhe==0}}" class="container">
             <view class="vip">
                 <button class="try {{currentTab==1 ? 'active' : ''}}" bindtap="swichtab(1)">
-                                                                                <view class="viptext {{currentTab==1 ? 'active' : ''}}">终身会员</view>
-                                                                                <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥199.00</view>
-                                                                            </button>
+                                                                                    <view class="viptext {{currentTab==1 ? 'active' : ''}}">{{jiagelist[1].miaoshu}}</view>
+                                                                                    <view class="viptext {{currentTab==1 ? 'active' : ''}}">￥{{jiagelist[1].jiage*0.01}}</view>
+                                                                                </button>
                 <button class="month {{currentTab==2 ? 'active' : ''}}" bindtap="swichtab(2)">
-                                                                                <view class="viptext {{currentTab==2 ? 'active' : ''}}">分手挽回(送终身会员)</view>
-                                                                                <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥1999.00</view>
-                                                                            </button>
+                                                                                    <view class="viptext {{currentTab==2 ? 'active' : ''}}">{{jiagelist[2].miaoshu}}</view>
+                                                                                    <view class="viptext {{currentTab==2 ? 'active' : ''}}">￥{{jiagelist[2].jiage*0.01}}</view>
+                                                                                </button>
             </view>
             <view class="vip">
                 <button class="year {{currentTab==3 ? 'active' : ''}}" bindtap="swichtab(3)">
-                                                                                <view class="viptext {{currentTab==3 ? 'active' : ''}}">私教1个月(送终身会员)</view>
-                                                                                <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥499.00</view>
-                                                                            </button>
+                                                                                    <view class="viptext {{currentTab==3 ? 'active' : ''}}">{{jiagelist[3].miaoshu}}</view>
+                                                                                    <view class="viptext {{currentTab==3 ? 'active' : ''}}">￥{{jiagelist[3].jiage*0.01}}</view>
+                                                                                </button>
                 <button class="lifelong {{currentTab==4 ? 'active' : ''}}" bindtap="swichtab(4)">
-                                                                                <view class="viptext {{currentTab==4 ? 'active' : ''}}">私教3个月(送终身会员)</view>
-                                                                                <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥999.00</view>
-                                                                            </button>
+                                                                                    <view class="viptext {{currentTab==4 ? 'active' : ''}}">{{jiagelist[4].miaoshu}}</view>
+                                                                                    <view class="viptext {{currentTab==4 ? 'active' : ''}}">￥{{jiagelist[4].jiage*0.01}}</view>
+                                                                                </button>
             </view>
             <view class="vip">
                 <button class="year {{currentTab==5 ? 'active' : ''}}" bindtap="swichtab(5)">
-                                                                                <view class="viptext {{currentTab==5 ? 'active' : ''}}">私教1年(送终身会员)</view>
-                                                                                <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥2999.00</view>
-                                                                            </button>
+                                                                                    <view class="viptext {{currentTab==5 ? 'active' : ''}}">{{jiagelist[5].miaoshu}}</view>
+                                                                                    <view class="viptext {{currentTab==5 ? 'active' : ''}}">￥{{jiagelist[5].jiage*0.01}}</view>
+                                                                                </button>
                 <button class="lifelong {{currentTab==6 ? 'active' : ''}}" bindtap="swichtab(6)">
-                                                                                <view class="viptext {{currentTab==6 ? 'active' : ''}}">联盟会员(含私教终身)</view>
-                                                                                <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥4999.00</view>
-                                                                            </button>
+                                                                                    <view class="viptext {{currentTab==6 ? 'active' : ''}}">{{jiagelist[6].miaoshu}}</view>
+                                                                                    <view class="viptext {{currentTab==6 ? 'active' : ''}}">￥{{jiagelist[6].jiage*0.01}}</view>
+                                                                                </button>
             </view>
             <button class="zhifu" bindtap="weixinzhifu">立即支付</button>
             <view class="tequan">
                 会员特权
                 <view class="tequanneirong" wx:if="{{currentTab==1}}">
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、20万+条撩妹话术可供搜索</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、上万+条撩妹套路可供参考</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、百万+张逗趣表情可供搜索</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、丰富的聊天实战案例</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的展示面案例</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的恋爱百科知识</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、丰富的土味情话</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、丰富的心理测试</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、500人答疑群</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、话术搜索无广告</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、20万+条撩妹话术可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、上万+条撩妹套路可供参考</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、百万+张逗趣表情可供搜索</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、丰富的聊天实战案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、丰富的展示面案例</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>7、丰富的恋爱百科知识</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>8、丰富的土味情话</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>9、丰富的心理测试</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>10、500人答疑群</view>
                 </view>
                 <view class="tequanneirong" wx:if="{{currentTab==2}}">
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、小程序终身会员</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、500人高级答疑群</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱联盟课程共9门</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱话术课程共9门</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、初步真实情感信息收集</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、电话语音学员深入沟通</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>6、导师团队开会分析评估制定具体方案</view>
@@ -63,27 +64,27 @@
                 <view class="tequanneirong" wx:if="{{currentTab==3}}">
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、小程序终身会员</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、500人高级答疑群</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱联盟课程共9门</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱话术课程共9门</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、恋爱挽回婚姻一对一私教指导（1个月）</view>
                 </view>
                 <view class="tequanneirong" wx:if="{{currentTab==4}}">
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、小程序终身会员</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、500人高级答疑群</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱联盟课程共9门</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱话术课程共9门</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、恋爱挽回婚姻一对一私教指导（3个月）</view>
                 </view>
                 <view class="tequanneirong" wx:if="{{currentTab==5}}">
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、小程序终身会员</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、500人高级答疑群</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱联盟课程共9门</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱话术课程共9门</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、恋爱挽回婚姻一对一私教指导（1年）</view>
                 </view>
                 <view class="tequanneirong" wx:if="{{currentTab==6}}">
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>1、小程序终身会员</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>2、500人高级答疑群</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱联盟课程共9门</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>3、恋爱话术课程共9门</view>
                     <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>4、恋爱挽回婚姻一对一私教指导（终身）</view>
-                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、联盟会员专属服务</view>
+                    <view class="tequantext"><text style="font-weight: bolder;font-size: 38rpx;color:#09BB07;">✔ </text>5、顶级会员专属服务</view>
                 </view>
             </view>
         </view>
@@ -94,16 +95,20 @@
     import wepy from 'wepy';
     import tip from '@/utils/tip';
     import api from '@/api/api';
+    import {
+        nametype
+    } from '@/utils/wxRequest';
     export default class adding extends wepy.page {
         config = {
             navigationBarTitleText: '开通会员',
         }
         data = {
             nowtime: 0,
-            weixinshenhe: wepy.getStorageSync('weixinshenhe'),
+            weixinpingguoshenhe: 1,
             currentTab: 1,
             paySign_data: {},
             ioswenan: '',
+            jiagelist:[],
             detail: ['非会员', '终身会员', '分手挽回(送终身会员)', '私教1个月(送终身会员)', '私教3个月(送终身会员)', '私教1年(送终身会员)', '联盟会员(含私教终身)'],
         }
         tiaoqizhifu() {
@@ -114,7 +119,7 @@
                 signType: this.paySign_data.signType,
                 paySign: this.paySign_data.paySign,
                 'success': function(res) {
-                    tip.confirm('恭喜您已开通恋爱联盟会员，可以在“个人==》导师微信”里扫码添加导师微信，这是您的会员特权，导师将把您加入答疑交流群，为您提供更多恋爱能力~');
+                    tip.confirm('恭喜您已开通恋爱话术会员，可以在“个人==》导师微信”里扫码添加导师微信，这是您的会员特权，导师将把您加入答疑交流群，为您提供更多恋爱能力~');
                     wx.navigateBack({
                         delta: 1
                     })
@@ -133,6 +138,20 @@
                 'unionid': unionid,
             });
             this.ioswenan = json.data;
+            this.$apply();
+        }
+        async getJiagelist() {
+            let unionid = wepy.getStorageSync('unionid') || '';
+            if (unionid == '') {
+                wepy.navigateTo({
+                    url: '/pages/shouquan'
+                })
+                return false;
+            }
+            const json = await api.getJiagelist({
+                'unionid': unionid,
+            });
+            this.jiagelist = json.jiagelist;
             this.$apply();
         }
         async get_prepay_id() {
@@ -155,17 +174,11 @@
                 'detail': this.detail[this.currentTab],
             });
             this.paySign_data = json.data;
-            if (json.MSG == 'nophoneNumber') {
-                wepy.navigateTo({
-                    url: '/pages/phonenumber'
-                });
-            } else {
-                this.tiaoqizhifu();
-            }
+            this.tiaoqizhifu();
             this.$apply();
         }
         weixinzhifu() {
-            if (this.weixinshenhe == 1) {
+            if (this.weixinpingguoshenhe == 0) {
                 this.get_prepay_id();
             } else {
                 wx.showModal({
@@ -188,11 +201,8 @@
             }
         }
         onShow() {
-            var phoneNumber = wepy.getStorageSync('phoneNumber');
-            if (phoneNumber == 1) {
-                wepy.setStorageSync('phoneNumber', 0);
-                this.tiaoqizhifu();
-            }
+            this.weixinpingguoshenhe = wepy.getStorageSync('weixinpingguoshenhe');
+            this.getJiagelist();
         }
         onLoad() {
             this.huoquwenan();
@@ -200,7 +210,7 @@
         }
         onShareAppMessage() {
             return {
-                title: '恋爱联盟',
+                title: '恋爱话术',
                 path: '/pages/home',
             };
         }
@@ -208,7 +218,7 @@
 </script>
 
 <style lang="less">
-    .weixinshenhe {
+    .weixinpingguoshenhe {
         padding-left: 20rpx;
         padding-top: 20rpx;
         padding-right: 20rpx;

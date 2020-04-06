@@ -41,7 +41,7 @@
                     return false;
                 }
             } else {
-                tip.confirm('尊敬的恋爱联盟用户，当前内容为付费阅读，请先购买~');
+                tip.confirm('尊敬的恋爱话术用户，当前内容为付费阅读，请先购买~');
                 wepy.setStorageSync('yigoumai', '0');
                 wx.navigateBack({
                     delta: 1
@@ -50,20 +50,20 @@
         }
         onLoad(e) {
             this.neirongid = e.neirongid;
-            this.kechengjson = JSON.parse(e.kechengjson);
+            this.kechengjson = JSON.parse(decodeURIComponent(e.kechengjson));
             this.kefenxiang = e.kefenxiang;
             this.getKecheng();
         }
         onShareAppMessage() {
             if (this.kefenxiang == '1') {
                 return {
-                    title: "恋爱联盟",
-                    path: '/pages/kechengneirong?neirongid=' + this.neirongid + '&kechengjson=' + JSON.stringify(this.kechengjson) + '&kefenxiang=' + this.kefenxiang,
+                    title: "恋爱话术",
+                    path: '/pages/kechengneirong?neirongid=' + this.neirongid + '&kechengjson=' + encodeURIComponent(JSON.stringify(this.kechengjson)) + '&kefenxiang=' + this.kefenxiang,
                 };
             } else {
                 return {
-                    title: "恋爱联盟",
-                    path: '/pages/kecheng?json=' + JSON.stringify(this.kechengjson),
+                    title: "恋爱话术",
+                    path: '/pages/kecheng?json=' + encodeURIComponent(JSON.stringify(this.kechengjson)),
                 };
             }
         }

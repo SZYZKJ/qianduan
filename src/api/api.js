@@ -117,8 +117,16 @@ const getFenxiaoyonghu = (params) => wxRequestPost(params, apiMain + 'getFenxiao
 const getTixianjilu = (params) => wxRequestPost(params, apiMain + 'getTixianjilu');
 //分销提现
 const tiXian = (params) => wxRequestPost(params, apiMain + 'tiXian');
-
+//获取价格列表
+const getJiagelist = (params) => wxRequestPost(params, apiMain + 'getJiagelist');
+//增加体验次数
+const addTiyancishu = (params) => wxRequestPost(params, apiMain + 'addTiyancishu');
+//获取体验次数
+const getTiyancishu = (params) => wxRequestPost(params, apiMain + 'getTiyancishu');
 export default {
+  getTiyancishu,
+  addTiyancishu,
+  getJiagelist,
   deleteHaibao,
   getHaibao,
   tiXian,

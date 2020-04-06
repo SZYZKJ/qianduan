@@ -7,7 +7,7 @@
                         <text selectable='true' class="title">{{item.title}}</text>
                         <view class="minlan">
                             <view class="laiyuan">{{item.count}}次学习</view>
-                            <view class="yigoumai" wx:if="{{weixinshenhe}}">¥{{item.jiage}}</view>
+                            <view class="yigoumai" wx:if="{{weixinpingguoshenhe==0}}">¥{{item.jiage}}</view>
                             <view class="yigoumai" wx:else>去学习</view>
                         </view>
                     </view>
@@ -16,7 +16,7 @@
             </view>
         </view>
         <view class="textend" wx:if="{{!isend}}">加载中......</view>
-        <view class="textend" wx:if="{{isend}}">恋爱脱单上恋爱联盟</view>
+        <view class="textend" wx:if="{{isend}}">恋爱有方法脱单有套路</view>
     </view>
 </template>
 
@@ -34,7 +34,7 @@
             sijiaoList: [],
             scroll: '',
             isend: false,
-            weixinshenhe: wepy.getStorageSync('weixinshenhe'),
+            weixinpingguoshenhe: wepy.getStorageSync('weixinpingguoshenhe'),
         }
         async getSijiaoList(e) {
             if (this.isend) return;
@@ -57,7 +57,7 @@
         methods = {
             goTohtml(item) {
                 wx.navigateTo({
-                    url: "./sijiao?json=" + JSON.stringify(item)
+                    url: "./sijiao?json=" + encodeURIComponent(JSON.stringify(item))
                 })
             }
         }
@@ -67,6 +67,9 @@
         }
         onReachBottom() {
             this.getSijiaoList(0);
+        }
+        onShow(){
+            this.weixinpingguoshenhe = wepy.getStorageSync('weixinpingguoshenhe');
         }
         onLoad() {
             this.getSijiaoList(0);

@@ -7,7 +7,7 @@
                         <text selectable='true' class="title">{{item.title}}</text>
                         <view class="minlan">
                             <view class="laiyuan">{{item.count}}次学习</view>
-                            <view class="yigoumai" wx:if="{{weixinshenhe}}">¥{{item.jiage}}</view>
+                            <view class="yigoumai" wx:if="{{weixinpingguoshenhe==0}}">¥{{item.jiage}}</view>
                             <view class="yigoumai" wx:if="{{item.yigoumai}}">去学习</view>
                             <view class="weigoumai" wx:else>去试读</view>
                         </view>
@@ -17,7 +17,7 @@
             </view>
         </view>
         <view class="textend" wx:if="{{!isend}}">加载中......</view>
-        <view class="textend" wx:if="{{isend}}">恋爱脱单上恋爱联盟</view>
+        <view class="textend" wx:if="{{isend}}">恋爱有方法脱单有套路</view>
     </view>
 </template>
 
@@ -37,7 +37,7 @@
             kechenglist: [],
             scroll: '',
             isend: false,
-            weixinshenhe: wepy.getStorageSync('weixinshenhe'),
+            weixinpingguoshenhe: wepy.getStorageSync('weixinpingguoshenhe'),
         }
         async getKechengList(e) {
             if (this.isend) return;
@@ -61,7 +61,7 @@
         methods = {
             goTohtml(item) {
                 wx.navigateTo({
-                    url: "./kecheng?json=" + JSON.stringify(item)
+                    url: "./kecheng?json=" + encodeURIComponent(JSON.stringify(item))
                 })
             }
         }
@@ -72,12 +72,15 @@
         onReachBottom() {
             this.getKechengList(0);
         }
+        onShow(){
+            this.weixinpingguoshenhe = wepy.getStorageSync('weixinpingguoshenhe');
+        }
         onLoad() {
             this.getKechengList(0);
         }
         onShareAppMessage() {
             return {
-                title: '恋爱联盟',
+                title: '恋爱话术',
                 path: '/pages/kechenglist',
             };
         }

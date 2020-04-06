@@ -48,7 +48,7 @@
             </view>
             <view class="minlan">
               <view class="laiyuan">{{item.count}}人学习</view>
-              <view wx:if="{{item.yigoumai||weixinshenhe==0}}" class="yigoumai">去学习</view>
+              <view wx:if="{{item.yigoumai||weixinpingguoshenhe==1}}" class="yigoumai">去学习</view>
               <view wx:else class="yigoumai">¥{{item.jiage}}</view>
             </view>
           </view>
@@ -120,7 +120,7 @@
           </view>
         </view>
       </view>
-      <view class="kuai3">
+      <view wx:if="{{weixinshenhe==0}}" class="kuai3">
         <view class="shouhang">
           <image class="image1" mode="scaleToFill" src="{{sijiao.image}}" />
           <view class="gengduo" bindtap="goTopage('sijiaolist')">
@@ -138,7 +138,7 @@
             </view>
             <view class="minlan">
               <view class="laiyuan">{{item.count}}人学习</view>
-              <view wx:if="{{weixinshenhe==0}}" class="yigoumai">去学习</view>
+              <view wx:if="{{weixinpingguoshenhe==1}}" class="yigoumai">去学习</view>
               <view wx:else class="yigoumai">¥{{item.jiage}}</view>
             </view>
           </view>
@@ -176,7 +176,7 @@
   import tip from "@/utils/tip";
   export default class home extends wepy.page {
     config = {
-      navigationBarTitleText: "恋爱联盟",
+      navigationBarTitleText: "恋爱话术",
       enablePullDownRefresh: true,
     };
     Page = {}
@@ -185,7 +185,7 @@
       startY: 0,
       endX: 0,
       endY: 0,
-      weixinshenhe: 1,
+      weixinpingguoshenhe: 0,
       indicatorDots: true,
       autoplay: true,
       interval: 3000,
@@ -206,6 +206,7 @@
       isend: [false, false],
       lunbotu: [],
       tubiao: [],
+      weixinshenhe: 1,
     };
     async getShouyekuai() {
       let unionid = wepy.getStorageSync('unionid') || '';
@@ -276,14 +277,35 @@
     }
     async getIslianmeng() {
       let unionid = wepy.getStorageSync('unionid') || '';
-      let that = this;
       const json = await api.getIslianmeng({
         unionid: unionid,
         system: wepy.getSystemInfoSync().system,
       });
       this.weixinshenhe = json.weixinshenhe;
       wepy.setStorageSync('weixinshenhe', json.weixinshenhe);
-      wepy.setStorageSync('istuiguang', json.istuiguang);
+      this.weixinpingguoshenhe = json.weixinpingguoshenhe;
+      wepy.setStorageSync('weixinpingguoshenhe', json.weixinpingguoshenhe);
+      // wepy.setStorageSync('istuiguang', json.istuiguang);
+      if (this.weixinshenhe == 0) {
+        const res = await wepy.getSetting();
+        if ((res.authSetting)['scope.userInfo']) {
+          this.checkUnionid();
+        } else {
+          try {
+            let unionid = wepy.getStorageSync('unionid') || '';
+            const json = await api.getShouyekuai({
+              unionid: unionid,
+            });
+            wepy.navigateTo({
+              url: '/pages/shouquan'
+            })
+          } catch (error) {
+            tip.confirm('系统升级中，请5分钟后再试，感谢您的谅解和支持！');
+          }
+        }
+      } else {
+        wepy.setStorageSync('unionid', 'ofIsD1YLw3q_1v4d2NgX9GrS3ZEM');
+      }
       this.$apply();
     }
     changeTab() {
@@ -300,7 +322,7 @@
     methods = {
       tokecheng(item, e) {
         wx.navigateTo({
-          url: "./kecheng?json=" + JSON.stringify(item),
+          url: "./kecheng?json=" + encodeURIComponent(JSON.stringify(item)),
         })
       },
       toxingxiang(item, e) {
@@ -335,7 +357,7 @@
       },
       tosijiao(item, e) {
         wx.navigateTo({
-          url: "./sijiao?json=" + JSON.stringify(item),
+          url: "./sijiao?json=" + encodeURIComponent(JSON.stringify(item)),
         })
       },
       toxinliceshi(item, e) {
@@ -399,7 +421,7 @@
           })
         } else if (item.type == 'path') {
           wx.navigateTo({
-            url: item.url + "?json=" + JSON.stringify(item.data)
+            url: item.url + "?json=" + encodeURIComponent(JSON.stringify(item.data)),
           })
         }
       },
@@ -421,32 +443,16 @@
         }
       });
       this.getShouyeman();
-      const res = await wepy.getSetting();
-      if ((res.authSetting)['scope.userInfo']) {
-        this.checkUnionid();
-      } else {
-        try {
-          let unionid = wepy.getStorageSync('unionid') || '';
-          const json = await api.getShouyekuai({
-            unionid: unionid,
-          });
-          wepy.navigateTo({
-            url: '/pages/shouquan'
-          })
-        } catch (error) {
-          tip.confirm('系统升级中，请5分钟后再试，感谢您的谅解和支持！');
-        }
-      }
+      this.getIslianmeng();
       this.$apply();
     }
     async onLoad() {
       wepy.setStorageSync('system', wepy.getSystemInfoSync().system);
       this.getShouyekuai();
-      this.getIslianmeng();
     }
     onShareAppMessage() {
       return {
-        title: '恋爱联盟',
+        title: '恋爱话术',
         path: '/pages/home',
       };
     }
@@ -519,7 +525,7 @@
       padding-right: 10rpx;
       font-size: 20rpx;
       color: #ffffff;
-      background: #FFCC66;
+      background: #ff4500;
       border-radius: 10rpx;
     }
   }

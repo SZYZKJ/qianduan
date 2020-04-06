@@ -12,7 +12,7 @@
       </view>
     </view>
     <view class="textend" wx:if="{{!isend}}">加载中......</view>
-    <view class="textend" wx:if="{{isend}}">恋爱脱单上恋爱联盟</view>
+    <view class="textend" wx:if="{{isend}}">恋爱有方法脱单有套路</view>
   </view>
 </template>
 
@@ -73,7 +73,7 @@
     }
     onShareAppMessage() {
       return {
-        title: "恋爱联盟",
+        title: "恋爱话术",
         path: "/pages/liaomeishizhanlist"
       };
     }

@@ -17,7 +17,7 @@
             </view>
         </view>
         <view class="textend" wx:if="{{!isend[currentTab]}}">加载中......</view>
-        <view class="textend" wx:if="{{isend[currentTab]}}">恋爱脱单上恋爱联盟</view>
+        <view class="textend" wx:if="{{isend[currentTab]}}">恋爱有方法脱单有套路</view>
     </view>
 </template>
 
@@ -140,7 +140,7 @@
         }
         onShareAppMessage() {
             return {
-                title: '恋爱联盟心理测试',
+                title: '恋爱话术心理测试',
                 path: '/pages/xinliceshilist',
             };
         }

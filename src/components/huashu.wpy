@@ -88,16 +88,6 @@
         font-size: 28rpx;
         color: #333;
       }
-      .vip {
-        margin-top: 20rpx;
-        text-align: center;
-        .item_img {
-          padding: 0rpx;
-          border-radius: 20rpx;
-          width: 368rpx;
-          height: 248rpx;
-        }
-      }
     }
   }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <view class="shouquan">
     <image class="authorize-icon" src="../images/authorize.png"></image>
-    <view class="auth-item">恋爱联盟申请获取以下权限：</view>
+    <view class="auth-item">恋爱话术申请获取以下权限：</view>
     <view class="auth-item">获取你的公开信息（头像、昵称等）</view>
     <view class="btn-authorize">
       <button open-type="getUserInfo" type="primary" lang="zh_CN" bindgetuserinfo="onGotUserInfo">授权</button>
@@ -61,10 +61,12 @@
         })
       }
     }
-    onLoad() {}
+    onLoad() {
+      wepy.setStorageSync('unionid', '');
+    }
     onShareAppMessage() {
       return {
-        title: '恋爱联盟',
+        title: '恋爱话术',
         path: '/pages/home',
       };
     }

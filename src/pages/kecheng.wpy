@@ -18,10 +18,10 @@
         </view>
       </view>
     </view>
-    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&weixinshenhe}}">
+    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&weixinpingguoshenhe==0}}">
       <view class="text" bindtap="zhifukecheng">特价 {{kecheng.jiage}}</view>
     </view>
-    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&weixinshenhe==0}}">
+    <view class="kuang" wx:if="{{kecheng.yigoumai==0&&weixinpingguoshenhe==1}}">
       <view class="text" bindtap="zhifukecheng">立即学习</view>
     </view>
   </view>
@@ -31,6 +31,9 @@
   import wepy from "wepy";
   import api from "@/api/api";
   import tip from '@/utils/tip';
+  import {
+    nametype
+  } from '@/utils/wxRequest';
   export default class kecheng extends wepy.page {
     config = {
       navigationBarTitleText: ""
@@ -38,7 +41,7 @@
     Page = {};
     data = {
       kecheng: {},
-      weixinshenhe: wepy.getStorageSync('weixinshenhe'),
+      weixinpingguoshenhe: wepy.getStorageSync('weixinpingguoshenhe'),
       currentTab: 0,
       paySign_data: {},
       isowenan: '',
@@ -75,7 +78,7 @@
       this.$apply();
     }
     async zhifukecheng() {
-      if (this.weixinshenhe == 0) {
+      if (this.weixinpingguoshenhe == 1) {
         tip.confirm(this.ioswenan);
         return;
       }
@@ -135,14 +138,14 @@
             kefenxiang = '1';
           }
           wx.navigateTo({
-            url: './kechengneirong?neirongid=' + item.id + '&kechengjson=' + JSON.stringify(this.kecheng) + '&kefenxiang=' + kefenxiang,
+            url: './kechengneirong?neirongid=' + item.id + '&kechengjson=' + encodeURIComponent(JSON.stringify(this.kecheng)) + '&kefenxiang=' + kefenxiang,
           })
         } else {
-          if (this.weixinshenhe == 0) {
+          if (this.weixinpingguoshenhe == 1) {
             tip.confirm(this.ioswenan);
             return;
           }
-          tip.confirm('尊敬的恋爱联盟用户，当前内容为付费阅读，请先购买~');
+          tip.confirm('尊敬的恋爱话术用户，当前内容为付费阅读，请先购买~');
         }
       },
       swichNav(e) {
@@ -155,6 +158,7 @@
       },
     }
     onShow() {
+      this.weixinpingguoshenhe = wepy.getStorageSync('weixinpingguoshenhe');
       var yigoumai = wepy.getStorageSync('yigoumai');
       if (yigoumai == '0') {
         this.kecheng.yigoumai = 0;
@@ -167,13 +171,13 @@
       }
     }
     onLoad(options) {
-      this.kecheng = JSON.parse(options.json);
+      this.kecheng = JSON.parse(decodeURIComponent(options.json));
       this.huoquwenan();
     }
     onShareAppMessage() {
       return {
-        title: "恋爱联盟",
-        path: "/pages/kecheng?json=" + JSON.stringify(this.kecheng)
+        title: "恋爱话术",
+        path: "/pages/kecheng?json=" + encodeURIComponent(JSON.stringify(this.kecheng)),
       };
     }
     onUnload() {

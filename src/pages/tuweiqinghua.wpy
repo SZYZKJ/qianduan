@@ -113,7 +113,7 @@
             var Width = wx.getSystemInfoSync().windowWidth;
             var Height = wx.getSystemInfoSync().windowHeight;
             this.winheight = Height / Width * 750;
-            this.wordsList = JSON.parse(e.json);
+            this.wordsList = JSON.parse(decodeURIComponent(e.json));
             this.cententsList = [this.wordsList];
             var r = [
                 "对方正在期待地搓搓手...",
@@ -128,7 +128,7 @@
         onShareAppMessage() {
             return {
                 title: '土味情话',
-                path: '/pages/tuweiqinghua?json=' + JSON.stringify(this.wordsList),
+                path: '/pages/tuweiqinghua?json=' + encodeURIComponent(JSON.stringify(this.wordsList)),
             };
         }
         onUnload() {

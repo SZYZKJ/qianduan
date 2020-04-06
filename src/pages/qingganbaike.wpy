@@ -87,12 +87,12 @@
     methods = {
       gotobaike(item) {
         wx.navigateTo({
-          url: "./baikelist?json=" + JSON.stringify(item)
+          url: "./baikelist?json=" + encodeURIComponent(JSON.stringify(item))
         })
       },
       goTowendalist(item) {
         wx.navigateTo({
-          url: "./wendalist?json=" + JSON.stringify(item)
+          url: "./wendalist?json=" + encodeURIComponent(JSON.stringify(item))
         })
       }
     }

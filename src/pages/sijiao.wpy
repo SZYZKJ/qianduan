@@ -20,7 +20,7 @@
             sijiao: {},
         }
         onLoad(options) {
-            this.sijiao = JSON.parse(options.json);
+            this.sijiao = JSON.parse(decodeURIComponent(options.json));
             wepy.setNavigationBarTitle({
                 title: this.sijiao.title,
             })
@@ -28,8 +28,8 @@
         }
         onShareAppMessage() {
             return {
-                title: '恋爱联盟',
-                path: '/pages/sijiao?json=' + JSON.stringify(this.sijiao),
+                title: '恋爱话术',
+                path: '/pages/sijiao?json=' + encodeURIComponent(JSON.stringify(this.sijiao)),
             };
         }
         onUnload() {

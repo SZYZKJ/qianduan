@@ -99,7 +99,7 @@
       </view>
       <view wx:if="{{currentTab0==8}}">
         <view class="tixian">提现提醒：
-          <view class="jinshi" bindtap="fuzhilianjie">请确保你关注了《恋爱联盟》公众号，并进入过菜单栏左边《加入会员》，点击进入会员或者课程并授权，或直接进入链接http://www.lianaizhuli.com/kechenglist(点击可复制链接),否则无法提现成功。</view>{{fenxiao.tixiantixing}}</view>
+          <view class="jinshi" bindtap="fuzhilianjie">请确保你关注了《恋爱脱单话术》公众号，并进入过菜单栏左边《加入会员》，点击进入会员或者课程并授权，或直接进入链接http://www.lianaizhuli.com/kechenglist(点击可复制链接),否则无法提现成功。</view>{{fenxiao.tixiantixing}}</view>
         <view class="tixianjine"><text class="tixianclour">提现金额：</text><input class="jinekuang" value="{{tixianjine}}" bindinput="bindinput" auto-focus/><text class="tixianclour">元</text></view>
         <button class="dianjitixian" type="primary" size="{{primarySize}}" bindtap="tixian"> 提现 </button>
       </view>
@@ -196,7 +196,7 @@
           duration: 2000
         });
       } else if (json.MSG == 'NOGZHID') {
-        tip.confirm('请确保你关注了《恋爱联盟》公众号，若还是无法体现，请到《恋爱联盟》公众号回复任意信息后再重新提现，否则无法提现成功。');
+        tip.confirm('请确保你关注了《恋爱脱单话术》公众号，若还是无法体现，请到《恋爱脱单话术》公众号回复任意信息后再重新提现，否则无法提现成功。');
       } else if (json.MSG == 'SENDNUM_LIMIT') {
         wx.showToast({
           icon: 'none',
@@ -437,7 +437,7 @@
     }
     onShareAppMessage() {
       return {
-        title: "恋爱联盟",
+        title: "恋爱话术",
         path: "/pages/fenxiao"
       };
     }

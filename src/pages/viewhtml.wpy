@@ -36,7 +36,7 @@
     }
     onShareAppMessage() {
       return {
-        title: '恋爱联盟',
+        title: '恋爱话术',
         path: '/pages/viewhtml?url=' + this.url,
       };
     }

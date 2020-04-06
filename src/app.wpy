@@ -9,10 +9,14 @@
   import 'wepy-async-function';
   export default class extends wepy.app {
     config = {
+      navigateToMiniProgramAppIdList: [
+        "wxa9ef833cef143ce1",
+        "wxb380a27f73ace110",
+        "wxc5aa9d9c24004e48",
+      ],
       pages: [
         'pages/home',
         'pages/shouquan',
-        'pages/adding',
         'pages/info',
         'pages/searchpage',
         'pages/liaomeitaolulist',
@@ -20,8 +24,6 @@
         'pages/vip',
         'pages/viewhtml',
         'pages/viewimage',
-        'pages/viewganhuo',
-        'pages/phonenumber',
         'pages/tequan',
         'pages/jifen',
         'pages/weixin',
@@ -50,7 +52,7 @@
       window: {
         backgroundTextStyle: 'dark',
         navigationBarBackgroundColor: '#ffffff',
-        navigationBarTitleText: '恋爱联盟',
+        navigationBarTitleText: '恋爱话术',
         navigationBarTextStyle: 'black',
         enablePullDownRefresh: true,
         backgroundColor: '#ffffff',
@@ -64,16 +66,16 @@
         list: [{
           pagePath: "pages/home",
           text: "首页",
-          iconPath: "images/shouye.png",
-          selectedIconPath: "images/shouye_active.png"
+          iconPath: "images/home.png",
+          selectedIconPath: "images/home_active.png"
         }, {
           pagePath: "pages/liaomeitaolulist",
           text: "套路",
-          iconPath: "images/wenzhang.png",
-          selectedIconPath: "images/wenzhang_active.png"
+          iconPath: "images/taolu.png",
+          selectedIconPath: "images/taolu_active.png"
         }, {
           pagePath: "pages/searchpage",
-          text: "搜索",
+          text: "话术",
           iconPath: "images/search.png",
           selectedIconPath: "images/search_active.png"
         }, {

@@ -11,30 +11,75 @@
           <image class="headercontent3" wx:if="{{vipdengji}}" src="https://www.lianaizhuli.com/geren/VIP.png" />
           <image class="headercontent3" wx:else src="https://www.lianaizhuli.com/geren/feiVIP.png" />
           <view class="headercontent1" bindtap="totequan">{{detail[vipdengji]}}
-            <view class="headercontent2" bindtap="tojifen">积分 <text class="jifen">{{jifen}}</text></view>
+            <view class="headercontent2" wx:if="{{vipdengji==0}}">可用搜索次数 <text class="jifen">{{tiyancishu}}</text></view>
           </view>
         </view>
         <view class="imagekuang">
-          <image class="banimage" wx:if="{{weixinshenhe}}" bindtap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
+          <image class="banimage" wx:if="{{weixinpingguoshenhe==0}}" bindtap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
           <image class="banimage" bindtap="toshoucang" src="https://www.lianaizhuli.com/geren/wodeshoucang.png" />
         </view>
       </view>
     </view>
     <view class="info_block">
-      <navigator wx:if="{{weixinshenhe}}" class="item" url="/pages/vip">
+      <navigator wx:if="{{weixinpingguoshenhe==0}}" class="item" url="/pages/vip">
         <view class="item_content">
           <image class="item_img" src="../images/shengjihuiyuan.png" />
           <view class="text">
-            <view class="text1">升级会员</view>
+            <view class="text1">开通会员终身去广告</view>
             <image class="text2" src="../images/jiantou.png" />
           </view>
         </view>
       </navigator>
-      <navigator wx:if="{{istuiguang}}" class="item" url="/pages/fenxiao">
+      <!-- <navigator wx:if="{{istuiguang}}" class="item" url="/pages/fenxiao">
+                                  <view class="item_content">
+                                    <image class="item_img" src="../images/fenxiao.png" />
+                                    <view class="text">
+                                      <view class="text1">推广中心</view>
+                                      <image class="text2" src="../images/jiantou.png" />
+                                    </view>
+                                  </view>
+                                </navigator> -->
+      <view class="item" bindtap="guankanguanggao">
         <view class="item_content">
-          <image class="item_img" src="../images/fenxiao.png" />
+          <image class="item_img" src="../images/guanggao.png" />
           <view class="text">
-            <view class="text1">推广中心</view>
+            <view class="text1">观看广告获取搜索次数</view>
+            <image class="text2" src="../images/jiantou.png" />
+          </view>
+        </view>
+      </view>
+      <view class="item" bindtap="toxiaochengxu('wxb380a27f73ace110')" plain="false">
+        <view class="item_content">
+          <image class="item_img" src="../images/qiming.png" />
+          <view class="text">
+            <view class="text1">宝宝起名</view>
+            <image class="text2" src="../images/jiantou.png" />
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{weixinshenhe==0}}" class="item" bindtap="toxiaochengxu('wxc5aa9d9c24004e48')" plain="false">
+        <view class="item_content">
+          <image class="item_img" src="../images/love.png" />
+          <view class="text">
+            <view class="text1">游戏盒子</view>
+            <image class="text2" src="../images/jiantou.png" />
+          </view>
+        </view>
+      </view>
+      <button class="item" open-type="contact" session-from="weapp" plain="false">
+        <view class="item_content">
+          <image class="item_img" src="../images/zaixiankefu.png" />
+          <view class="text">
+            <view class="text1">在线客服</view>
+            <image class="text2" src="../images/jiantou.png" />
+          </view>
+        </view>
+      </button>
+      <navigator class="item" url="/pages/weixin">
+        <view class="item_content">
+          <image class="item_img" src="../images/daoshiweixin.png" />
+          <view class="text">
+            <view class="text1">导师微信</view>
             <image class="text2" src="../images/jiantou.png" />
           </view>
         </view>
@@ -48,34 +93,7 @@
           </view>
         </view>
       </navigator>
-      <navigator class="item" url="/pages/jifen">
-        <view class="item_content">
-          <image class="item_img" src="../images/wodejifen.png" />
-          <view class="text">
-            <view class="text1">我的积分</view>
-            <image class="text2" src="../images/jiantou.png" />
-          </view>
-        </view>
-      </navigator>
-      <button class="item" open-type="contact" session-from="weapp" plain="false">
-                                      <view class="item_content">
-                                        <image class="item_img" src="../images/zaixiankefu.png"/>
-                                        <view class="text">
-                                          <view class="text1">在线客服</view>
-                                          <image class="text2" src="../images/jiantou.png" />
-                                        </view>
-                                      </view>
-                                    </button>
-      <navigator class="item" url="/pages/weixin">
-        <view class="item_content">
-          <image class="item_img" src="../images/daoshiweixin.png" />
-          <view class="text">
-            <view class="text1">导师微信</view>
-            <image class="text2" src="../images/jiantou.png" />
-          </view>
-        </view>
-      </navigator>
-      <navigator wx:if="{{weixinshenhe}}" class="item" url="/pages/dingdan">
+      <navigator wx:if="{{weixinpingguoshenhe==0}}" class="item" url="/pages/dingdan">
         <view class="item_content">
           <image class="item_img" src="../images/quanbudingdan.png" />
           <view class="text">
@@ -91,6 +109,7 @@
 <script>
   import wepy from 'wepy';
   import api from '@/api/api';
+  let rewardedVideoAd = null;
   export default class info extends wepy.page {
     config = {
       navigationBarTitleText: '个人',
@@ -107,25 +126,33 @@
       nickName: "",
       detail: ['非会员', '终身会员', '分手挽回(送终身会员)', '私教1个月(送终身会员)', '私教3个月(送终身会员)', '私教1年(送终身会员)', '联盟会员(含私教终身)'],
       vipdengji: 0,
-      jifen: 0,
+      tiyancishu: 0,
+      sousuocishu: 0,
       weixinshenhe: wepy.getStorageSync('weixinshenhe'),
-      istuiguang: wepy.getStorageSync('istuiguang'),
+      weixinpingguoshenhe: wepy.getStorageSync('weixinpingguoshenhe'),
+      // istuiguang: wepy.getStorageSync('istuiguang'),
     }
-    async getJifen() {
+    async addTiyancishu() {
       let unionid = wepy.getStorageSync('unionid') || '';
       if (unionid == '') {
         wepy.navigateTo({
-          url: '/pages/shouquan'
-        })
+          url: "/pages/shouquan"
+        });
         return false;
       }
-      const json = await api.getJifen({
+      const json = await api.addTiyancishu({
         unionid: unionid,
-        iszhudong: 0,
+      });
+    }
+    async getTiyancishu() {
+      let unionid = wepy.getStorageSync('unionid') || '';
+      const json = await api.getTiyancishu({
+        unionid: unionid,
       })
-      this.vipdengji = json.data.vipdengji;
-      this.jifen = json.data.jifen;
-      this.wenhouyu = json.data.wenhouyu;
+      this.tiyancishu = json.tiyancishu;
+      this.sousuocishu = json.sousuocishu;
+      this.vipdengji = json.vipdengji;
+      this.wenhouyu = json.wenhouyu;
       this.$apply();
     }
     tovip() {
@@ -143,11 +170,6 @@
         url: '/pages/tequan'
       })
     }
-    tojifen() {
-      wepy.navigateTo({
-        url: '/pages/jifen'
-      })
-    }
     changeTab() {
       if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {
         wx.switchTab({
@@ -160,6 +182,14 @@
       }
     }
     methods = {
+      guankanguanggao() {
+        rewardedVideoAd.show();
+      },
+      toxiaochengxu(appid) {
+        wx.navigateToMiniProgram({
+          appId: appid,
+        })
+      },
       touchStart(e) {
         this.startX = e.changedTouches[0].clientX;
         this.startY = e.changedTouches[0].clientY;
@@ -171,17 +201,72 @@
       },
     }
     onShow() {
-      this.getJifen();
+      this.weixinshenhe = wepy.getStorageSync('weixinshenhe');
+      this.weixinpingguoshenhe = wepy.getStorageSync('weixinpingguoshenhe');
+      this.getTiyancishu();
     }
     onLoad() {
       let userInfo = wepy.getStorageSync('userInfo');
       this.avatarUrl = userInfo.avatarUrl;
       this.nickName = userInfo.nickName;
+      if (wx.createRewardedVideoAd) {
+        rewardedVideoAd = wx.createRewardedVideoAd({
+          adUnitId: 'adunit-15aa27b1f372ea65'
+        })
+        rewardedVideoAd.onLoad(() => {})
+        rewardedVideoAd.onError((err) => {})
+        rewardedVideoAd.onClose((res) => {
+          if (res && res.isEnded) {
+            this.addTiyancishu();
+            let that = this;
+            setTimeout(() => {
+              that.getTiyancishu();
+            }, 1000);
+            wx.showToast({
+              title: "搜索次数增加" + that.sousuocishu + "次",
+              duration: 500
+            });
+          } else {
+            if (this.weixinpingguoshenhe == 0) {
+              wx.showModal({
+                title: "开通会员",
+                content: "广告未观看完毕，点击开通，可去掉广告~",
+                showCancel: true,
+                cancelText: "取消",
+                confirmText: "开通",
+                success: function(res) {
+                  if (res.cancel) {} else {
+                    wepy.navigateTo({
+                      url: "/pages/vip"
+                    });
+                  }
+                },
+                fail: function(res) {}, //接口调用失败的回调函数
+                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+              });
+            } else {
+              wx.showModal({
+                title: "温馨提示",
+                content: "广告未观看完毕，观看完毕即可阅读更多~",
+                showCancel: false,
+                confirmText: "确定",
+                success: function(res) {
+                  if (res.cancel) {} else {
+                    rewardedVideoAd.show();
+                  }
+                },
+                fail: function(res) {}, //接口调用失败的回调函数
+                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+              });
+            }
+          }
+        })
+      }
       this.$apply();
     }
     onShareAppMessage() {
       return {
-        title: '恋爱联盟',
+        title: '恋爱话术',
         path: '/pages/home',
       };
     }

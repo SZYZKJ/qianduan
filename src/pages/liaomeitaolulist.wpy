@@ -135,9 +135,9 @@
     methods = {
       gotoLilun(obj) {
         wx.navigateTo({
-          url: "./liaomeitaolu?json=" + JSON.stringify({
+          url: "./liaomeitaolu?json=" + encodeURIComponent(JSON.stringify({
             'cid': obj
-          })
+          }))
         })
       },
       touchStart(e) {
@@ -153,7 +153,7 @@
     onLoad() {}
     onShareAppMessage() {
       return {
-        title: '恋爱联盟',
+        title: '恋爱话术',
         path: '/pages/home',
       };
     }

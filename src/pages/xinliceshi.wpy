@@ -140,8 +140,8 @@
       }
     }
     deepClone(obj) {
-      let _obj = JSON.stringify(obj),
-        objClone = JSON.parse(_obj);
+      let _obj = encodeURIComponent(JSON.stringify(obj)),
+        objClone = JSON.parse(decodeURIComponent(_obj));
       return objClone
     }
     methods = {

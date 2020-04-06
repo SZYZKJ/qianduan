@@ -31,7 +31,7 @@
         <baike :baikeList.sync="baikeList"></baike>
       </view>
       <view class="textend" wx:if="{{(currentTab==0&&!isend0&&oldhuashu)||(currentTab==1&&!isend1&&oldbiaoqing)||(currentTab==2&&!isend2&&oldbaike)}}">加载中......</view>
-      <view class="textend" wx:else>恋爱脱单上恋爱联盟</view>
+      <view class="textend" wx:else>恋爱有方法脱单有套路</view>
     </view>
     <view class="recommend" wx:else>
       <view wx:if="{{showhlepkeyword}}">
@@ -71,6 +71,7 @@
   import biaoqing from "@/components/biaoqing";
   import baike from "@/components/baike";
   import placeholder from "@/components/placeholder";
+  let rewardedVideoAd = null;
   export default class searchpage extends wepy.page {
     config = {
       navigationBarTitleText: "搜索",
@@ -113,8 +114,20 @@
       jilutype: "huashu",
       jilucontent: "",
       copyinput: "",
-      weixinshenhe: wepy.getStorageSync('weixinshenhe'),
+      weixinpingguoshenhe: wepy.getStorageSync('weixinpingguoshenhe'),
     };
+    async addTiyancishu() {
+      let unionid = wepy.getStorageSync('unionid') || '';
+      if (unionid == '') {
+        wepy.navigateTo({
+          url: "/pages/shouquan"
+        });
+        return false;
+      }
+      const json = await api.addTiyancishu({
+        unionid: unionid,
+      });
+    }
     async getHelpkeywords() {
       let unionid = wepy.getStorageSync('unionid') || '';
       if (unionid == '') {
@@ -163,39 +176,39 @@
     }
     computed = {};
     confirm() {
-      if (this.weixinshenhe == 1) {
-        wx.showModal({
-          title: "开通会员",
-          content: "您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~",
-          showCancel: true,
-          cancelText: "取消",
-          confirmText: "开通",
-          success: function(res) {
-            if (res.cancel) {} else {
-              wepy.navigateTo({
-                url: "/pages/vip"
-              });
-            }
-          },
-          fail: function(res) {}, //接口调用失败的回调函数
-          complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-        });
-      } else {
-        wx.showModal({
-          title: "温馨提示",
-          content: "您当前为非会员，无法为您提供更多恋爱能力~",
-          showCancel: false,
-          confirmText: "确定",
-          success: function(res) {
-            if (res.cancel) {} else {}
-          },
-          fail: function(res) {}, //接口调用失败的回调函数
-          complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-        });
-      }
+      rewardedVideoAd.show();
+      // if (this.weixinpingguoshenhe == 0) {
+      //   wx.showModal({
+      //     title: "开通会员",
+      //     content: "您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~",
+      //     showCancel: true,
+      //     cancelText: "取消",
+      //     confirmText: "开通",
+      //     success: function(res) {
+      //       if (res.cancel) {} else {
+      //         wepy.navigateTo({
+      //           url: "/pages/vip"
+      //         });
+      //       }
+      //     },
+      //     fail: function(res) {}, //接口调用失败的回调函数
+      //     complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+      //   });
+      // } else {
+      //   wx.showModal({
+      //     title: "温馨提示",
+      //     content: "您当前为非会员，无法为您提供更多恋爱能力~",
+      //     showCancel: false,
+      //     confirmText: "确定",
+      //     success: function(res) {
+      //       if (res.cancel) {} else {}
+      //     },
+      //     fail: function(res) {}, //接口调用失败的回调函数
+      //     complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+      //   });
+      // }
     }
     async searchLiaomeihuashu() {
-      let that = this;
       let unionid = wepy.getStorageSync('unionid') || '';
       if (unionid == '') {
         wepy.navigateTo({
@@ -204,20 +217,20 @@
         return false;
       }
       const json = await api.searchLiaomeihuashu({
-        query: that.inputValue,
+        query: this.inputValue,
         unionid: unionid,
-        scroll: that.scroll0
+        scroll: this.scroll0
       });
-      that.oldhuashu = that.inputValue;
       if (json.MSG == "OK") {
-        that.huashuList = that.huashuList.concat(json.data);
+        this.oldhuashu = this.inputValue;
+        this.huashuList = this.huashuList.concat(json.data);
         if (json.data.length < 10) this.isend0 = true;
-        that.scroll0 = json.scroll;
+        this.scroll0 = json.scroll;
       } else {
         this.confirm();
       }
-      that.showRecommend = false;
-      that.$apply();
+      this.showRecommend = false;
+      this.$apply();
     }
     async searchBiaoqing() {
       let that = this;
@@ -233,8 +246,8 @@
         unionid: unionid,
         scroll: that.scroll1
       });
-      that.oldbiaoqing = that.inputValue;
       if (json.MSG == "OK") {
+        that.oldbiaoqing = that.inputValue;
         that.biaoqingList = that.biaoqingList.concat(json.data);
         if (json.data.length < 10) this.isend1 = true;
         that.scroll1 = json.scroll;
@@ -258,8 +271,8 @@
         unionid: unionid,
         scroll: that.scroll2
       });
-      that.oldbaike = that.inputValue;
       if (json.MSG == "OK") {
+        that.oldbaike = that.inputValue;
         that.baikeList = that.baikeList.concat(json.data);
         if (json.data.length < 10) this.isend2 = true;
         that.scroll2 = json.scroll;
@@ -286,9 +299,9 @@
     doSearch(val) {
       if (val.length) {
         this.inputValue = val;
-        if (this.currentTab == 0) this.searchLiaomeihuashu();
-        if (this.currentTab == 1) this.searchBiaoqing();
-        if (this.currentTab == 2) this.searchBaike();
+        if (this.currentTab == 0 && this.inputValue != this.oldhuashu) this.searchLiaomeihuashu();
+        if (this.currentTab == 1 && this.inputValue != this.oldbiaoqing) this.searchBiaoqing();
+        if (this.currentTab == 2 && this.inputValue != this.oldbaike) this.searchBaike();
         this.$apply();
       }
     }
@@ -413,7 +426,7 @@
         if (this.inputValue == '') {
           return;
         }
-        if (this.currentTab == 0 && this.inputValue != this.oldhuashu) {
+        if (this.currentTab == 0 && (this.inputValue != this.oldhuashu)) {
           this.huashuList = [];
           this.scroll0 = "";
           this.isend0 = false;
@@ -434,6 +447,9 @@
       },
       bindfocus() {
         this.showRecommend = true;
+        if (this.hotWordsList.length == 0) {
+          this.getRecommend();
+        }
         this.getHiswordList();
       },
       delText() {
@@ -513,6 +529,7 @@
       }
     }
     onShow() {
+      this.weixinpingguoshenhe = wepy.getStorageSync('weixinpingguoshenhe');
       let that = this;
       if (wepy.$instance.globalData.currentTab != -1) {
         this.currentTab = wepy.$instance.globalData.currentTab;
@@ -552,12 +569,62 @@
       that.$apply();
     }
     onLoad() {
+      if (wx.createRewardedVideoAd) {
+        rewardedVideoAd = wx.createRewardedVideoAd({
+          adUnitId: 'adunit-15aa27b1f372ea65'
+        })
+        rewardedVideoAd.onLoad(() => {})
+        rewardedVideoAd.onError((err) => {})
+        rewardedVideoAd.onClose((res) => {
+          if (res && res.isEnded) {
+            this.addTiyancishu();
+            let that = this;
+            that.scroll0 = '';
+            setTimeout(() => {
+              that.searchLiaomeihuashu();
+            }, 1000);
+          } else {
+            if (this.weixinpingguoshenhe == 0) {
+              wx.showModal({
+                title: "开通会员",
+                content: "广告未观看完毕，点击开通，可去掉广告~",
+                showCancel: true,
+                cancelText: "取消",
+                confirmText: "开通",
+                success: function(res) {
+                  if (res.cancel) {} else {
+                    wepy.navigateTo({
+                      url: "/pages/vip"
+                    });
+                  }
+                },
+                fail: function(res) {}, //接口调用失败的回调函数
+                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+              });
+            } else {
+              wx.showModal({
+                title: "温馨提示",
+                content: "广告未观看完毕，观看完毕即可搜索~",
+                showCancel: false,
+                confirmText: "继续观看",
+                success: function(res) {
+                  if (res.cancel) {} else {
+                    rewardedVideoAd.show();
+                  }
+                },
+                fail: function(res) {}, //接口调用失败的回调函数
+                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+              });
+            }
+          }
+        })
+      }
       this.getRecommend();
       this.$apply();
     }
     onShareAppMessage() {
       return {
-        title: "恋爱联盟",
+        title: "恋爱话术",
         path: "/pages/home"
       };
     }

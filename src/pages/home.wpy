@@ -21,7 +21,7 @@
           <view class="text">
             {{inputValue}}
           </view>
-          <image class="image" mode="scaleToFill" src="{{searchicon}}" />
+          <image class="image" mode="scaleToFill" src="../images/search_active.png" />
         </view>
         <view class="searchmiaoshu">
           {{miaoshu}}
@@ -193,8 +193,8 @@
       indicatorActiveColor: "#ffffff",
       inputValue: "海量聊天话术每日更新",
       searchicon: '',
-      gengduotext: '',
       gengduoicon: '',
+      gengduotext: '',
       miaoshu: '',
       tuijian: [],
       kecheng: {},

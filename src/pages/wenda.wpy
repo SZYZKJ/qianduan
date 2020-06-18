@@ -4,13 +4,13 @@
         <rich-text nodes="{{wenda.content}}"></rich-text>
         <view class="dikuang">
             <view class="shoucangkuang">
-                <image class="shoucang" bindtap="gaibiandianzan" wx:if="{{dianzan}}" src="https://www.lianaizhuli.com/yidianzan.png" />
-                <image class="shoucang" bindtap="gaibiandianzan" wx:else src="https://www.lianaizhuli.com/weidianzan.png" />
+                <image class="shoucang" bindtap="gaibiandianzan" wx:if="{{dianzan}}" src="../images/yidianzan.png" />
+                <image class="shoucang" bindtap="gaibiandianzan" wx:else src="../images/weidianzan.png" />
                 <view>{{wenda.dianzan}}</view>
             </view>
             <view class="shoucangkuang">
-                <image class="shoucang" bindtap="gaibianshoucang" wx:if="{{shoucang}}" src="https://www.lianaizhuli.com/yishoucang.png" />
-                <image class="shoucang" bindtap="gaibianshoucang" wx:else src="https://www.lianaizhuli.com/weishoucang.png" />
+                <image class="shoucang" bindtap="gaibianshoucang" wx:if="{{shoucang}}" src="../images/yishoucang.png" />
+                <image class="shoucang" bindtap="gaibianshoucang" wx:else src="../images/weishoucang.png" />
                 <view>{{wenda.shoucang}}</view>
             </view>
         </view>

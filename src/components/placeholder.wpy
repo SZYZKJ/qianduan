@@ -1,5 +1,5 @@
 <template>
-    <view class="empty-placeholder" wx:if="{{show}}">
+    <view class="empty-placeholder">
         <image class="icon-xl" src="../images/kong.png" />
     </view>
 </template>
@@ -8,10 +8,6 @@
     import wepy from 'wepy'
     export default class Placeholder extends wepy.component {
         props = {
-            show: {
-                type: Boolean,
-                default: false
-            },
             message: {}
         };
     }

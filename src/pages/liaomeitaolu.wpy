@@ -48,7 +48,6 @@
   import api from "@/api/api";
   import wepy from "wepy";
   import tip from "@/utils/tip";
-  let rewardedVideoAd = null;
   export default class methodology extends wepy.page {
     config = {
       navigationBarTitleText: "",
@@ -110,37 +109,36 @@
       }
     };
     confirm() {
-      rewardedVideoAd.show();
-      // if (this.weixinpingguoshenhe == 0) {
-      //   wx.showModal({
-      //     title: "开通会员",
-      //     content: "您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~",
-      //     showCancel: true,
-      //     cancelText: "取消",
-      //     confirmText: "开通",
-      //     success: function(res) {
-      //       if (res.cancel) {} else {
-      //         wepy.navigateTo({
-      //           url: "/pages/vip"
-      //         });
-      //       }
-      //     },
-      //     fail: function(res) {}, //接口调用失败的回调函数
-      //     complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-      //   });
-      // } else {
-      //   wx.showModal({
-      //     title: "温馨提示",
-      //     content: "您当前为非会员，无法为您提供更多恋爱能力~",
-      //     showCancel: false,
-      //     confirmText: "确定",
-      //     success: function(res) {
-      //       if (res.cancel) {} else {}
-      //     },
-      //     fail: function(res) {}, //接口调用失败的回调函数
-      //     complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-      //   });
-      // }
+      if (this.weixinpingguoshenhe == 0) {
+        wx.showModal({
+          title: "开通会员",
+          content: "您当前为非会员，点击开通，解锁更多会员专属服务，为您提供更多恋爱能力~",
+          showCancel: true,
+          cancelText: "取消",
+          confirmText: "开通",
+          success: function(res) {
+            if (res.cancel) {} else {
+              wepy.navigateTo({
+                url: "/pages/vip"
+              });
+            }
+          },
+          fail: function(res) {}, //接口调用失败的回调函数
+          complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+        });
+      } else {
+        wx.showModal({
+          title: "温馨提示",
+          content: "您当前为非会员，无法为您提供更多恋爱能力~",
+          showCancel: false,
+          confirmText: "确定",
+          success: function(res) {
+            if (res.cancel) {} else {}
+          },
+          fail: function(res) {}, //接口调用失败的回调函数
+          complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
+        });
+      }
     }
     async getLiaomeitaoluList() {
       let unionid = wepy.getStorageSync('unionid') || '';
@@ -199,55 +197,6 @@
       wepy.setNavigationBarTitle({
         title: this.title[this.cid]
       });
-      if (wx.createRewardedVideoAd) {
-        rewardedVideoAd = wx.createRewardedVideoAd({
-          adUnitId: 'adunit-15aa27b1f372ea65'
-        })
-        rewardedVideoAd.onLoad(() => {})
-        rewardedVideoAd.onError((err) => {})
-        rewardedVideoAd.onClose((res) => {
-          if (res && res.isEnded) {
-            this.addTiyancishu();
-            let that=this;
-            setTimeout(() => {
-              that.getLiaomeitaoluList();
-            }, 1000);
-          } else {
-            if (this.weixinpingguoshenhe == 0) {
-              wx.showModal({
-                title: "开通会员",
-                content: "广告未观看完毕，点击开通，可去掉广告~",
-                showCancel: true,
-                cancelText: "取消",
-                confirmText: "开通",
-                success: function(res) {
-                  if (res.cancel) {} else {
-                    wepy.navigateTo({
-                      url: "/pages/vip"
-                    });
-                  }
-                },
-                fail: function(res) {}, //接口调用失败的回调函数
-                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-              });
-            } else {
-              wx.showModal({
-                title: "温馨提示",
-                content: "广告未观看完毕，观看完毕即可阅读更多~",
-                showCancel: false,
-                confirmText: "确定",
-                success: function(res) {
-                  if (res.cancel) {} else {
-                    rewardedVideoAd.show();
-                  }
-                },
-                fail: function(res) {}, //接口调用失败的回调函数
-                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-              });
-            }
-          }
-        })
-      }
       this.getLiaomeitaoluList();
       this.$apply();
     }
@@ -263,8 +212,7 @@
 <style lang="less">
   .liaomeitaolu {
     text-align: justify;
-    background-image: url('https://www.lianaizhuli.com/liaomeitaolubackground.png');
-    background-size: 750rpx 1181rpx;
+    background: #efefef;
     .textend {
       padding-top: 30rpx;
       padding-bottom: 30rpx;
@@ -272,7 +220,7 @@
     }
   }
   .swiper {
-    min-height: 3543rpx;
+    min-height: 3500rpx;
   }
   .current {
     text-align: center;

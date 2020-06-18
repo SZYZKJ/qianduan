@@ -45,8 +45,6 @@ const searchGanhuoList = (params) => wxRequestPost(params, apiMain + 'searchGanh
 const get_prepay_id = (params) => wxRequestPost(params, apiMain + 'get_prepay_id');
 //获取特权
 const getTequan = (params) => wxRequestPost(params, apiMain + 'getTequan');
-//获取积分
-const getJifen = (params) => wxRequestPost(params, apiMain + 'getJifen');
 //获取订单
 const getDingdan = (params) => wxRequestPost(params, apiMain + 'getDingdan');
 //获取联盟
@@ -119,13 +117,7 @@ const getTixianjilu = (params) => wxRequestPost(params, apiMain + 'getTixianjilu
 const tiXian = (params) => wxRequestPost(params, apiMain + 'tiXian');
 //获取价格列表
 const getJiagelist = (params) => wxRequestPost(params, apiMain + 'getJiagelist');
-//增加体验次数
-const addTiyancishu = (params) => wxRequestPost(params, apiMain + 'addTiyancishu');
-//获取体验次数
-const getTiyancishu = (params) => wxRequestPost(params, apiMain + 'getTiyancishu');
 export default {
-  getTiyancishu,
-  addTiyancishu,
   getJiagelist,
   deleteHaibao,
   getHaibao,
@@ -167,7 +159,6 @@ export default {
   searchGanhuoList,
   get_prepay_id,
   getTequan,
-  getJifen,
   getDingdan,
   getIslianmeng,
   setJilu,

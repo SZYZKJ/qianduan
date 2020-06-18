@@ -120,7 +120,8 @@
       enablePullDownRefresh: true,
     };
     Page = {}
-    data = {};
+    data = {
+    };
     changeTab() {
       if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {
         wx.switchTab({

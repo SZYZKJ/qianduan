@@ -81,11 +81,11 @@
         width: 100%;
       }
       .nvtext {
-        font-size: 28rpx;
+        font-size: 33rpx;
         color: #ff4500;
       }
       .nantext {
-        font-size: 28rpx;
+        font-size: 33rpx;
         color: #333;
       }
     }

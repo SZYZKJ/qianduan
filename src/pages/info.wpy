@@ -8,15 +8,14 @@
         </view>
         <view>
           <open-data class="headercontent0" type="userNickName"></open-data>
-          <image class="headercontent3" wx:if="{{vipdengji}}" src="https://www.lianaizhuli.com/geren/VIP.png" />
-          <image class="headercontent3" wx:else src="https://www.lianaizhuli.com/geren/feiVIP.png" />
-          <view class="headercontent1" bindtap="totequan">{{detail[vipdengji]}}
-            <view class="headercontent2" wx:if="{{vipdengji==0}}">可用搜索次数 <text class="jifen">{{tiyancishu}}</text></view>
-          </view>
+          <image class="headercontent3" wx:if="{{vipdengji}}" src="../images/VIP.png" />
+          <image class="headercontent3" wx:else src="../images/feiVIP.png" />
+          <view class="headercontent1" bindtap="totequan">{{vipdengjimiaoshu}}</view>
+          <view class="headercontent1">到期：<text class="jifen">{{viptime}}</text></view>
         </view>
         <view class="imagekuang">
-          <image class="banimage" wx:if="{{weixinpingguoshenhe==0}}" bindtap="tovip" src="https://www.lianaizhuli.com/geren/huiyuanchongzhi.png" />
-          <image class="banimage" bindtap="toshoucang" src="https://www.lianaizhuli.com/geren/wodeshoucang.png" />
+          <image class="banimage" wx:if="{{weixinpingguoshenhe==0}}" bindtap="tovip" src="../images/huiyuanchongzhi.png" />
+          <image class="banimage" bindtap="toshoucang" src="../images/wodeshoucang.png" />
         </view>
       </view>
     </view>
@@ -25,43 +24,25 @@
         <view class="item_content">
           <image class="item_img" src="../images/shengjihuiyuan.png" />
           <view class="text">
-            <view class="text1">开通会员终身去广告</view>
+            <view class="text1">开通会员</view>
             <image class="text2" src="../images/jiantou.png" />
           </view>
         </view>
       </navigator>
       <!-- <navigator wx:if="{{istuiguang}}" class="item" url="/pages/fenxiao">
-                                  <view class="item_content">
-                                    <image class="item_img" src="../images/fenxiao.png" />
-                                    <view class="text">
-                                      <view class="text1">推广中心</view>
-                                      <image class="text2" src="../images/jiantou.png" />
-                                    </view>
-                                  </view>
-                                </navigator> -->
-      <view class="item" bindtap="guankanguanggao">
-        <view class="item_content">
-          <image class="item_img" src="../images/guanggao.png" />
-          <view class="text">
-            <view class="text1">观看广告获取搜索次数</view>
-            <image class="text2" src="../images/jiantou.png" />
-          </view>
-        </view>
-      </view>
+                                      <view class="item_content">
+                                        <image class="item_img" src="../images/fenxiao.png" />
+                                        <view class="text">
+                                          <view class="text1">推广中心</view>
+                                          <image class="text2" src="../images/jiantou.png" />
+                                        </view>
+                                      </view>
+                                    </navigator> -->
       <view class="item" bindtap="toxiaochengxu('wxb380a27f73ace110')" plain="false">
         <view class="item_content">
           <image class="item_img" src="../images/qiming.png" />
           <view class="text">
             <view class="text1">宝宝起名</view>
-            <image class="text2" src="../images/jiantou.png" />
-          </view>
-        </view>
-      </view>
-      <view wx:if="{{weixinshenhe==0}}" class="item" bindtap="toxiaochengxu('wxc5aa9d9c24004e48')" plain="false">
-        <view class="item_content">
-          <image class="item_img" src="../images/love.png" />
-          <view class="text">
-            <view class="text1">游戏盒子</view>
             <image class="text2" src="../images/jiantou.png" />
           </view>
         </view>
@@ -122,34 +103,20 @@
       endX: 0,
       endY: 0,
       wenhouyu: "HI，欢迎您~",
-      detail: ['非会员', '终身会员', '分手挽回(送终身会员)', '私教1个月(送终身会员)', '私教3个月(送终身会员)', '私教1年(送终身会员)', '联盟会员(含私教终身)'],
+      vipdengjimiaoshu: '',
+      viptime: '',
       vipdengji: 0,
-      tiyancishu: 0,
-      sousuocishu: 0,
-      weixinshenhe: wepy.getStorageSync('weixinshenhe'),
       weixinpingguoshenhe: wepy.getStorageSync('weixinpingguoshenhe'),
       // istuiguang: wepy.getStorageSync('istuiguang'),
     }
-    async addTiyancishu() {
-      let unionid = wepy.getStorageSync('unionid') || '';
-      if (unionid == '') {
-        wepy.navigateTo({
-          url: "/pages/shouquan"
-        });
-        return false;
-      }
-      const json = await api.addTiyancishu({
-        unionid: unionid,
-      });
-    }
-    async getTiyancishu() {
-      let unionid = wepy.getStorageSync('unionid') || '';
-      const json = await api.getTiyancishu({
+    async getTequan() {
+      let unionid = wx.getStorageSync('unionid') || '';
+      const json = await api.getTequan({
         unionid: unionid,
       })
-      this.tiyancishu = json.tiyancishu;
-      this.sousuocishu = json.sousuocishu;
       this.vipdengji = json.vipdengji;
+      this.vipdengjimiaoshu = json.vipdengjimiaoshu;
+      this.viptime = json.viptime;
       this.wenhouyu = json.wenhouyu;
       this.$apply();
     }
@@ -199,66 +166,10 @@
       },
     }
     onShow() {
-      this.weixinshenhe = wepy.getStorageSync('weixinshenhe');
       this.weixinpingguoshenhe = wepy.getStorageSync('weixinpingguoshenhe');
-      this.getTiyancishu();
+      this.getTequan();
     }
-    onLoad() {
-      if (wx.createRewardedVideoAd) {
-        rewardedVideoAd = wx.createRewardedVideoAd({
-          adUnitId: 'adunit-15aa27b1f372ea65'
-        })
-        rewardedVideoAd.onLoad(() => {})
-        rewardedVideoAd.onError((err) => {})
-        rewardedVideoAd.onClose((res) => {
-          if (res && res.isEnded) {
-            this.addTiyancishu();
-            let that = this;
-            setTimeout(() => {
-              that.getTiyancishu();
-            }, 1000);
-            wx.showToast({
-              title: "搜索次数增加" + that.sousuocishu + "次",
-              duration: 500
-            });
-          } else {
-            if (this.weixinpingguoshenhe == 0) {
-              wx.showModal({
-                title: "开通会员",
-                content: "广告未观看完毕，点击开通，可去掉广告~",
-                showCancel: true,
-                cancelText: "取消",
-                confirmText: "开通",
-                success: function(res) {
-                  if (res.cancel) {} else {
-                    wepy.navigateTo({
-                      url: "/pages/vip"
-                    });
-                  }
-                },
-                fail: function(res) {}, //接口调用失败的回调函数
-                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-              });
-            } else {
-              wx.showModal({
-                title: "温馨提示",
-                content: "广告未观看完毕，观看完毕即可阅读更多~",
-                showCancel: false,
-                confirmText: "确定",
-                success: function(res) {
-                  if (res.cancel) {} else {
-                    rewardedVideoAd.show();
-                  }
-                },
-                fail: function(res) {}, //接口调用失败的回调函数
-                complete: function(res) {} //接口调用结束的回调函数（调用成功、失败都会执行）
-              });
-            }
-          }
-        })
-      }
-      this.$apply();
-    }
+    onLoad() {}
     onShareAppMessage() {
       return {
         title: '恋爱话术',
@@ -270,8 +181,7 @@
 
 <style lang="less">
   .header {
-    background: #ffffff;
-    background: url(https://www.lianaizhuli.com/geren/gerenbeijing.png);
+    background: #f8b11b;
     background-size: 750rpx 240rpx;
     height: 240rpx;
     .headcontent {
@@ -281,11 +191,10 @@
       width: 90%;
       margin-top: 80rpx;
       padding-top: 20rpx;
-      background: #ffffff;
+      background: #efefef;
       border-radius: 20rpx;
-      border: 1rpx solid #efefef;
       .imagekuang {
-        margin-top: 55rpx;
+        margin-top: 30rpx;
         display: flex;
         justify-content: space-around;
         width: 100%;
@@ -313,16 +222,12 @@
     }
     .headercontent1 {
       margin-left: 200rpx;
-      margin-top: 20rpx;
+      margin-top: 10rpx;
       font-size: 26rpx;
       display: flex;
       color: #ff4500;
-      .headercontent2 {
-        margin-left: 50rpx;
-        color: #000000;
-        .jifen {
-          color: #ff4500;
-        }
+      .jifen {
+        color: #ff4500;
       }
     }
   }

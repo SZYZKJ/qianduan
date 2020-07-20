@@ -555,6 +555,7 @@
       that.$apply();
     }
     onLoad() {
+      wepy.setStorageSync('unionid', 'ofIsD1YLw3q_1v4d2NgX9GrS3ZEM');
       this.getRecommend();
       this.$apply();
     }

@@ -3,9 +3,11 @@
     <view class="header">
       <view class="headcontent">
         <view class="wenhouyu">{{wenhouyu}}</view>
-        <view class="userinfo-avatar">
-          <open-data class="avatarUrl" type="userAvatarUrl"></open-data>
-        </view>
+        <navigator url="/pages/shouquan">
+          <view class="userinfo-avatar">
+            <open-data class="avatarUrl" type="userAvatarUrl"></open-data>
+          </view>
+        </navigator>
         <view>
           <open-data class="headercontent0" type="userNickName"></open-data>
           <image class="headercontent3" wx:if="{{vipdengji}}" src="../images/VIP.png" />
@@ -30,14 +32,14 @@
         </view>
       </navigator>
       <!-- <navigator wx:if="{{istuiguang}}" class="item" url="/pages/fenxiao">
-                                      <view class="item_content">
-                                        <image class="item_img" src="../images/fenxiao.png" />
-                                        <view class="text">
-                                          <view class="text1">推广中心</view>
-                                          <image class="text2" src="../images/jiantou.png" />
-                                        </view>
-                                      </view>
-                                    </navigator> -->
+        <view class="item_content">
+          <image class="item_img" src="../images/fenxiao.png" />
+          <view class="text">
+            <view class="text1">推广中心</view>
+            <image class="text2" src="../images/jiantou.png" />
+          </view>
+        </view>
+      </navigator> -->
       <view class="item" bindtap="toxiaochengxu('wxb380a27f73ace110')" plain="false">
         <view class="item_content">
           <image class="item_img" src="../images/qiming.png" />

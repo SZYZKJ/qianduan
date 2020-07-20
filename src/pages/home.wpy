@@ -48,8 +48,9 @@
             </view>
             <view class="minlan">
               <view class="laiyuan">{{item.count}}人学习</view>
-              <view wx:if="{{item.yigoumai||weixinpingguoshenhe==1}}" class="yigoumai">去学习</view>
-              <view wx:else class="yigoumai">¥{{item.jiage}}</view>
+              <!-- <view wx:if="{{item.yigoumai||weixinpingguoshenhe==1}}" class="yigoumai">去学习</view>
+              <view wx:else class="yigoumai">¥{{item.jiage}}</view> -->
+              <view class="yigoumai">去学习</view>
             </view>
           </view>
         </view>
@@ -76,7 +77,7 @@
           </view>
         </view>
       </view>
-      <view class="kuai3">
+      <view class="kuai3" wx:if="{{liaomeishenhe==0}}">
         <view class="shouhang">
           <image class="image1" mode="scaleToFill" src="{{qingganbaike.image}}" />
           <view class="gengduo" bindtap="goTopage('qingganbaike')">
@@ -98,7 +99,7 @@
           </view>
         </view>
       </view>
-      <view class="kuai4">
+      <view class="kuai4" wx:if="{{liaomeishenhe==0}}">
         <view class="shouhang">
           <image class="image1" mode="scaleToFill" src="{{liaomeishizhan.image}}" />
           <view class="gengduo" bindtap="goTopage('liaomeishizhanlist')">
@@ -207,6 +208,7 @@
       lunbotu: [],
       tubiao: [],
       weixinshenhe: 1,
+      liaomeishenhe: 1,
     };
     async getShouyekuai() {
       let unionid = wepy.getStorageSync('unionid') || '';
@@ -279,6 +281,8 @@
       wepy.setStorageSync('weixinshenhe', json.weixinshenhe);
       this.weixinpingguoshenhe = json.weixinpingguoshenhe;
       wepy.setStorageSync('weixinpingguoshenhe', json.weixinpingguoshenhe);
+      wepy.setStorageSync('liaomeishenhe', json.liaomeishenhe);
+      this.liaomeishenhe = json.liaomeishenhe;
       // wepy.setStorageSync('istuiguang', json.istuiguang);
       const res = await wepy.getSetting();
       if ((res.authSetting)['scope.userInfo']) {

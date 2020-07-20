@@ -34,15 +34,15 @@
       <view class="kuai_list">
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('916767903321494437')">高价值展示</button>
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('559231030230830323')">推拉</button>
-        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('139591450027399058')">打压</button>
-      </view>
-      <view class="kuai_list">
-        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('421622887787204420')">服从性测试</button>
-        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('216906182379993169')">筛选</button>
-        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('754520455982876815')">一致性测试</button>
-      </view>
-      <view class="kuai_list">
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('329167014077745490')">引导追逐</button>
+      </view>
+      <view class="kuai_list">
+        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('216906182379993169')">筛选</button>
+        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('421622887787204420')">顺从</button>
+        <button wx:if="{{liaomeishenhe==0}}" class="weui-btn" type="default" size="mini" bindtap="gotoLilun('139591450027399058')">损对方</button>
+      </view>
+      <view wx:if="{{liaomeishenhe==0}}" class="kuai_list">
+        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('754520455982876815')">一致性测试</button>
       </view>
     </view>
     <view class="kuai">
@@ -65,7 +65,7 @@
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('268593572301089945')">调情话术</button>
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('306065522251726604')">走心话术</button>
       </view>
-      <view class="kuai_list">
+      <view wx:if="{{liaomeishenhe==0}}" class="kuai_list">
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('631577800116926043')">张力话题</button>
       </view>
     </view>
@@ -85,10 +85,10 @@
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('427667882094816570')">约会后话术</button>
       </view>
     </view>
-    <view class="kuai">
+    <view wx:if="{{liaomeishenhe==0}}" class="kuai">
       <view class="biaoti">
         <view class="kuai_flag"></view>
-        <biaoti>恋爱成功</biaoti>
+        <biaoti>达成恋爱</biaoti>
       </view>
       <view class="kuai_list">
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('979666957014117155')">轻微触碰</button>
@@ -101,9 +101,9 @@
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('937003359675300134')">回家</button>
       </view>
       <view class="kuai_list">
-        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('223517300450035940')">酒店</button>
+        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('223517300450035940')">约会升级</button>
         <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('299594360911260275')">单独空间相处</button>
-        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('512829660730509238')">化解最后尴尬</button>
+        <button class="weui-btn" type="default" size="mini" bindtap="gotoLilun('512829660730509238')">化解尴尬</button>
       </view>
     </view>
     <view class="tou"></view>
@@ -116,11 +116,12 @@
   import tip from "@/utils/tip";
   export default class lilun extends wepy.page {
     config = {
-      navigationBarTitleText: "撩妹套路",
+      navigationBarTitleText: "幽默话题",
       enablePullDownRefresh: true,
     };
     Page = {}
     data = {
+      liaomeishenhe: wepy.getStorageSync('liaomeishenhe') || 1,
     };
     changeTab() {
       if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {

@@ -36,8 +36,8 @@
               let data = rlt.data;
               if (data.unionid) {
                 wepy.setStorageSync('unionid', data.unionid);
-                wx.navigateBack({
-                  delta: 1
+                wx.switchTab({
+                  url: "/pages/home"
                 })
               } else {
                 wepy.showModal({

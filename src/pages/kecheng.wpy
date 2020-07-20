@@ -19,7 +19,8 @@
       </view>
     </view>
     <view class="kuang" wx:if="{{kecheng.yigoumai==0&&weixinpingguoshenhe==0}}">
-      <view class="text" bindtap="zhifukecheng">特价 {{kecheng.jiage}}</view>
+      <!-- <view class="text" bindtap="zhifukecheng">特价 {{kecheng.jiage}}</view> -->
+      <view class="text" bindtap="zhifukecheng">购买</view>
     </view>
     <view class="kuang" wx:if="{{kecheng.yigoumai==0&&weixinpingguoshenhe==1}}">
       <view class="text" bindtap="zhifukecheng">立即学习</view>
@@ -82,33 +83,36 @@
         tip.confirm(this.ioswenan);
         return;
       }
-      var timestamp = Date.parse(new Date());
-      if (timestamp - this.nowtime < 3000) {
-        return false;
-      } else {
-        this.nowtime = timestamp;
-      }
-      let unionid = wepy.getStorageSync('unionid') || '';
-      if (unionid == '') {
-        wepy.navigateTo({
-          url: '/pages/shouquan'
-        })
-        return false;
-      }
-      const json = await api.get_kechengprepay_id({
-        'unionid': unionid,
-        'kechengid': this.kecheng.id,
-        'detail': '课程：' + this.kecheng.title,
+      wepy.navigateTo({
+        url: "/pages/vip"
       });
-      this.paySign_data = json.data;
-      if (json.MSG == 'nophoneNumber') {
-        wepy.navigateTo({
-          url: '/pages/phonenumber'
-        });
-      } else {
-        this.tiaoqizhifu();
-      }
-      this.$apply();
+      // var timestamp = Date.parse(new Date());
+      // if (timestamp - this.nowtime < 3000) {
+      //   return false;
+      // } else {
+      //   this.nowtime = timestamp;
+      // }
+      // let unionid = wepy.getStorageSync('unionid') || '';
+      // if (unionid == '') {
+      //   wepy.navigateTo({
+      //     url: '/pages/shouquan'
+      //   })
+      //   return false;
+      // }
+      // const json = await api.get_kechengprepay_id({
+      //   'unionid': unionid,
+      //   'kechengid': this.kecheng.id,
+      //   'detail': '课程：' + this.kecheng.title,
+      // });
+      // this.paySign_data = json.data;
+      // if (json.MSG == 'nophoneNumber') {
+      //   wepy.navigateTo({
+      //     url: '/pages/phonenumber'
+      //   });
+      // } else {
+      //   this.tiaoqizhifu();
+      // }
+      // this.$apply();
     }
     changeTab() {
       if (this.endX - this.startX > 30 && Math.abs(this.endY - this.startY) * 1.5 < Math.abs(this.endX - this.startX)) {

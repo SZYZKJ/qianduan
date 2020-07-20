@@ -43,7 +43,6 @@
             const json = await api.getTequan({
                 unionid: unionid,
             })
-            console.log(json);
             this.vipdengji = json.vipdengji;
             this.vipdengjimiaoshu = json.vipdengjimiaoshu;
             this.contentlist = json.contentlist;

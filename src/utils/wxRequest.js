@@ -15,11 +15,12 @@ function Decrypt(word) {
     return decryptedStr.toString();
 }
 const apptype = 'weixin'
-const nametype = 'tuodanhuashu'
+const nametype = 'lianaihuashuai'
 const wxRequestPost = async (params = {}, url) => {
     let data = params || {};
     data.apptype = apptype;
     data.nametype = nametype;
+    data.version = '3.6.9';
     var newdata = JSON.stringify(data);
     newdata = Encrypt(newdata);
     let res = await wepy.request({

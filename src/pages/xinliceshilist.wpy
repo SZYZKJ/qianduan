@@ -166,8 +166,9 @@
         display: flex;
         justify-content: space-between;
         height: 80rpx;
+        line-height: 80rpx;
         width: 100%;
-        font-size: 28rpx;
+        font-size: 33rpx;
         .tab-item {
             color: #000;
             margin-left: 20rpx;
@@ -179,7 +180,7 @@
             margin-left: 20rpx;
             margin-right: 20rpx;
             display: inline;
-            padding-bottom: 6rpx;
+            padding-bottom: 16rpx;
             border-bottom: 6rpx solid #ff4500;
         }
     }
@@ -206,11 +207,11 @@
                 justify-content: space-between;
                 .title {
                     color: #333;
-                    font-size: 28rpx;
+                    font-size: 30rpx;
                     width: 420rpx;
                 }
                 .laiyuan {
-                    font-size: 20rpx;
+                    font-size: 22rpx;
                 }
             }
             .image {

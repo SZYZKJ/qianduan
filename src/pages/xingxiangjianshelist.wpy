@@ -110,11 +110,11 @@
           justify-content: space-between;
           .title {
             color: #333;
-            font-size: 28rpx;
+            font-size: 30rpx;
             width: 420rpx;
           }
           .laiyuan {
-            font-size: 20rpx;
+            font-size: 22rpx;
           }
         }
         .image {

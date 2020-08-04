@@ -225,7 +225,7 @@
     .headercontent1 {
       margin-left: 200rpx;
       margin-top: 10rpx;
-      font-size: 26rpx;
+      font-size: 28rpx;
       display: flex;
       color: #ff4500;
       .jifen {
@@ -275,7 +275,7 @@
       justify-content: space-between;
       margin-left: 25rpx;
       .text1 {
-        font-size: 26rpx;
+        font-size: 28rpx;
         color: #000;
       }
       .text2 {
@@ -287,12 +287,6 @@
     .item_img {
       width: 30rpx;
       height: 28rpx;
-    }
-    .tip {
-      color: #ffffff;
-      font-size: 28rpx;
-      margin-top: 20rpx;
-      margin-left: 60rpx;
     }
   }
 </style>

@@ -36,8 +36,15 @@
               let data = rlt.data;
               if (data.unionid) {
                 wepy.setStorageSync('unionid', data.unionid);
-                wx.switchTab({
-                  url: "/pages/home"
+                let pages = getCurrentPages();
+                var nowi = pages.length - 1;
+                for (; nowi >= 0; --nowi) {
+                  if (pages[nowi].route != 'pages/shouquan') {
+                    break;
+                  }
+                }
+                wx.navigateBack({
+                  delta: pages.length - 1 - nowi,
                 })
               } else {
                 wepy.showModal({

@@ -4,11 +4,11 @@
       <view class="searchkuang">
         <view class="serch_content">
           <view class="searchicon">
-            <icon type="search" size="24"></icon>
+            <icon type="search" size="28"></icon>
           </view>
           <input type="text" class="search_input" value="{{inputValue}}" focus="{{focus}}" bindinput="bindinput" bindconfirm="bindconfirm('')" bindfocus="bindfocus" confirm-type="search" placeholder="复制妹子聊天的话" maxlength="20" />
           <view class="clearicon" wx:if="{{inputValue!=''}}" bindtap="delText">
-            <icon type="clear" size="24"></icon>
+            <icon type="clear" size="28"></icon>
           </view>
         </view>
         <view class="searchanniu" bindtap="bindconfirm('')">搜索</view>
@@ -538,8 +538,13 @@
             (that.currentTab == 0 && that.oldhuashu == that.inputValue) ||
             (that.currentTab == 1 && that.oldbiaoqing == that.inputValue) ||
             (that.currentTab == 2 && that.oldbaike == that.inputValue)
-          )
-            return false;
+          ) {
+            if (that.inputValue == '') {
+              that.inputValue = '你好';
+            } else {
+              return false;
+            }
+          }
           that.huashuList = [];
           that.biaoqingList = [];
           that.baikeList = [];
@@ -555,14 +560,13 @@
       that.$apply();
     }
     onLoad() {
-      wepy.setStorageSync('unionid', 'ofIsD1YLw3q_1v4d2NgX9GrS3ZEM');
       this.getRecommend();
       this.$apply();
     }
     onShareAppMessage() {
       return {
         title: "恋爱话术",
-        path: "/pages/home"
+        path: "/pages/searchpage"
       };
     }
   }
@@ -589,10 +593,10 @@
         border-radius: 300rpx;
         color: #333;
         background: rgba(0, 0, 0, 0.1);
-        height: 68rpx;
+        height: 80rpx;
         .search_input {
-          line-height: 68rpx;
-          font-size: 28rpx;
+          line-height: 80rpx;
+          font-size: 33rpx;
           width: 100%;
         }
         .searchicon {
@@ -606,10 +610,11 @@
         }
       }
       .searchanniu {
+        font-size: 33rpx;
         margin-left: 2%;
         text-align: center;
         border-radius: 20rpx;
-        line-height: 68rpx;
+        line-height: 80rpx;
         width: 10%;
         color: #fff;
         background: #ff4500;
@@ -621,7 +626,7 @@
     }
   }
   .showdata {
-    padding-top: 148rpx;
+    padding-top: 160rpx;
     background: rgba(0, 0, 0, 0.1);
     .textend {
       padding-top: 30rpx;
@@ -630,7 +635,7 @@
     }
   }
   .recommend {
-    padding-top: 88rpx;
+    padding-top: 100rpx;
     .helpkeywords {
       .keyword {
         padding-top: 20rpx;

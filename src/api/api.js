@@ -117,7 +117,10 @@ const getTixianjilu = (params) => wxRequestPost(params, apiMain + 'getTixianjilu
 const tiXian = (params) => wxRequestPost(params, apiMain + 'tiXian');
 //获取价格列表
 const getJiagelist = (params) => wxRequestPost(params, apiMain + 'getJiagelist');
+//领取红包
+const lingQuhongbao = (params) => wxRequestPost(params, apiMain + 'lingQuhongbao');
 export default {
+  lingQuhongbao,
   getJiagelist,
   deleteHaibao,
   getHaibao,

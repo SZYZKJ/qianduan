@@ -42,7 +42,7 @@
     font-weight: bolder;
     padding-left: 10%;
     padding-right: 10%;
-    line-height: 66rpx;
+    line-height: 80rpx;
     display: flex;
     text-align: center;
     justify-content: space-between;

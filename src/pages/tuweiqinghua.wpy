@@ -12,8 +12,8 @@
         </view>
         <view class="fixed-footer">
             <view class="btngroup-prev-next">
-                <view bindtap="openChat(0)" class="btn-prev {{prevChatId===false?'disabled':''}}">上一个(下拉)</view>
-                <view bindtap="openChat(1)" class="btn-next {{nextChatId===false?'disabled':''}}">下一个(上滑)</view>
+                <view bindtap="openChat(0)" class="btn-prev {{prevChatId===false?'disabled':''}}">上一个</view>
+                <view bindtap="openChat(1)" class="btn-next {{nextChatId===false?'disabled':''}}">下一个</view>
             </view>
         </view>
     </view>
@@ -253,7 +253,7 @@
         line-height: 90rpx;
         text-align: center;
         color: #535355;
-        font-size: 34rpx;
+        font-size: 33rpx;
         overflow: hidden;
         box-sizing: border-box;
         border-radius: 0;

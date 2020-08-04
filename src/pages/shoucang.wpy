@@ -242,7 +242,7 @@
     .bianji {
       width: 100rpx;
       height: 80rpx;
-      ;
+      line-height: 80rpx;
       z-index: 100;
       position: fixed;
       top: 0rpx;
@@ -256,8 +256,9 @@
       justify-content: space-around;
       height: 80rpx;
       width: 100%;
-      font-size: 28px;
+      font-size: 33rpx;
       background: #ffffff;
+      line-height: 80rpx;
       .tab-item {
         color: #000;
         margin-left: 20rpx;
@@ -296,13 +297,13 @@
           justify-content: space-between;
           .title {
             color: #333;
-            font-size: 28rpx;
+            font-size: 30rpx;
             width: 420rpx;
           }
           .laiyuan {
             text-align: center;
             width: 100rpx;
-            font-size: 20rpx;
+            font-size: 22rpx;
             color: #fff;
             background: #ff4500;
             border-radius: 20rpx;
@@ -352,7 +353,7 @@
       line-height: 90rpx;
       text-align: center;
       color: #535355;
-      font-size: 34rpx;
+      font-size: 33rpx;
       overflow: hidden;
       box-sizing: border-box;
       border-radius: 0;

@@ -127,7 +127,7 @@
         word-break: break-all;
         .title {
             color: #000;
-            font-size: 40rpx;
+            font-size: 38rpx;
             margin-bottom: 30rpx;
         }
         .dikuang {

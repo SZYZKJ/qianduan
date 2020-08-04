@@ -476,7 +476,7 @@
         height: 60rpx;
       }
       .title {
-        font-size: 20rpx;
+        font-size: 24rpx;
       }
     }
   }
@@ -494,6 +494,7 @@
       line-height: 80rpx;
       width: 76%;
       overflow: hidden;
+      font-size: 33rpx;  
     }
     .image {
       margin-top: 20rpx;
@@ -503,7 +504,7 @@
   }
   .searchmiaoshu {
     margin-top: 10rpx;
-    font-size: 20rpx;
+    font-size: 24rpx;
     color: #ff4500;
   }
   .tuijiankuang {
@@ -513,7 +514,7 @@
     .tuijian {
       padding-left: 10rpx;
       padding-right: 10rpx;
-      font-size: 20rpx;
+      font-size: 24rpx;
       color: #ffffff;
       background: #ff4500;
       border-radius: 10rpx;
@@ -538,7 +539,7 @@
       }
       .gengduo {
         color: #ff4500;
-        font-size: 26rpx;
+        font-size: 33rpx;
         line-height: 40rpx;
         margin-right: 30rpx;
       }
@@ -565,7 +566,7 @@
         justify-content: space-between;
         .bigtext {
           min-height: 80rpx;
-          font-size: 26rpx;
+          font-size: 30rpx;
           color: #333;
         }
         .minlan {
@@ -575,14 +576,14 @@
           justify-content: space-between;
           text-align: center;
           .laiyuan {
-            font-size: 20rpx;
+            font-size: 24rpx;
           }
           .yigoumai {
             width: 100rpx;
             color: #fff;
             background: #ff4500;
             border-radius: 20rpx;
-            font-size: 20rpx;
+            font-size: 24rpx;
           }
         }
         .mintext {
@@ -610,7 +611,7 @@
       }
       .gengduo {
         color: #ff4500;
-        font-size: 26rpx;
+        font-size: 33rpx;
         line-height: 40rpx;
         margin-right: 30rpx;
       }
@@ -638,7 +639,7 @@
           text-align: left;
           .bigtext {
             min-height: 80rpx;
-            font-size: 26rpx;
+            font-size: 30rpx;
             color: #333;
           }
           .mintext {

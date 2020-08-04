@@ -15,7 +15,7 @@ function Decrypt(word) {
     return decryptedStr.toString();
 }
 const apptype='weixin'
-const nametype='lianaituodanhuashu'
+const nametype='tuodanhuashu'
 const wxRequestPost = async (params = {}, url) => {
     let data = params || {};
     data.apptype = apptype;

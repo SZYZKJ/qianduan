@@ -22,7 +22,7 @@
       navigationBarTitleText: "导师微信"
     };
     data = {
-      weixin: "Love---Union",
+      weixin: "lianaituodanhuashu",
       erweima: "https://www.lianaizhuli.com/daoshiweixin/pangyuming.jpg",
       gongzhonghao: "https://www.lianaizhuli.com/daoshiweixin/gongzhonghao.png",
       vipdengji: 0
@@ -35,8 +35,9 @@
       });
     }
     fuzhiweixinhao() {
+      let that = this;
       wx.setClipboardData({
-        data: 'Love---Union',
+        data: that.weixin,
         success: function() {
           wx.showToast({
             title: "复制成功",
@@ -57,6 +58,7 @@
         unionid: unionid
       });
       this.vipdengji = json.vipdengji;
+      this.weixin = json.weixin;
       this.$apply();
     }
     onLoad() {

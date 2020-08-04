@@ -304,7 +304,7 @@
     text-align: center;
     padding: 30rpx;
     margin-bottom: 30rpx;
-    font-size: 40rpx;
+    font-size: 38rpx;
     color: #000;
   }
   .timutitle {
@@ -348,7 +348,7 @@
   }
   .bigtext {
     margin-top: 30rpx;
-    font-size: 35rpx;
+    font-size: 36rpx;
     color: #000;
     text-align: left;
     margin-left: 5%;

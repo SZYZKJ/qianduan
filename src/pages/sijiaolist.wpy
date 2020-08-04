@@ -105,7 +105,7 @@
                     justify-content: space-between;
                     .title {
                         color: #333;
-                        font-size: 28rpx;
+                        font-size: 30rpx;
                         width: 420rpx;
                     }
                     .minlan {
@@ -113,21 +113,21 @@
                         justify-content: space-between;
                         text-align: center;
                         .laiyuan {
-                            font-size: 20rpx;
+                            font-size: 22rpx;
                         }
                         .yigoumai {
                             width: 100rpx;
                             color: #fff;
                             background: #ff4500;
                             border-radius: 20rpx;
-                            font-size: 20rpx;
+                            font-size: 22rpx;
                         }
                         .weigoumai {
                             width: 100rpx;
                             color: #fff;
                             background: #09BB07;
                             border-radius: 20rpx;
-                            font-size: 20rpx;
+                            font-size: 22rpx;
                         }
                     }
                 }

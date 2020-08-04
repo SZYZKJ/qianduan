@@ -235,6 +235,7 @@
         return String.fromCharCode(e);
       },
       changeceshi() {
+        this.tijiao = 0;
         this.isceshi = 1;
         wx.setNavigationBarTitle({
           title: '心理测试'

@@ -105,7 +105,7 @@
             margin-left: 4%;
             padding-top: 20rpx;
             padding-bottom: 20rpx;
-            border-bottom: 1px solid #efefef;
+            border-bottom: 2rpx solid #efefef;
             .kuai {
                 padding-left: 16rpx;
                 padding-right: 16rpx;

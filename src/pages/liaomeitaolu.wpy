@@ -261,12 +261,12 @@
         color: #333;
       }
       .nv {
-        line-height: 25px;
+        line-height: 50rpx;
         display: flex;
         left: 0;
       }
       .nan {
-        line-height: 25px;
+        line-height: 50rpx;
         display: flex;
         left: 0;
       }

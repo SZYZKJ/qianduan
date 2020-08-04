@@ -256,7 +256,7 @@
       border-color: #ffffff;
       background: #ffffff;
       padding-left: 0rpx;
-      border-bottom: 1px solid #efefef;
+      border-bottom: 2rpx solid #efefef;
       display: flex;
       align-items: center;
       justify-content: space-between;

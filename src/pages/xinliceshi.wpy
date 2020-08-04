@@ -309,7 +309,7 @@
   }
   .timutitle {
     padding: 30rpx;
-    font-size: 30rpx;
+    font-size: 45rpx;
     color: #000;
   }
   .zixiang {
@@ -320,6 +320,7 @@
     min-height: 100rpx;
     line-height: 100rpx;
     .xuanxiang {
+      font-size: 38rpx;
       width: 96%;
       color: #000;
     }

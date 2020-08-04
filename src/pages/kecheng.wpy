@@ -208,7 +208,7 @@
   }
   .title {
     color: #333;
-    font-size: 40rpx;
+    font-size: 38rpx;
     margin-top: 20rpx;
     margin-bottom: 20rpx;
   }
@@ -216,15 +216,16 @@
     display: flex;
     justify-content: space-around;
     height: 80rpx;
-    font-size: 30px;
     border-bottom: 2rpx solid #dfdfdf;
     .tab-item {
+      font-size: 38rpx;
       color: #000;
       margin-left: 20rpx;
       margin-right: 20rpx;
       display: inline;
     }
     .tab-itemactive {
+      font-size: 38rpx;
       color: #ff4500;
       margin-left: 15rpx;
       margin-right: 15rpx;
